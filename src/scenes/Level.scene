@@ -2,6 +2,8 @@
     "id": "b685c081-ee5f-4b67-b583-415922c9e2c4",
     "sceneType": "SCENE",
     "settings": {
+        "snapWidth": 565.0256351240134,
+        "snapHeight": 587.0053037928724,
         "exportClass": true,
         "autoImport": true,
         "preloadPackFiles": [],
@@ -11,7 +13,24 @@
         "borderWidth": 1280,
         "borderHeight": 720
     },
-    "displayList": [],
+    "displayList": [
+        {
+            "type": "SpineGameObject",
+            "id": "d6e18694-2eef-4e73-beae-acdb38ac5362",
+            "label": "idle",
+            "scope": "PUBLIC",
+            "dataKey": "Idle",
+            "atlasKey": "Idle-atlas",
+            "skinName": "default",
+            "bpType": 1,
+            "bpAnimation": "animation",
+            "defaultMix": 1,
+            "x": 651,
+            "y": 379,
+            "scaleX": 0.313331752455583,
+            "scaleY": 0.313331752455583
+        }
+    ],
     "plainObjects": [],
     "meta": {
         "app": "Phaser Editor - Scene Editor",

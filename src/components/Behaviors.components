@@ -1,5 +1,23 @@
 {
-    "components": [],
+    "components": [
+        {
+            "name": "StartAnimationComp",
+            "baseClass": "UserComponent",
+            "gameObjectType": "SpineGameObject",
+            "properties": [
+                {
+                    "name": "animationName",
+                    "label": "Animation Name",
+                    "tooltip": "",
+                    "defValue": "",
+                    "customDefinition": false,
+                    "type": {
+                        "id": "spine-animation-name"
+                    }
+                }
+            ]
+        }
+    ],
     "meta": {
         "app": "Phaser Editor 2D - User Components Editor",
         "url": "https://phasereditor2d.com",
