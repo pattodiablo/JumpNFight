@@ -10,6 +10,16 @@
                 "url": "assets/SpineAnimations/IdlePlayer/Idle.atlas",
                 "type": "spineAtlas",
                 "key": "Idle-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Player/Player.json",
+                "type": "spineJson",
+                "key": "Player"
+            },
+            {
+                "url": "assets/SpineAnimations/Player/Player.atlas",
+                "type": "spineAtlas",
+                "key": "Player-atlas"
             }
         ]
     },
