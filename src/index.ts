@@ -24,11 +24,11 @@ class Boot extends Phaser.Scene {
 window.addEventListener('load', function () {
 	
 	const game = new Phaser.Game({
-		width: this.window.innerWidth,
-		height: this.window.innerHeight,
-		backgroundColor: "#2A7FDB",
+		width: 1031,
+		height: 580,
+		backgroundColor: "#ffffff",
 		scale: {
-			mode: Phaser.Scale.ScaleModes.WIDTH_CONTROLS_HEIGHT,
+			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
 			autoCenter: Phaser.Scale.Center.CENTER_BOTH
 		}, 
 		plugins: {
@@ -39,7 +39,25 @@ window.addEventListener('load', function () {
 			  }]
 		  },
 		
-		scene: [Boot, Preload, Level]
+		scene: [Boot, Preload, Level],
+        input: {
+            keyboard: true, // Asegúrate de que el sistema de teclado esté habilitado
+            mouse: true,    // Asegúrate de que el sistema de ratón esté habilitado
+            touch: true,    // Asegúrate de que el sistema de toque esté habilitado
+            gamepad: true   // Asegúrate de que el sistema de gamepad esté habilitado
+        },
+		physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: { x:0,y: 300 }, // Configura la gravedad en el eje Y
+                debug: false // Activa la depuración de colisiones
+            }
+        },
+		render: {
+            pixelArt: false, // Habilita el modo de pixel art
+            antialias: true, // Desactiva el antialiasing
+            roundPixels: true // Redondea las posiciones de los píxeles
+        }
 	});
 
 	game.scene.start("Boot");

@@ -2,8 +2,8 @@
     "id": "b685c081-ee5f-4b67-b583-415922c9e2c4",
     "sceneType": "SCENE",
     "settings": {
-        "snapWidth": 565.0256351240134,
-        "snapHeight": 587.0053037928724,
+        "snapWidth": 600.8918440386587,
+        "snapHeight": 604.1008274744254,
         "exportClass": true,
         "autoImport": true,
         "preloadPackFiles": [],
@@ -15,20 +15,16 @@
     },
     "displayList": [
         {
-            "type": "SpineGameObject",
-            "id": "d6e18694-2eef-4e73-beae-acdb38ac5362",
-            "label": "idle",
+            "prefabId": "e398a937-841b-4a4e-aa40-dc1553d45e14",
+            "id": "899453bf-fa2f-4675-af26-b94538b929c1",
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "label": "Player",
             "scope": "PUBLIC",
-            "dataKey": "Idle",
-            "atlasKey": "Idle-atlas",
-            "skinName": "default",
-            "bpType": 1,
-            "bpAnimation": "animation",
-            "defaultMix": 1,
-            "x": 651,
-            "y": 379,
-            "scaleX": 0.313331752455583,
-            "scaleY": 0.313331752455583
+            "x": 602,
+            "y": 148
         }
     ],
     "plainObjects": [],

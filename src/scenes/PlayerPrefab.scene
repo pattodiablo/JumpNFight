@@ -1,0 +1,150 @@
+{
+    "id": "e398a937-841b-4a4e-aa40-dc1553d45e14",
+    "sceneType": "PREFAB",
+    "settings": {
+        "exportClass": true,
+        "autoImport": true,
+        "preloadMethodName": "",
+        "preloadPackFiles": [],
+        "createMethodName": "",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
+        "borderWidth": 1280,
+        "borderHeight": 720
+    },
+    "displayList": [
+        {
+            "type": "SpineGameObject",
+            "id": "b959cada-7339-47d2-9e48-ae96392385d9",
+            "label": "Player",
+            "scope": "PUBLIC",
+            "hitArea.shape": "RECTANGLE",
+            "dataKey": "Player",
+            "atlasKey": "Player-atlas",
+            "skinName": "default",
+            "bpType": 1,
+            "bpAnimation": "Idle",
+            "scaleX": 0.15,
+            "scaleY": 0.15
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor - Scene Editor",
+        "url": "https://phaser.io/editor",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    },
+    "prefabProperties": [
+        {
+            "name": "PlayerSpeed",
+            "label": "PlayerSpeed",
+            "tooltip": "PlayerSpeed",
+            "defValue": 400,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "cursors",
+            "label": "cursors",
+            "tooltip": "cursors",
+            "defValue": "",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Phaser.Types.Input.Keyboard.CursorKeys"
+            }
+        },
+        {
+            "name": "currentAnimation",
+            "label": "currentAnimation",
+            "tooltip": "currentAnimation",
+            "defValue": "Idle",
+            "customDefinition": false,
+            "type": {
+                "id": "string"
+            }
+        },
+        {
+            "name": "facingLeft",
+            "label": "facingLeft",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "isJumping",
+            "label": "isJumping",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "fallMultiplier",
+            "label": "fallMultiplier",
+            "tooltip": "",
+            "defValue": 3.5,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "playerGravity",
+            "label": "playerGravity",
+            "tooltip": "",
+            "defValue": 1500,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "JumpVelocity",
+            "label": "JumpVelocity",
+            "tooltip": "",
+            "defValue": 1000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "IsFalling",
+            "label": "IsFalling",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "mouseInactiveTimer",
+            "label": "mouseInactiveTimer",
+            "tooltip": "",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "mouseInactiveThreshold",
+            "label": "mouseInactiveThreshold",
+            "tooltip": "",
+            "defValue": 500,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        }
+    ]
+}
