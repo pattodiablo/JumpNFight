@@ -110,6 +110,36 @@
             "type": {
                 "id": "number"
             }
+        },
+        {
+            "name": "IsNearPlayer",
+            "label": "IsNearPlayer",
+            "tooltip": "IsNearPlayer",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "EnemyLife",
+            "label": "EnemyLife",
+            "tooltip": "EnemyLife",
+            "defValue": 3,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "IsDestroyed",
+            "label": "IsDestroyed",
+            "tooltip": "IsDestroyed",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
         }
     ]
 }

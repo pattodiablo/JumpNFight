@@ -67,22 +67,25 @@ export default class Level extends Phaser.Scene {
 
 	/* START-USER-CODE */
 
-    public playerSpeed: number = 10; // Variable pública para la velocidad del jugador
+
 
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
     private currentAnimation: string = "Idle";
 	// Write your code here
 	private platforms!: Phaser.GameObjects.Group;
     private platformBuffer: number = 20; // Número de plataformas de buffer por delante y por detrás del jugador
+    public enemies!: Phaser.GameObjects.Group; // Grupo de enemigos
+
 	create() {
 
 		this.editorCreate();
-
+   
         // Reproduce la animación 'Idle' por defecto
         this.player.animationState.setAnimation(0, "Idle", true);
 		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,0);
 		this.cameras.main.setZoom(0.5); // Ajustar el zoom de la cámara para que parezca más alejada
 		this.platforms = this.add.group();
+        this.enemies = this.add.group();
 		this.createFloor();
 		this.createPlatforms();
 

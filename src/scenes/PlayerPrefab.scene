@@ -18,6 +18,8 @@
             "label": "Player",
             "scope": "PUBLIC",
             "hitArea.shape": "RECTANGLE",
+            "hitArea.width": 100,
+            "hitArea.height": 600,
             "dataKey": "Player",
             "atlasKey": "Player-atlas",
             "skinName": "default",
@@ -154,6 +156,56 @@
             "customDefinition": false,
             "type": {
                 "id": "boolean"
+            }
+        },
+        {
+            "name": "lastShotTime",
+            "label": "lastShotTime",
+            "tooltip": "",
+            "defValue": 2000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "shotInterval",
+            "label": "shotInterval",
+            "tooltip": "shotInterval",
+            "defValue": 500,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "laserColor",
+            "label": "laserColor",
+            "tooltip": "laserColor",
+            "defValue": "ff0000",
+            "customDefinition": false,
+            "type": {
+                "id": "string"
+            }
+        },
+        {
+            "name": "laserSpeed",
+            "label": "laserSpeed",
+            "tooltip": "laserSpeed",
+            "defValue": 3000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "laserDuration",
+            "label": "laserDuration",
+            "tooltip": "laserDuration",
+            "defValue": 500,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
             }
         }
     ]

@@ -14,7 +14,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, boundsProvider?: SpineGameObjectBoundsProvider) {
 		super(scene, plugin, x ?? 0, y ?? 0, "Player", "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
 
-		this.setInteractive(new Phaser.Geom.Rectangle(0, 0, 0, 0), Phaser.Geom.Rectangle.Contains);
+		this.setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 600), Phaser.Geom.Rectangle.Contains);
 		this.skeleton.setSkinByName("default");
 		this.scaleX = 0.5;
 		this.scaleY = 0.5;
@@ -23,7 +23,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		this.setOrigin(0.5, 0.5);
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
 		this.scene.events.on("update", (time: number, delta: number) => this.updatePlayer(delta));
-		this.scene.input.on('pointermove', () => this.resetMouseInactiveTimer());
+	//	this.scene.input.on('pointermove', () => this.resetMouseInactiveTimer());
 		/* END-USER-CTR-CODE */
 	}
 
@@ -39,6 +39,11 @@ export default class PlayerPrefab extends SpineGameObject {
 	public mouseInactiveTimer: number = 0;
 	public mouseInactiveThreshold: number = 500;
 	public hasDoubleJumped: boolean = false;
+	public lastShotTime: number = 2000;
+	public shotInterval: number = 500;
+	public laserColor: string = "ff0000";
+	public laserSpeed: number = 3000;
+	public laserDuration: number = 500;
 
 	/* START-USER-CODE */
 	create(){
@@ -49,6 +54,11 @@ export default class PlayerPrefab extends SpineGameObject {
 
         playerBody.setCollideWorldBounds(false);
         playerBody.setGravityY(this.playerGravity); // Configura la gravedad para el jugador
+
+		    // Ajustar el tamaño y la forma del cuerpo de colisión del jugador
+			playerBody.setSize(400, 400); // Ajustar el tamaño del cuerpo de colisión
+			playerBody.setOffset(140, 210); // Ajustar la posición del cuerpo de colisión
+
 
 		if (this.scene.input.keyboard) {
             this.cursors = this.scene.input.keyboard.createCursorKeys();
@@ -72,8 +82,108 @@ export default class PlayerPrefab extends SpineGameObject {
         this.mouseInactiveTimer = 0;
     }
 
+	scanAndDestroy() {
+		const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
+
+		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
+
+			if((enemy as any).IsNearPlayer){
+				if (this.scene.time.now > this.lastShotTime + this.shotInterval) {
+					this.createLaserParticles();
+					this.scene.time.delayedCall(100, () => {
+						this.shootLaser(enemy as Phaser.GameObjects.Sprite);
+					});
+					this.lastShotTime = this.scene.time.now;
+				}
+
+			}
+		});
+	}
+
+	shootLaser(enemy: Phaser.GameObjects.Sprite) {
+		const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
+		const laser = this.scene.add.ellipse(this.x, this.y, 100, 20, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
+		this.scene.physics.add.existing(laser);
+		const laserBody = laser.body as Phaser.Physics.Arcade.Body;
+		laserBody.setAllowGravity(false);
+
+		// Calcular la dirección del láser hacia el jugador
+		const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+		const velocityX = Math.cos(angle) * this.laserSpeed;
+		const velocityY = Math.sin(angle) * this.laserSpeed;
+		laserBody.setVelocity(velocityX, velocityY);
+		laser.rotation = angle;
+		// Establecer la duración del láser
+		laser.lifespan = this.laserDuration;
+		this.scene.time.addEvent({
+			delay: this.laserDuration,
+			callback: () => {
+				laser.destroy();
+			}
+		});
+
+		  // Agregar colisión entre el láser y el jugador
+		  this.scene.physics.add.overlap(laser, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+
+	}
+
+	handleLaserCollision(laser: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {
+		// Manejar la colisión entre el láser y el jugador
+
+		(enemy as any).EnemyLife -= 1;
+
+		
+		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {
+			x: (laser as Phaser.GameObjects.Ellipse).x,
+			y: (laser as Phaser.GameObjects.Ellipse).y,
+			speed: { min: -1000, max: 1000 },
+			angle: { min: 0, max: 360 },
+			lifespan: { min: 30, max: 500 },
+			scale: { start: 2, end: 0 },
+			quantity: 5,
+			maxParticles: 5,
+			frequency: 100,
+			gravityY: 3000
+
+		});
+
+		bloodParticles.setDepth(1);
+			// Detener el sistema de partículas después de un tiempo y luego destruirlo
+			this.scene.time.delayedCall(500, function() {
+				bloodParticles.stop();
+				bloodParticles.destroy();
+			}, [], this);
+			laser.destroy(); // Destruir el láser al colisionar con el jugador
+		// Aquí puedes agregar lógica adicional, como reducir la salud del jugador
+	}
+
+	createLaserParticles() {
+
+		const appearParicles =  this.scene.add.particles(0, 0, 'particleImage', {
+			x: this.x,
+			y: this.y,
+			speed: { min: -30, max: 30 },
+			angle: { min: 0, max: 360 },
+			lifespan: { min: 30, max: 200 },
+			scale: { start: 1, end: 0 },
+			quantity: 1,
+			maxParticles: 10,
+			frequency: 10,
+
+		});
+
+		appearParicles.setDepth(1);
+			// Detener el sistema de partículas después de un tiempo y luego destruirlo
+			this.scene.time.delayedCall(500, function() {
+				appearParicles.stop();
+				appearParicles.destroy();
+			}, [], this);
+	}
+
+
     updatePlayer(delta: number) {
 
+		this.scanAndDestroy();
 		const cursors = this.cursors;
 		let newAnimation = this.currentAnimation;
 
@@ -170,7 +280,7 @@ export default class PlayerPrefab extends SpineGameObject {
             this.currentAnimation = newAnimation;
         }
 
-		this.ArmsFollowMouse(this, this.scene.input.mousePointer);
+	//	this.ArmsFollowMouse(this, this.scene.input.mousePointer);
 
 		this.update(delta);
 	}
