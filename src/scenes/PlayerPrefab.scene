@@ -23,8 +23,8 @@
             "skinName": "default",
             "bpType": 1,
             "bpAnimation": "Idle",
-            "scaleX": 0.15,
-            "scaleY": 0.15
+            "scaleX": 0.5,
+            "scaleY": 0.5
         }
     ],
     "plainObjects": [],
@@ -39,7 +39,7 @@
             "name": "PlayerSpeed",
             "label": "PlayerSpeed",
             "tooltip": "PlayerSpeed",
-            "defValue": 400,
+            "defValue": 1400,
             "customDefinition": false,
             "type": {
                 "id": "number"
@@ -100,7 +100,7 @@
             "name": "playerGravity",
             "label": "playerGravity",
             "tooltip": "",
-            "defValue": 1500,
+            "defValue": 2500,
             "customDefinition": false,
             "type": {
                 "id": "number"
@@ -110,7 +110,7 @@
             "name": "JumpVelocity",
             "label": "JumpVelocity",
             "tooltip": "",
-            "defValue": 1000,
+            "defValue": 1800,
             "customDefinition": false,
             "type": {
                 "id": "number"
@@ -144,6 +144,16 @@
             "customDefinition": false,
             "type": {
                 "id": "number"
+            }
+        },
+        {
+            "name": "hasDoubleJumped",
+            "label": "hasDoubleJumped",
+            "tooltip": "hasDoubleJumped",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
             }
         }
     ]

@@ -16,8 +16,8 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		this.setInteractive(new Phaser.Geom.Rectangle(0, 0, 0, 0), Phaser.Geom.Rectangle.Contains);
 		this.skeleton.setSkinByName("default");
-		this.scaleX = 0.15;
-		this.scaleY = 0.15;
+		this.scaleX = 0.5;
+		this.scaleY = 0.5;
 
 		/* START-USER-CTR-CODE */
 		this.setOrigin(0.5, 0.5);
@@ -27,17 +27,18 @@ export default class PlayerPrefab extends SpineGameObject {
 		/* END-USER-CTR-CODE */
 	}
 
-	public PlayerSpeed: number = 400;
+	public PlayerSpeed: number = 1400;
 	public cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 	public currentAnimation: string = "Idle";
 	public facingLeft: boolean = false;
 	public isJumping: boolean = false;
 	public fallMultiplier: number = 3.5;
-	public playerGravity: number = 1500;
-	public JumpVelocity: number = 1000;
+	public playerGravity: number = 2500;
+	public JumpVelocity: number = 1800;
 	public IsFalling: boolean = false;
 	public mouseInactiveTimer: number = 0;
 	public mouseInactiveThreshold: number = 500;
+	public hasDoubleJumped: boolean = false;
 
 	/* START-USER-CODE */
 	create(){
@@ -81,7 +82,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
             if (cursors.left.isDown || this.scene.input.keyboard.keys[65].isDown) {
                 // Mover a la izquierda
-                playerBody.setVelocityX(-this.PlayerSpeed);
+                playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, -this.PlayerSpeed, 0.3));
 				if (!this.facingLeft) {
 					this.skeleton.scaleX=-1;
                     this.facingLeft = true;
@@ -95,7 +96,7 @@ export default class PlayerPrefab extends SpineGameObject {
 				}
             } else if (cursors.right.isDown || this.scene.input.keyboard.keys[68].isDown) {
                 // Mover a la derecha
-                playerBody.setVelocityX(this.PlayerSpeed);
+				playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, this.PlayerSpeed, 0.3));
 				if (this.facingLeft) {
 					this.skeleton.scaleX=1;
                     this.facingLeft = false;
@@ -117,12 +118,25 @@ export default class PlayerPrefab extends SpineGameObject {
 				}
             }
 
-			 // Verificar si se presiona la tecla W o la barra espaciadora para saltar
-			 if ((cursors.up.isDown || this.scene.input.keyboard.keys[87].isDown || this.scene.input.keyboard.keys[32].isDown) && !this.isJumping) {
-                playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
-                this.isJumping = true;
+			  // Verificar si se presiona la tecla W o la barra espaciadora para saltar
+			  if ((cursors.up.isDown || this.scene.input.keyboard.keys[87].isDown || this.scene.input.keyboard.keys[32].isDown)) {
+                if (!this.isJumping) {
+                    playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
+                    this.isJumping = true;
+                    newAnimation = "Jump"; // Cambiar a la animación de salto
+                } else if (this.isJumping && !this.hasDoubleJumped && playerBody.velocity.y > 0) {
+                    playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para el doble salto
+                    this.hasDoubleJumped = true;
+                    newAnimation = "Roll"; // Cambiar a la animación de Roll
 
-                newAnimation = "Jump"; // Cambiar a la animación de salto
+					const camera = this.scene.cameras.main;
+                camera.zoomTo(0.4, 500); // Alejar la cámara a un zoom de 0.8 en 500ms
+                this.scene.time.delayedCall(1000, () => {
+                    camera.zoomTo(0.5, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
+                });
+
+
+                }
             }
 
 			 // Aplicar velocidad de caída aumentada
@@ -137,6 +151,7 @@ export default class PlayerPrefab extends SpineGameObject {
             // Verificar si el jugador ha aterrizado
             if (playerBody.blocked.down) {
                 this.isJumping = false;
+				this.hasDoubleJumped = false; // Resetear el doble salto al aterrizar
 				this.IsFalling = false;
             }
 

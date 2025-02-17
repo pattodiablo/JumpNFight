@@ -2,6 +2,16 @@
     "section1": {
         "files": [
             {
+                "url": "assets/SpineAnimations/Enemy1/EnemyV1.json",
+                "type": "spineJson",
+                "key": "EnemyV1"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy1/EnemyV1.atlas",
+                "type": "spineAtlas",
+                "key": "EnemyV1-atlas"
+            },
+            {
                 "url": "assets/SpineAnimations/IdlePlayer/Idle.json",
                 "type": "spineJson",
                 "key": "Idle"
@@ -10,6 +20,11 @@
                 "url": "assets/SpineAnimations/IdlePlayer/Idle.atlas",
                 "type": "spineAtlas",
                 "key": "Idle-atlas"
+            },
+            {
+                "url": "assets/particleImage.png",
+                "type": "image",
+                "key": "particleImage"
             },
             {
                 "url": "assets/SpineAnimations/Player/Player.json",

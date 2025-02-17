@@ -24,8 +24,8 @@ class Boot extends Phaser.Scene {
 window.addEventListener('load', function () {
 	
 	const game = new Phaser.Game({
-		width: 1031,
-		height: 580,
+		width: 1920,
+		height: 1080,
 		backgroundColor: "#ffffff",
 		scale: {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
