@@ -45,7 +45,7 @@
             "name": "EnemyVelo",
             "label": "EnemyVelo",
             "tooltip": "EnemyVelo",
-            "defValue": 100,
+            "defValue": 300,
             "customDefinition": false,
             "type": {
                 "id": "number"

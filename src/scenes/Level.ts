@@ -3,8 +3,8 @@
 
 /* START OF COMPILED CODE */
 
-import PlayerPrefab from "./PlayerPrefab";
 import Enemy1 from "./Enemy1";
+import PlayerPrefab from "./PlayerPrefab";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
@@ -25,38 +25,6 @@ export default class Level extends Phaser.Scene {
 		// Player
 		const player = new PlayerPrefab(this, this.spine, 900, -964);
 		this.add.existing(player);
-
-		// enemyV1
-		const enemyV1 = new Enemy1(this, this.spine, 3087, -1041);
-		this.add.existing(enemyV1);
-
-		// enemyV
-		const enemyV = new Enemy1(this, this.spine, 4002, -1247);
-		this.add.existing(enemyV);
-
-		// enemyV_1
-		const enemyV_1 = new Enemy1(this, this.spine, 3722, -958);
-		this.add.existing(enemyV_1);
-
-		// enemyV_2
-		const enemyV_2 = new Enemy1(this, this.spine, 4604, -1164);
-		this.add.existing(enemyV_2);
-
-		// enemyV_3
-		const enemyV_3 = new Enemy1(this, this.spine, 4777, -900);
-		this.add.existing(enemyV_3);
-
-		// enemyV_4
-		const enemyV_4 = new Enemy1(this, this.spine, 5197, -1016);
-		this.add.existing(enemyV_4);
-
-		// enemyV_5
-		const enemyV_5 = new Enemy1(this, this.spine, 5584, -1148);
-		this.add.existing(enemyV_5);
-
-		// enemyV_6
-		const enemyV_6 = new Enemy1(this, this.spine, 6103, -1008);
-		this.add.existing(enemyV_6);
 
 		this.player = player;
 
@@ -79,7 +47,7 @@ export default class Level extends Phaser.Scene {
 	create() {
 
 		this.editorCreate();
-   
+
         // Reproduce la animación 'Idle' por defecto
         this.player.animationState.setAnimation(0, "Idle", true);
 		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,0);
@@ -88,8 +56,51 @@ export default class Level extends Phaser.Scene {
         this.enemies = this.add.group();
 		this.createFloor();
 		this.createPlatforms();
+        this.createEnemies();
 
 	}
+
+    createEnemies() {
+        // Crear un grupo para los enemigos
+        this.enemies = this.add.group();
+    
+        // Parámetros iniciales para la generación de enemigos
+        let numEnemies = 10; // Número inicial de enemigos a generar
+        let minEnemyX = -3000; // Posición X mínima para los enemigos
+        let maxEnemyX = 3000; // Posición X máxima para los enemigos
+        let minEnemyY = this.player.y-600; // Posición Y mínima para los enemigos
+        let maxEnemyY = this.scale.height - 1400; // Posición Y máxima para los enemigos
+    
+        const generateEnemies = () => {
+            for (let i = 0; i < numEnemies; i++) {
+                const enemyX = Phaser.Math.Between(minEnemyX, maxEnemyX);
+                const enemyY = Phaser.Math.Between(minEnemyY, maxEnemyY);
+    
+                const enemy = new Enemy1(this, this.spine, enemyX, enemyY);
+                this.add.existing(enemy);
+    
+                this.enemies.add(enemy);
+            }
+    
+            // Incrementar la dificultad
+            numEnemies += 2; // Incrementar el número de enemigos
+            minEnemyX += 500; // Incrementar la posición X mínima
+            maxEnemyX += 500; // Incrementar la posición X máxima
+        };
+    
+        const checkAndGenerateEnemies = () => {
+            if (this.enemies.getLength() === 0) {
+                generateEnemies();
+            }
+    
+            // Llamar a esta función nuevamente después de un cierto tiempo
+            this.time.delayedCall(5000, checkAndGenerateEnemies, [], this); // Verificar cada 5 segundos
+        };
+    
+        // Iniciar la verificación y generación de enemigos
+        checkAndGenerateEnemies();
+    }
+
 
 	createPlatforms() {
         // Crear un grupo para las plataformas

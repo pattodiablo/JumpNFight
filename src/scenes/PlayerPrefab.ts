@@ -40,7 +40,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public mouseInactiveThreshold: number = 500;
 	public hasDoubleJumped: boolean = false;
 	public lastShotTime: number = 2000;
-	public shotInterval: number = 500;
+	public shotInterval: number = 250;
 	public laserColor: string = "ff0000";
 	public laserSpeed: number = 3000;
 	public laserDuration: number = 500;
@@ -103,6 +103,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	shootLaser(enemy: Phaser.GameObjects.Sprite) {
 		const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
 		const laser = this.scene.add.ellipse(this.x, this.y, 100, 20, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
+		laser.setDepth(-1);
 		this.scene.physics.add.existing(laser);
 		const laserBody = laser.body as Phaser.Physics.Arcade.Body;
 		laserBody.setAllowGravity(false);
@@ -132,7 +133,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		(enemy as any).EnemyLife -= 1;
 
-		
+
 		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {
 			x: (laser as Phaser.GameObjects.Ellipse).x,
 			y: (laser as Phaser.GameObjects.Ellipse).y,
