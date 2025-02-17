@@ -8,6 +8,16 @@ import { SpinePlugin } from "@esotericsoftware/spine-phaser";
 import { SpineGameObjectBoundsProvider } from "@esotericsoftware/spine-phaser";
 import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
+
+declare global {
+	namespace Phaser {
+		interface Scene {
+			enemies: Phaser.GameObjects.Group;
+		}
+	}
+}
+
+
 /* END-USER-IMPORTS */
 
 export default class Enemy1 extends SpineGameObject {
@@ -21,6 +31,7 @@ export default class Enemy1 extends SpineGameObject {
 		/* START-USER-CTR-CODE */
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
 		this.scene.events.on("update", (time: number, delta: number) => this.updateEnemy(delta));
+		console.log(this.scene)
 
 		/* END-USER-CTR-CODE */
 	}
@@ -33,14 +44,19 @@ export default class Enemy1 extends SpineGameObject {
 	public lastShotTime: number = 400;
 	public shotInterval: number = 2500;
 	public shootingRadius: number = 1200;
+	public IsNearPlayer: boolean = false;
+	public EnemyLife: number = 3;
+	public IsDestroyed: boolean = false;
 
 	/* START-USER-CODE */
 	create(){
-		console.log("Enemy1 created");
+
+		this.scene.enemies.add(this);
 		this.scene.physics.add.existing(this);
 		const enemyBody = this.body as Phaser.Physics.Arcade.Body;
 		enemyBody.setGravityY(this.enemyGravity); // Configura la gravedad para el jugador\
 		enemyBody.setAllowGravity(false); // Desactiva la gravedad para el enemigo
+		enemyBody.setImmovable(true); // Hacer que el enemigo sea inmovible
 		this.animationState.setAnimation(0, "Idle", true);
 
 		    // Generar un factor aleatorio entre 0.5 y 1.5
@@ -52,37 +68,92 @@ export default class Enemy1 extends SpineGameObject {
 		enemyBody.setVelocityX(-this.EnemyVelo);
 		this.setDepth(1); 
 
+		const player = (this.scene as Phaser.Scene & { player: Phaser.GameObjects.Sprite }).player;
+		this.scene.physics.add.collider(this, player, this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+
+	}
+
+	handlePlayerCollision(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
+
+
 	}
 
 	updateEnemy(delta: number) {
-		const player = (this.scene as Phaser.Scene & { player: Phaser.GameObjects.Sprite }).player; // Asumiendo que el jugador está disponible en la escena como this.scene.player
 
-		if (player.x < this.x) {
-			// El jugador está a la izquierda del enemigo
-			this.skeleton.scaleX = 1; // Flip horizontal hacia la izquierda
-		} else {
-			// El jugador está a la derecha del enemigo
-			this.skeleton.scaleX = -1; // Flip horizontal hacia la derecha
+		if (this.IsDestroyed) {
+			return;
+		}else{
+					const player = (this.scene as Phaser.Scene & { player: Phaser.GameObjects.Sprite }).player; // Asumiendo que el jugador está disponible en la escena como this.scene.player
+
+				if (player.x < this.x) {
+					// El jugador está a la izquierda del enemigo
+					this.skeleton.scaleX = 1; // Flip horizontal hacia la izquierda
+				} else {
+					// El jugador está a la derecha del enemigo
+					this.skeleton.scaleX = -1; // Flip horizontal hacia la derecha
+				}
+
+				const distanceToPlayer = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+				if (distanceToPlayer <= this.shootingRadius) {
+					this.IsNearPlayer=true
+					// Disparar el láser a intervalos regulares
+					if (this.scene.time.now > this.lastShotTime + this.shotInterval) {
+						this.createLaserParticles();
+						this.scene.time.delayedCall(500, () => {
+							this.shootLaser(player);
+						});
+						this.lastShotTime = this.scene.time.now;
+					}
+				}else{
+					this.IsNearPlayer=false;
+				}
+
+			// Verificar si el enemigo está a 3000 píxeles a la izquierda de la cámara
+			if (this.x < this.scene.cameras.main.worldView.x - 3000) {
+				// Reaparecer a 3000 píxeles a la derecha de la cámara
+				this.x = this.scene.cameras.main.worldView.x + this.scene.cameras.main.width + 3000;
+			}
+
+			if (this.EnemyLife <= 0 && !this.IsDestroyed) {
+			this.handleDestroy();
+			}
+
 		}
+		
+	}
 
-		const distanceToPlayer = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
-        if (distanceToPlayer <= this.shootingRadius) {
-            // Disparar el láser a intervalos regulares
-            if (this.scene.time.now > this.lastShotTime + this.shotInterval) {
-				this.createLaserParticles();
-                this.scene.time.delayedCall(500, () => {
-					this.shootLaser(player);
-				});
-                this.lastShotTime = this.scene.time.now;
-            }
-        }
+	handleDestroy() {
+		this.IsDestroyed = true;
+		const destroyParticles =  this.scene.add.particles(0, 0, 'particleImage', {
+			x: this.x,
+			y: this.y,
+			speed: { min: -3000, max: 3000 },
+			angle: { min: 0, max: 360 },
+			lifespan: { min: 30, max: 500 },
+			scale: { start: 5, end: 0 },
+			quantity: 30,
+			
+			maxParticles: 50,
+			frequency: 1,
 
-	 // Verificar si el enemigo está a 3000 píxeles a la izquierda de la cámara
-	 if (this.x < this.scene.cameras.main.worldView.x - 3000) {
-        // Reaparecer a 3000 píxeles a la derecha de la cámara
-        this.x = this.scene.cameras.main.worldView.x + this.scene.cameras.main.width + 3000;
-    }
+		});
 
+		destroyParticles.setDepth(1); 
+		this.scene.time.delayedCall(1500, () => {
+			console.log("destroyed");
+			destroyParticles.stop();
+			destroyParticles.destroy();
+			 // Eliminar el enemigo del grupo de enemigos
+			 (this.scene as any).enemies.remove(this);
+
+			 // Destruir el enemigo
+			 this.destroy();
+			 
+		}, [], this);
+		this.setVisible(false);
+		const enemyBody = this.body as Phaser.Physics.Arcade.Body;
+		enemyBody.setEnable(false);
+		//this.destroy();
 	}
 
 	createLaserParticles() {
@@ -129,7 +200,40 @@ export default class Enemy1 extends SpineGameObject {
 				laser.destroy();
 			}
 		});
+
+		  // Agregar colisión entre el láser y el jugador
+		  this.scene.physics.add.overlap(laser, player, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+
 	}
+	handleLaserCollision(laser: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
+		// Manejar la colisión entre el láser y el jugador
+
+
+
+		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {
+			x: (laser as Phaser.GameObjects.Ellipse).x,
+			y: (laser as Phaser.GameObjects.Ellipse).y,
+			speed: { min: -1000, max: 1000 },
+			angle: { min: 0, max: 360 },
+			lifespan: { min: 30, max: 500 },
+			scale: { start: 2, end: 0 },
+			quantity: 5,
+			maxParticles: 5,
+			frequency: 100,
+			gravityY: 3000
+
+		});
+
+		bloodParticles.setDepth(1);
+			// Detener el sistema de partículas después de un tiempo y luego destruirlo
+			this.scene.time.delayedCall(500, function() {
+				bloodParticles.stop();
+				bloodParticles.destroy();
+			}, [], this);
+			laser.destroy(); // Destruir el láser al colisionar con el jugador
+		// Aquí puedes agregar lógica adicional, como reducir la salud del jugador
+	}
+
 	/* END-USER-CODE */
 }
 
