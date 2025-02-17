@@ -31,7 +31,7 @@ export default class Enemy1 extends SpineGameObject {
 	public laserSpeed: number = 3000;
 	public laserColor: string = "#ff0000";
 	public lastShotTime: number = 400;
-	public shotInterval: number = 2000;
+	public shotInterval: number = 2500;
 	public shootingRadius: number = 1200;
 
 	/* START-USER-CODE */
@@ -69,7 +69,8 @@ export default class Enemy1 extends SpineGameObject {
         if (distanceToPlayer <= this.shootingRadius) {
             // Disparar el láser a intervalos regulares
             if (this.scene.time.now > this.lastShotTime + this.shotInterval) {
-                this.scene.time.delayedCall(1000, () => {
+				this.createLaserParticles();
+                this.scene.time.delayedCall(500, () => {
 					this.shootLaser(player);
 				});
                 this.lastShotTime = this.scene.time.now;
@@ -85,22 +86,26 @@ export default class Enemy1 extends SpineGameObject {
 	}
 
 	createLaserParticles() {
-		const particles = this.scene.add.particles(this.x,this.y,'particleImage',{
+
+		const appearParicles =  this.scene.add.particles(0, 0, 'particleImage', {
 			x: this.x,
 			y: this.y,
-			speed: { min: -100, max: 100 },
+			speed: { min: -30, max: 30 },
 			angle: { min: 0, max: 360 },
-			scale: { start: 0.5, end: 0 },
-			lifespan: 500,
-			blendMode: 'ADD'
-		}); // Asegúrate de tener una imagen de partícula cargada con la clave 'particleImage'
-		const emitter = particles.createEmitter();
-	
-		// Detener el emisor después de un segundo
-		this.scene.time.delayedCall(1000, () => {
-			
-			particles.destroy();
+			lifespan: { min: 30, max: 500 },
+			scale: { start: 3, end: 0 },
+			quantity: 2,
+			maxParticles: 10,
+			frequency: 10,
+
 		});
+
+		appearParicles.setDepth(1);
+			// Detener el sistema de partículas después de un tiempo y luego destruirlo
+			this.scene.time.delayedCall(500, function() {
+				appearParicles.stop();
+				appearParicles.destroy();
+			}, [], this);
 	}
 
 	shootLaser(player: Phaser.GameObjects.Sprite) {

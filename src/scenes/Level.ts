@@ -27,35 +27,35 @@ export default class Level extends Phaser.Scene {
 		this.add.existing(player);
 
 		// enemyV1
-		const enemyV1 = new Enemy1(this, this.spine, 3087, -406);
+		const enemyV1 = new Enemy1(this, this.spine, 3087, -1041);
 		this.add.existing(enemyV1);
 
 		// enemyV
-		const enemyV = new Enemy1(this, this.spine, 4002, -612);
+		const enemyV = new Enemy1(this, this.spine, 4002, -1247);
 		this.add.existing(enemyV);
 
 		// enemyV_1
-		const enemyV_1 = new Enemy1(this, this.spine, 3722, -323);
+		const enemyV_1 = new Enemy1(this, this.spine, 3722, -958);
 		this.add.existing(enemyV_1);
 
 		// enemyV_2
-		const enemyV_2 = new Enemy1(this, this.spine, 4604, -529);
+		const enemyV_2 = new Enemy1(this, this.spine, 4604, -1164);
 		this.add.existing(enemyV_2);
 
 		// enemyV_3
-		const enemyV_3 = new Enemy1(this, this.spine, 4777, -265);
+		const enemyV_3 = new Enemy1(this, this.spine, 4777, -900);
 		this.add.existing(enemyV_3);
 
 		// enemyV_4
-		const enemyV_4 = new Enemy1(this, this.spine, 5197, -381);
+		const enemyV_4 = new Enemy1(this, this.spine, 5197, -1016);
 		this.add.existing(enemyV_4);
 
 		// enemyV_5
-		const enemyV_5 = new Enemy1(this, this.spine, 5584, -513);
+		const enemyV_5 = new Enemy1(this, this.spine, 5584, -1148);
 		this.add.existing(enemyV_5);
 
 		// enemyV_6
-		const enemyV_6 = new Enemy1(this, this.spine, 6103, -373);
+		const enemyV_6 = new Enemy1(this, this.spine, 6103, -1008);
 		this.add.existing(enemyV_6);
 
 		this.player = player;
