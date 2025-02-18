@@ -3,10 +3,10 @@
 
 /* START OF COMPILED CODE */
 
-import Enemy1 from "./Enemy1";
 import PlayerPrefab from "./PlayerPrefab";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
+import Enemy1 from "./Enemy1";
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
 /* END-USER-IMPORTS */
 
@@ -26,12 +26,18 @@ export default class Level extends Phaser.Scene {
 		const player = new PlayerPrefab(this, this.spine, 900, -964);
 		this.add.existing(player);
 
+		// bg1
+		const bg1 = this.add.tileSprite(0, 0, 1920, 1080, "bg1");
+		bg1.setOrigin(0, 0);
+
 		this.player = player;
+		this.bg1 = bg1;
 
 		this.events.emit("scene-awake");
 	}
 
 	public player!: PlayerPrefab;
+	public bg1!: Phaser.GameObjects.TileSprite;
 
 	/* START-USER-CODE */
 
@@ -48,12 +54,18 @@ export default class Level extends Phaser.Scene {
 
 		this.editorCreate();
 
+        this.bg1.width = this.scale.width;
         // Reproduce la animación 'Idle' por defecto
         this.player.animationState.setAnimation(0, "Idle", true);
 		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,0);
 		this.cameras.main.setZoom(0.5); // Ajustar el zoom de la cámara para que parezca más alejada
 		this.platforms = this.add.group();
         this.enemies = this.add.group();
+        this.bg1.setDepth(-1);
+
+        this.bg1.setSize(this.cameras.main.displayWidth*20, this.cameras.main.displayHeight*10);
+        this.bg1.setTileScale(4, 4);
+
 		this.createFloor();
 		this.createPlatforms();
         this.createEnemies();
@@ -63,40 +75,39 @@ export default class Level extends Phaser.Scene {
     createEnemies() {
         // Crear un grupo para los enemigos
         this.enemies = this.add.group();
-    
+
         // Parámetros iniciales para la generación de enemigos
-        let numEnemies = 10; // Número inicial de enemigos a generar
+        let numEnemies = 1; // Número inicial de enemigos a generar
         let minEnemyX = -3000; // Posición X mínima para los enemigos
         let maxEnemyX = 3000; // Posición X máxima para los enemigos
         let minEnemyY = this.player.y-600; // Posición Y mínima para los enemigos
         let maxEnemyY = this.scale.height - 1400; // Posición Y máxima para los enemigos
-    
+
         const generateEnemies = () => {
             for (let i = 0; i < numEnemies; i++) {
                 const enemyX = Phaser.Math.Between(minEnemyX, maxEnemyX);
                 const enemyY = Phaser.Math.Between(minEnemyY, maxEnemyY);
-    
+
                 const enemy = new Enemy1(this, this.spine, enemyX, enemyY);
                 this.add.existing(enemy);
-    
-                this.enemies.add(enemy);
+
             }
-    
+
             // Incrementar la dificultad
             numEnemies += 2; // Incrementar el número de enemigos
-            minEnemyX += 500; // Incrementar la posición X mínima
-            maxEnemyX += 500; // Incrementar la posición X máxima
+            minEnemyX += 2000; // Incrementar la posición X mínima
+            maxEnemyX += 200; // Incrementar la posición X máxima
         };
-    
+
         const checkAndGenerateEnemies = () => {
             if (this.enemies.getLength() === 0) {
                 generateEnemies();
             }
-    
+
             // Llamar a esta función nuevamente después de un cierto tiempo
             this.time.delayedCall(5000, checkAndGenerateEnemies, [], this); // Verificar cada 5 segundos
         };
-    
+
         // Iniciar la verificación y generación de enemigos
         checkAndGenerateEnemies();
     }
@@ -164,7 +175,15 @@ export default class Level extends Phaser.Scene {
 		if (this.player.y > 2000) {
 			this.player.y = -2000;
 			this.player.x = this.player.x-400;
+            this.cameras.main.shake(500, 0.1); // Duración de 500ms y intensidad de 0.01
 		}
+
+         // Actualizar la posición de bg1 para crear el efecto parallax
+         this.bg1.tilePositionX = this.cameras.main.scrollX * 0.01;
+         this.bg1.tilePositionY = this.cameras.main.scrollY * 0.05;
+         this.bg1.x = this.cameras.main.scrollX-2000;
+         this.bg1.y = this.cameras.main.scrollY-1300;
+
     }
 
 	updatePlatforms() {

@@ -25,6 +25,19 @@
             "scope": "PUBLIC",
             "x": 900,
             "y": -964
+        },
+        {
+            "type": "TileSprite",
+            "id": "e30bc3d0-d847-4882-8998-65876d27559f",
+            "label": "bg1",
+            "scope": "PUBLIC",
+            "texture": {
+                "key": "bg1"
+            },
+            "originX": 0,
+            "originY": 0,
+            "width": 1920,
+            "height": 1080
         }
     ],
     "plainObjects": [],

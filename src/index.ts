@@ -26,7 +26,7 @@ window.addEventListener('load', function () {
 	const game = new Phaser.Game({
 		width: 1920,
 		height: 1080,
-		backgroundColor: "#ffffff",
+		backgroundColor: "#e2e2e2",
 		scale: {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
 			autoCenter: Phaser.Scale.Center.CENTER_BOTH
