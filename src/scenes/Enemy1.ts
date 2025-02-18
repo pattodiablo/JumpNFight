@@ -31,13 +31,12 @@ export default class Enemy1 extends SpineGameObject {
 		/* START-USER-CTR-CODE */
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
 		this.scene.events.on("update", (time: number, delta: number) => this.updateEnemy(delta));
-		console.log(this.scene)
 
 		/* END-USER-CTR-CODE */
 	}
 
 	public enemyGravity: number = 0;
-	public EnemyVelo: number = 100;
+	public EnemyVelo: number = 300;
 	public laserDuration: number = 6000;
 	public laserSpeed: number = 3000;
 	public laserColor: string = "#ff0000";
@@ -119,7 +118,7 @@ export default class Enemy1 extends SpineGameObject {
 			}
 
 		}
-		
+
 	}
 
 	handleDestroy() {
@@ -132,7 +131,7 @@ export default class Enemy1 extends SpineGameObject {
 			lifespan: { min: 30, max: 500 },
 			scale: { start: 5, end: 0 },
 			quantity: 30,
-			
+
 			maxParticles: 50,
 			frequency: 1,
 
@@ -140,7 +139,6 @@ export default class Enemy1 extends SpineGameObject {
 
 		destroyParticles.setDepth(1); 
 		this.scene.time.delayedCall(1500, () => {
-			console.log("destroyed");
 			destroyParticles.stop();
 			destroyParticles.destroy();
 			 // Eliminar el enemigo del grupo de enemigos
@@ -148,7 +146,7 @@ export default class Enemy1 extends SpineGameObject {
 
 			 // Destruir el enemigo
 			 this.destroy();
-			 
+
 		}, [], this);
 		this.setVisible(false);
 		const enemyBody = this.body as Phaser.Physics.Arcade.Body;

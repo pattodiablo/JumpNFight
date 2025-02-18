@@ -172,7 +172,7 @@
             "name": "shotInterval",
             "label": "shotInterval",
             "tooltip": "shotInterval",
-            "defValue": 500,
+            "defValue": 250,
             "customDefinition": false,
             "type": {
                 "id": "number"
