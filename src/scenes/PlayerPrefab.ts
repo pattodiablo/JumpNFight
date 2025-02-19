@@ -41,9 +41,10 @@ export default class PlayerPrefab extends SpineGameObject {
 	public hasDoubleJumped: boolean = false;
 	public lastShotTime: number = 2000;
 	public shotInterval: number = 250;
-	public laserColor: string = "ff0000";
+	public laserColor: string = "0000FF";
 	public laserSpeed: number = 3000;
 	public laserDuration: number = 500;
+	public isInAir: boolean = false;
 
 	/* START-USER-CODE */
 	create(){
@@ -66,6 +67,7 @@ export default class PlayerPrefab extends SpineGameObject {
                 A: Phaser.Input.Keyboard.KeyCodes.A,
                 D: Phaser.Input.Keyboard.KeyCodes.D,
 				W: Phaser.Input.Keyboard.KeyCodes.W,
+				S: Phaser.Input.Keyboard.KeyCodes.S,
                 SPACE: Phaser.Input.Keyboard.KeyCodes.SPACE
             });
         }
@@ -102,7 +104,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	shootLaser(enemy: Phaser.GameObjects.Sprite) {
 		const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
-		const laser = this.scene.add.ellipse(this.x, this.y, 100, 20, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
+		const laser = this.scene.add.ellipse(this.x, this.y, 200, 30, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
 		laser.setDepth(-1);
 		this.scene.physics.add.existing(laser);
 		const laserBody = laser.body as Phaser.Physics.Arcade.Body;
@@ -123,8 +125,16 @@ export default class PlayerPrefab extends SpineGameObject {
 			}
 		});
 
+		const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
+
+		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
+
+			if((enemy as any).IsNearPlayer){
+				this.scene.physics.add.overlap(laser, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+			}
+		});
 		  // Agregar colisión entre el láser y el jugador
-		  this.scene.physics.add.overlap(laser, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+
 
 	}
 
@@ -160,7 +170,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	createLaserParticles() {
 
-		const appearParicles =  this.scene.add.particles(0, 0, 'particleImage', {
+		const appearParicles =  this.scene.add.particles(0, 0, 'particleImageBlue', {
 			x: this.x,
 			y: this.y,
 			speed: { min: -30, max: 30 },
@@ -190,6 +200,12 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		if (this.scene.input.keyboard) {
             const playerBody = this.body as Phaser.Physics.Arcade.Body;
+
+			 // Verificar si se presiona la tecla S o la tecla hacia abajo para activar HyperFall
+			 if (this.isInAir && (cursors.down.isDown || this.scene.input.keyboard.keys[83].isDown)&&playerBody.velocity.y > 0) {
+				playerBody.setVelocityY(this.JumpVelocity * 3); // Aumentar la velocidad de caída
+				newAnimation = "HyperFall"; // Cambiar a la animación de HyperFall
+			}
 
             if (cursors.left.isDown || this.scene.input.keyboard.keys[65].isDown) {
                 // Mover a la izquierda
@@ -234,6 +250,7 @@ export default class PlayerPrefab extends SpineGameObject {
                 if (!this.isJumping) {
                     playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
                     this.isJumping = true;
+					this.isInAir = true;
                     newAnimation = "Jump"; // Cambiar a la animación de salto
                 } else if (this.isJumping && !this.hasDoubleJumped && playerBody.velocity.y > 0) {
                     playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para el doble salto
@@ -250,6 +267,8 @@ export default class PlayerPrefab extends SpineGameObject {
                 }
             }
 
+
+
 			 // Aplicar velocidad de caída aumentada
 				 if (playerBody.velocity.y > 0) {
 					this.IsFalling = true;
@@ -263,6 +282,7 @@ export default class PlayerPrefab extends SpineGameObject {
             if (playerBody.blocked.down) {
                 this.isJumping = false;
 				this.hasDoubleJumped = false; // Resetear el doble salto al aterrizar
+				this.isInAir = false; // Resetear el estado de estar en el aire al aterrizar
 				this.IsFalling = false;
             }
 

@@ -206,6 +206,8 @@ export default class Enemy1 extends SpineGameObject {
 	handleLaserCollision(laser: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 		// Manejar la colisión entre el láser y el jugador
 
+    // Agregar un efecto de "camera shake"
+
 
 
 		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {

@@ -2,6 +2,16 @@
     "section1": {
         "files": [
             {
+                "url": "assets/bg1.png",
+                "type": "image",
+                "key": "bg1"
+            },
+            {
+                "url": "assets/bg2.png",
+                "type": "image",
+                "key": "bg2"
+            },
+            {
                 "url": "assets/SpineAnimations/Enemy1/EnemyV1.json",
                 "type": "spineJson",
                 "key": "EnemyV1"
@@ -25,6 +35,11 @@
                 "url": "assets/particleImage.png",
                 "type": "image",
                 "key": "particleImage"
+            },
+            {
+                "url": "assets/particleImageBlue.png",
+                "type": "image",
+                "key": "particleImageBlue"
             },
             {
                 "url": "assets/SpineAnimations/Player/Player.json",
