@@ -45,6 +45,9 @@ export default class PlayerPrefab extends SpineGameObject {
 	public laserSpeed: number = 3000;
 	public laserDuration: number = 500;
 	public isInAir: boolean = false;
+	public TouchX: number = 0;
+	public TouchY: number = 0;
+	public TouchJump: boolean = false;
 
 	/* START-USER-CODE */
 	create(){
@@ -74,7 +77,42 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		       // Reproduce la animación 'Idle' por defecto
 			   this.setAnimation("Idle", true);
+
+
+			       // Escuchar eventos del joystick
+				   const gameUIScene = this.scene.scene.get('GameUI') as Phaser.Scene;
+				   gameUIScene.events.on('joystickMove', this.handleJoystickMove, this);
+
+				   gameUIScene.events.on('jump', this.handleJump, this);
 	}
+
+	handleJump(isJumping: boolean) {
+		
+		this.TouchJump = isJumping;
+	}
+
+	handleJoystickMove(direction: { x: number, y: number }) {
+        const playerBody = this.body as Phaser.Physics.Arcade.Body;
+
+		if (direction.x > 0) {
+			this.TouchX=1;
+		} else if (direction.x < 0) {
+			this.TouchX=-1;
+		} else {
+			this.TouchX=0;
+		}
+
+		if(direction.y>0.9){
+			this.TouchY=1;
+			console.log("abajo");
+		}else if (direction.y < 0) {
+			this.TouchY=-1;
+		} else {
+			this.TouchY=0;
+		}
+    }
+
+
 
 	setAnimation(animationName: string, loop: boolean) {
         this.animationState.setAnimation(0, animationName, loop);
@@ -202,12 +240,12 @@ export default class PlayerPrefab extends SpineGameObject {
             const playerBody = this.body as Phaser.Physics.Arcade.Body;
 
 			 // Verificar si se presiona la tecla S o la tecla hacia abajo para activar HyperFall
-			 if (this.isInAir && (cursors.down.isDown || this.scene.input.keyboard.keys[83].isDown)&&playerBody.velocity.y > 0) {
+			 if (this.isInAir && (cursors.down.isDown || this.scene.input.keyboard.keys[83].isDown || this.TouchY==1)&&playerBody.velocity.y > 0) {
 				playerBody.setVelocityY(this.JumpVelocity * 3); // Aumentar la velocidad de caída
 				newAnimation = "HyperFall"; // Cambiar a la animación de HyperFall
 			}
 
-            if (cursors.left.isDown || this.scene.input.keyboard.keys[65].isDown) {
+            if (cursors.left.isDown || this.scene.input.keyboard.keys[65].isDown || this.TouchX==-1) {
                 // Mover a la izquierda
                 playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, -this.PlayerSpeed, 0.3));
 				if (!this.facingLeft) {
@@ -221,7 +259,7 @@ export default class PlayerPrefab extends SpineGameObject {
 						newAnimation = "Run";
                 	}
 				}
-            } else if (cursors.right.isDown || this.scene.input.keyboard.keys[68].isDown) {
+            } else if (cursors.right.isDown || this.scene.input.keyboard.keys[68].isDown || this.TouchX==1) {
                 // Mover a la derecha
 				playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, this.PlayerSpeed, 0.3));
 				if (this.facingLeft) {
@@ -246,7 +284,7 @@ export default class PlayerPrefab extends SpineGameObject {
             }
 
 			  // Verificar si se presiona la tecla W o la barra espaciadora para saltar
-			  if ((cursors.up.isDown || this.scene.input.keyboard.keys[87].isDown || this.scene.input.keyboard.keys[32].isDown)) {
+			  if ((cursors.up.isDown || this.scene.input.keyboard.keys[87].isDown || this.scene.input.keyboard.keys[32].isDown) || this.TouchJump) {
                 if (!this.isJumping) {
                     playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
                     this.isJumping = true;

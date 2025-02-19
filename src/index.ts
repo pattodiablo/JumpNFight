@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import GameUI from './scenes/GameUI';
 import Level from "./scenes/Level";
 import preloadAssetPackUrl from "../static/assets/preload-asset-pack.json";
 import Preload from "./scenes/Preload";
@@ -21,6 +22,10 @@ class Boot extends Phaser.Scene {
     }
 }
 
+function isMobileDevice() {
+    return /Mobi|Android/i.test(navigator.userAgent);
+}
+
 window.addEventListener('load', function () {
 	
 	const game = new Phaser.Game({
@@ -39,11 +44,15 @@ window.addEventListener('load', function () {
 			  }]
 		  },
 		
-		scene: [Boot, Preload, Level],
+		scene: [Boot, Preload, Level, GameUI],
         input: {
             keyboard: true, // Asegúrate de que el sistema de teclado esté habilitado
             mouse: true,    // Asegúrate de que el sistema de ratón esté habilitado
-            touch: true,    // Asegúrate de que el sistema de toque esté habilitado
+            touch: {
+                capture: true,
+                
+                // activePointers: 3 // Permitir hasta 3 punteros activos
+            },    // Asegúrate de que el sistema de toque esté habilitado
             gamepad: true   // Asegúrate de que el sistema de gamepad esté habilitado
         },
 		physics: {
@@ -60,5 +69,5 @@ window.addEventListener('load', function () {
         }
 	});
 
-	game.scene.start("Boot");
+   
 });

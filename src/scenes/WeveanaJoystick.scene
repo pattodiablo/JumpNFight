@@ -1,0 +1,119 @@
+{
+    "id": "830de4c8-26d1-47a8-bace-3760dfadc5bc",
+    "sceneType": "PREFAB",
+    "settings": {
+        "exportClass": true,
+        "autoImport": true,
+        "preloadMethodName": "",
+        "preloadPackFiles": [],
+        "createMethodName": "",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
+        "borderWidth": 1280,
+        "borderHeight": 720
+    },
+    "displayList": [
+        {
+            "type": "Container",
+            "id": "d4d63589-8a02-4c38-b082-613f8ae3d15a",
+            "label": "container_1",
+            "blendMode": -1,
+            "list": [
+                {
+                    "type": "Ellipse",
+                    "id": "d9956a22-14e4-4a67-82e2-a2c755b1e56f",
+                    "label": "base",
+                    "scope": "PUBLIC",
+                    "strokeColor": "#ff0000",
+                    "lineWidth": 16,
+                    "isStroked": true,
+                    "width": 384,
+                    "height": 384
+                },
+                {
+                    "type": "Ellipse",
+                    "id": "d6436905-e8c0-4705-bae5-e9120deef0a5",
+                    "label": "thumb",
+                    "scope": "PUBLIC",
+                    "isFilled": true,
+                    "fillColor": "#000",
+                    "lineWidth": 12,
+                    "isStroked": true,
+                    "width": 128,
+                    "height": 128
+                }
+            ]
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor - Scene Editor",
+        "url": "https://phaser.io/editor",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    },
+    "prefabProperties": [
+        {
+            "name": "pointerId",
+            "label": "pointerId",
+            "tooltip": "pointerId",
+            "defValue": "",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": " number | null"
+            }
+        },
+        {
+            "name": "LastX",
+            "label": "LastX",
+            "tooltip": "LastX",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "LastY",
+            "label": "LastY",
+            "tooltip": "LastY",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "maxRadius",
+            "label": "maxRadius",
+            "tooltip": "maxRadius",
+            "defValue": 200,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "direction",
+            "label": "direction",
+            "tooltip": "direction",
+            "defValue": "",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "{}"
+            }
+        },
+        {
+            "name": "activePointerId",
+            "label": "activePointerId",
+            "tooltip": "activePointerId",
+            "defValue": "null",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "number | null"
+            }
+        }
+    ]
+}

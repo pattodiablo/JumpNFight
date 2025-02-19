@@ -53,12 +53,13 @@ export default class Level extends Phaser.Scene {
 	create() {
 
 		this.editorCreate();
-
+        this.scene.launch("GameUI");
+        const factor = this.scale.height/this.scale.width;
         this.bg1.width = this.scale.width;
         // Reproduce la animación 'Idle' por defecto
         this.player.animationState.setAnimation(0, "Idle", true);
 		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,0);
-		this.cameras.main.setZoom(0.5); // Ajustar el zoom de la cámara para que parezca más alejada
+		this.cameras.main.setZoom(factor); // Ajustar el zoom de la cámara para que parezca más alejada
 		this.platforms = this.add.group();
         this.enemies = this.add.group();
         this.bg1.setDepth(-1);
@@ -70,8 +71,10 @@ export default class Level extends Phaser.Scene {
 		this.createPlatforms();
         this.createEnemies();
 
+     
 	}
 
+   
     createEnemies() {
         // Crear un grupo para los enemigos
         this.enemies = this.add.group();
