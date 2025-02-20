@@ -34,8 +34,8 @@
             "texture": {
                 "key": "JumpBtn"
             },
-            "x": 311,
-            "y": 820,
+            "x": 387,
+            "y": 675,
             "scaleX": 0.5,
             "scaleY": 0.5
         }

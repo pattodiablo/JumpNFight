@@ -247,6 +247,16 @@
             "type": {
                 "id": "boolean"
             }
+        },
+        {
+            "name": "factor",
+            "label": "factor",
+            "tooltip": "factor",
+            "defValue": 0.5,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
         }
     ]
 }

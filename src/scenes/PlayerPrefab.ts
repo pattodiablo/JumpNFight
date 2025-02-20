@@ -48,9 +48,12 @@ export default class PlayerPrefab extends SpineGameObject {
 	public TouchX: number = 0;
 	public TouchY: number = 0;
 	public TouchJump: boolean = false;
+	public factor: number = 0.5;
 
 	/* START-USER-CODE */
 	create(){
+
+		this.factor = this.scene.scale.height / this.scene.scale.width;
 		this.flipX = true; // Flip horizontal
 
 		this.scene.physics.add.existing(this);
@@ -87,7 +90,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	}
 
 	handleJump(isJumping: boolean) {
-		
+
 		this.TouchJump = isJumping;
 	}
 
@@ -296,9 +299,9 @@ export default class PlayerPrefab extends SpineGameObject {
                     newAnimation = "Roll"; // Cambiar a la animación de Roll
 
 					const camera = this.scene.cameras.main;
-                camera.zoomTo(0.4, 500); // Alejar la cámara a un zoom de 0.8 en 500ms
+                camera.zoomTo(this.factor/2.5, 500); // Alejar la cámara en 500ms
                 this.scene.time.delayedCall(1000, () => {
-                    camera.zoomTo(0.5, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
+                    camera.zoomTo(this.factor/2, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
                 });
 
 

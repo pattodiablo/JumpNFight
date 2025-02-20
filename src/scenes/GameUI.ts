@@ -5,6 +5,7 @@
 
 import WeveanaJoystick from "./WeveanaJoystick";
 /* START-USER-IMPORTS */
+
 /* END-USER-IMPORTS */
 
 export default class GameUI extends Phaser.Scene {
@@ -13,7 +14,9 @@ export default class GameUI extends Phaser.Scene {
 		super("GameUI");
 
 		/* START-USER-CTR-CODE */
-		// Write your code here.
+
+		
+
 		/* END-USER-CTR-CODE */
 	}
 
@@ -25,7 +28,7 @@ export default class GameUI extends Phaser.Scene {
 		weveanaJoystick.name = "weveanaJoystick";
 
 		// JumpBtn
-		const jumpBtn = this.add.image(311, 820, "JumpBtn");
+		const jumpBtn = this.add.image(387, 675, "JumpBtn");
 		jumpBtn.scaleX = 0.5;
 		jumpBtn.scaleY = 0.5;
 
@@ -45,10 +48,11 @@ export default class GameUI extends Phaser.Scene {
 	create() {
 
 		this.editorCreate();
+		const factor = this.scale.height / this.scale.width;
 
 		this.input.addPointer(2); // Agregar dos punteros adicionales
 
-		
+
 		this.weveanaJoystick.on('move', (direction: { x: number, y: number }) => {
             this.events.emit('joystickMove', direction);
         });
@@ -66,6 +70,13 @@ export default class GameUI extends Phaser.Scene {
             this.jumpBtn.clearTint(); // Eliminar tinte si el puntero sale del botón
 			this.events.emit('jump',false);
         });
+
+		this.jumpBtn.setScale(factor/2);
+		this.weveanaJoystick.setScale(factor/2);
+
+	
+		
+		this.jumpBtn.setPosition(this.scale.width*0.15,this.scale.height-this.scale.height*0.25);
 	}
 
 	/* END-USER-CODE */
