@@ -1,0 +1,50 @@
+{
+    "id": "fd6157ae-d1e1-4d7d-9271-228c102f7055",
+    "sceneType": "SCENE",
+    "settings": {
+        "exportClass": true,
+        "autoImport": true,
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "GameUI",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
+        "borderWidth": 1920,
+        "borderHeight": 1080
+    },
+    "displayList": [
+        {
+            "prefabId": "830de4c8-26d1-47a8-bace-3760dfadc5bc",
+            "id": "018625a6-6cef-4d48-a9f8-729e9fb20d05",
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "label": "weveanaJoystick",
+            "useGameObjectName": true,
+            "scope": "PUBLIC",
+            "x": 0,
+            "y": 0
+        },
+        {
+            "type": "Image",
+            "id": "54e5d9ea-1103-4a94-ac75-ad8a75c67323",
+            "label": "JumpBtn",
+            "displayName": "JumpBtn",
+            "scope": "PUBLIC",
+            "texture": {
+                "key": "JumpBtn"
+            },
+            "x": 387,
+            "y": 675,
+            "scaleX": 0.5,
+            "scaleY": 0.5
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor - Scene Editor",
+        "url": "https://phaser.io/editor",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    }
+}

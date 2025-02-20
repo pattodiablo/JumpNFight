@@ -217,6 +217,46 @@
             "type": {
                 "id": "boolean"
             }
+        },
+        {
+            "name": "TouchX",
+            "label": "TouchX",
+            "tooltip": "TouchX",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "TouchY",
+            "label": "TouchY",
+            "tooltip": "TouchY",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "TouchJump",
+            "label": "TouchJump",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "factor",
+            "label": "factor",
+            "tooltip": "factor",
+            "defValue": 0.5,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
         }
     ]
 }

@@ -32,6 +32,11 @@
                 "key": "Idle-atlas"
             },
             {
+                "url": "assets/JumpBtn.png",
+                "type": "image",
+                "key": "JumpBtn"
+            },
+            {
                 "url": "assets/particleImage.png",
                 "type": "image",
                 "key": "particleImage"
