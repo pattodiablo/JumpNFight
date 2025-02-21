@@ -182,7 +182,7 @@
             "name": "laserColor",
             "label": "laserColor",
             "tooltip": "laserColor",
-            "defValue": "0000FF",
+            "defValue": "FF0000",
             "customDefinition": false,
             "type": {
                 "id": "string"

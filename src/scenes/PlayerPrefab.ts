@@ -41,7 +41,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public hasDoubleJumped: boolean = false;
 	public lastShotTime: number = 2000;
 	public shotInterval: number = 250;
-	public laserColor: string = "0000FF";
+	public laserColor: string = "FF0000";
 	public laserSpeed: number = 3000;
 	public laserDuration: number = 500;
 	public isInAir: boolean = false;
@@ -180,7 +180,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	}
 
 	handleLaserCollision(laser: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {
-		// Manejar la colisión entre el láser y el jugador
+
 
 		(enemy as any).EnemyLife -= 1;
 
@@ -211,7 +211,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	createLaserParticles() {
 
-		const appearParicles =  this.scene.add.particles(0, 0, 'particleImageBlue', {
+		const appearParicles =  this.scene.add.particles(0, 0, 'particleImage', {
 			x: this.x,
 			y: this.y,
 			speed: { min: -30, max: 30 },

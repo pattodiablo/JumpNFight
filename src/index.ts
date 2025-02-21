@@ -7,6 +7,7 @@ import { SpinePlugin } from "@esotericsoftware/spine-phaser";
 // @ts-ignore
 import { PokiPlugin } from '@poki/phaser-3';
 
+var renderer: string;
 
 class Boot extends Phaser.Scene {
 
@@ -30,6 +31,12 @@ function isMobileDevice() {
 }
 const isMobile = isMobileDevice();
 
+if(isMobile){
+    const ancho = window.screen.width;
+    const alto = window.screen.height;
+    console.log("Mobile")
+
+}
 
 function getDPI() {
     // Crear un elemento div temporal
@@ -56,12 +63,61 @@ const dpi = getDPI();
 console.log(`DPI: ${dpi.x} x ${dpi.y}`);
 
 
+
+function getOS() {
+
+	var userAgent = window.navigator.userAgent,
+		platform = window.navigator.platform,
+		macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+		windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+		iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+		os = null;
+
+	if (macosPlatforms.indexOf(platform) !== -1) {
+		renderer = "Phaser.CANVAS";
+	} else if (iosPlatforms.indexOf(platform) !== -1) {
+		renderer = "Phaser.CANVAS";
+	} else if (windowsPlatforms.indexOf(platform) !== -1) {
+		renderer = "Phaser.WEBGL";
+	} else if (/Android/.test(userAgent)) {
+		renderer = "Phaser.WEBGL";
+	} else if (!os && /Linux/.test(platform)) {
+		renderer = "Phaser.WEBGL";
+	}
+
+	return renderer;
+}
+
+getOS();
+
+
+
+interface CustomGame extends Phaser.Game {
+    playerData: {
+        isMobile: boolean;
+   
+  
+    };
+}
+
+class CustomGameImpl extends Phaser.Game implements CustomGame {
+    playerData = {
+        isMobile: false,
+      
+     
+    };
+}
+
 window.addEventListener('load', function () {
-	
-	const game = new Phaser.Game({
-       
-		width: this.innerWidth,
-		height: this.innerHeight,
+    
+    const game = new CustomGameImpl({
+          /*
+        width: window.innerWidth,
+		height:  window.innerHeight,
+        */
+        width: 1031,
+		height: 580,
+    
 		backgroundColor: "#e2e2e2",
 		scale: {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
@@ -119,5 +175,10 @@ window.addEventListener('load', function () {
         }
 	});
 
+    game.playerData = {
+        
+        isMobile: isMobile,
+    
+    }
    
 });

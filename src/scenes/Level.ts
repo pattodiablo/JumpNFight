@@ -5,8 +5,10 @@
 
 import PlayerPrefab from "./PlayerPrefab";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
+
 /* START-USER-IMPORTS */
 import Enemy1 from "./Enemy1";
+import CollectableParticle from "./CollectableParticle";
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
 /* END-USER-IMPORTS */
 
@@ -25,6 +27,8 @@ export default class Level extends Phaser.Scene {
 		// Player
 		const player = new PlayerPrefab(this, this.spine, 900, -964);
 		this.add.existing(player);
+		player.scaleX = 0.5;
+		player.scaleY = 0.5;
 
 		// bg1
 		const bg1 = this.add.tileSprite(0, 0, 1920, 1080, "bg1");
@@ -42,7 +46,7 @@ export default class Level extends Phaser.Scene {
 	/* START-USER-CODE */
 
 
-
+    private currentPlatform!: Phaser.GameObjects.Rectangle;
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
     private currentAnimation: string = "Idle";
 	// Write your code here
@@ -53,9 +57,10 @@ export default class Level extends Phaser.Scene {
 	create() {
 
 		this.editorCreate();
+        this.createParticles();
 
         const poki = this.plugins.get('poki');
-     
+
         if (poki) {
 
             (poki as any).runWhenInitialized((poki: { hasAdblock: boolean }) => {
@@ -71,19 +76,19 @@ export default class Level extends Phaser.Scene {
                   // When ads are available: enable the rewarded ad button:
                   /*
                   (poki as any).rewardedBreak().then((success: boolean) => {
-                  
+
                     if (success) {
                         console.log('Give coins!');
                         // Give coins!
                     }
-                       
+
                 });
                  */
                 }
               })
-            
-          
-          
+
+
+
         };
 
         this.scene.launch("GameUI");
@@ -104,10 +109,10 @@ export default class Level extends Phaser.Scene {
 		this.createPlatforms();
         this.createEnemies();
 
-     
+
 	}
 
-   
+
     createEnemies() {
         // Crear un grupo para los enemigos
         this.enemies = this.add.group();
@@ -148,7 +153,22 @@ export default class Level extends Phaser.Scene {
         checkAndGenerateEnemies();
     }
 
+createParticles() {
+    const generateParticle = () => {
+        const x =  Phaser.Math.Between(this.player.x-1000, this.player.x+1000); // A la derecha de la cámara
+        const y = Phaser.Math.Between(this.player.y, this.player.y-1000); // Desde la mitad de la pantalla hacia arriba
+        const particle = new CollectableParticle(this, x, y);
+        this.add.existing(particle);
+    };
 
+    // Llamar a generateParticle cada cierto tiempo
+    this.time.addEvent({
+        delay: 1000, // Intervalo de tiempo en milisegundos
+        callback: generateParticle,
+        callbackScope: this,
+        loop: true
+    });
+}
 	createPlatforms() {
         // Crear un grupo para las plataformas
 
@@ -208,11 +228,16 @@ export default class Level extends Phaser.Scene {
 	 // 	this.player.updatePlayer(delta);
         this.updatePlatforms();
 
-		if (this.player.y > 2000) {
-			this.player.y = -2000;
-			this.player.x = this.player.x-400;
-            this.cameras.main.shake(500, 0.1); // Duración de 500ms y intensidad de 0.01
-		}
+        if (this.player.y > 2000) {
+            if (this.currentPlatform) {
+                this.player.x = this.currentPlatform.x;
+                this.player.y = this.currentPlatform.y - 1800;
+            } else {
+                this.player.y = -2000;
+                this.player.x = this.player.x - 400;
+            }
+            this.cameras.main.shake(500, 0.1); // Duración de 500ms y intensidad de 0.1
+        }
 
          // Actualizar la posición de bg1 para crear el efecto parallax
          this.bg1.tilePositionX = this.cameras.main.scrollX * 0.01;
@@ -275,6 +300,7 @@ export default class Level extends Phaser.Scene {
 
     checkPlatformDistance(player: Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Physics.Arcade.Body | Phaser.Tilemaps.Tile, platform: Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Physics.Arcade.Body | Phaser.Tilemaps.Tile) {
 		const currentPlatform = platform as Phaser.GameObjects.Rectangle;
+        this.currentPlatform = currentPlatform; // Actualizar la plataforma actual
        // currentPlatform.fillColor = 0xff0000; // Cambiar el color de la plataforma a rojo
         this.platforms.getChildren().forEach((value) => {
             const p = value as Phaser.GameObjects.Rectangle;

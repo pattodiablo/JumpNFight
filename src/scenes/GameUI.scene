@@ -38,6 +38,17 @@
             "y": 675,
             "scaleX": 0.5,
             "scaleY": 0.5
+        },
+        {
+            "type": "Image",
+            "id": "afbd78b3-7818-4347-aced-a0db7672754d",
+            "label": "fullScreenBtn",
+            "scope": "PUBLIC",
+            "texture": {
+                "key": "FullScreenBtn"
+            },
+            "scaleX": 0.5,
+            "scaleY": 0.5
         }
     ],
     "plainObjects": [],

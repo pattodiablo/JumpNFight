@@ -15,7 +15,7 @@ export default class GameUI extends Phaser.Scene {
 
 		/* START-USER-CTR-CODE */
 
-		
+
 
 		/* END-USER-CTR-CODE */
 	}
@@ -32,22 +32,48 @@ export default class GameUI extends Phaser.Scene {
 		jumpBtn.scaleX = 0.5;
 		jumpBtn.scaleY = 0.5;
 
+		// fullScreenBtn
+		const fullScreenBtn = this.add.image(0, 0, "FullScreenBtn");
+		fullScreenBtn.scaleX = 0.5;
+		fullScreenBtn.scaleY = 0.5;
+
 		this.weveanaJoystick = weveanaJoystick;
 		this.jumpBtn = jumpBtn;
+		this.fullScreenBtn = fullScreenBtn;
 
 		this.events.emit("scene-awake");
 	}
 
 	public weveanaJoystick!: WeveanaJoystick;
 	public jumpBtn!: Phaser.GameObjects.Image;
+	public fullScreenBtn!: Phaser.GameObjects.Image;
 
 	/* START-USER-CODE */
-
+	public levelText!: Phaser.GameObjects.Text;
 	// Write your code here
 
 	create() {
 
 		this.editorCreate();
+
+		const levelBar = this.add.rectangle(this.scale.width / 2, 30, this.scale.width / 2, 35, 0xffffff);
+        levelBar.setOrigin(0.5, 0.5);
+
+		const UpdateBar = this.add.rectangle(this.scale.width / 2-this.scale.width/4, 30, this.scale.width / 2, 35, 0xff0000);
+        UpdateBar.setOrigin(0, 0.5);
+		UpdateBar.scaleX=0;
+
+		const strokeBar = this.add.graphics();
+        strokeBar.lineStyle(6, 0x000000); // Grosor de 2 píxeles y color blanco
+		strokeBar.strokeRoundedRect(this.scale.width / 4-2, 13, this.scale.width / 2+4, 35, 10); // Dibuja el rectángulo con bordes redondeados
+		
+		const levelText = this.add.text(this.scale.width / 4+10, 30, 'Lv.1', {
+            fontSize: '24px',
+            color: '#e1e1e1',
+            fontStyle: 'bold'
+        });
+        levelText.setOrigin(0, 0.5);
+
 		const factor = this.scale.height / this.scale.width;
 
 		this.input.addPointer(2); // Agregar dos punteros adicionales
@@ -72,13 +98,39 @@ export default class GameUI extends Phaser.Scene {
         });
 
 		this.jumpBtn.setScale(factor/2);
-		this.weveanaJoystick.setScale(factor/2);
+		this.weveanaJoystick.setScale(factor/1.5);
+		console.log(this.game.device.os.desktop);
 
-	
-		
+		this.fullScreenBtn.setInteractive();
+		this.fullScreenBtn.on("pointerdown", () => {
+			if (this.scene.scene.scale.isFullscreen) {
+				this.scene.scene.scale.stopFullscreen();
+				// On stop fulll screen
+			} else {
+				this.scene.scene.scale.startFullscreen();
+				// On start fulll screen
+			}
+		});
+
 		this.jumpBtn.setPosition(this.scale.width*0.15,this.scale.height-this.scale.height*0.25);
-	}
+		if(this.game.device.os.desktop){
+			this.jumpBtn.setVisible(false);
+			this.fullScreenBtn.setVisible(false);
+			}else{
+			
+			this.fullScreenBtn.setPosition(this.scale.width-this.scale.width*0.05,this.scale.height-this.scale.height*0.1);
 
+		}
+		this.scale.on('enterfullscreen', this.handleResize, this);
+        this.scale.on('leavefullscreen', this.handleResize, this);
+        window.addEventListener('resize', this.handleResize.bind(this));
+	}
+	handleResize() {
+        const factor = this.scale.height / this.scale.width;
+        this.jumpBtn.setScale(factor / 2);
+        this.weveanaJoystick.setScale(factor / 2);
+        this.jumpBtn.setPosition(this.scale.width * 0.15, this.scale.height - this.scale.height * 0.25);
+    }
 	/* END-USER-CODE */
 }
 
