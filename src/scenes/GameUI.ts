@@ -50,6 +50,12 @@ export default class GameUI extends Phaser.Scene {
 
 	/* START-USER-CODE */
 	public levelText!: Phaser.GameObjects.Text;
+	public levelBar!: Phaser.GameObjects.Rectangle;
+	public updateBar!: Phaser.GameObjects.Rectangle;
+	public strokeBar!: Phaser.GameObjects.Graphics;
+	private level: number = 1;
+	private LevelReach: number = 40;
+	private collectedParticles: number = 0;
 	// Write your code here
 
 	create() {
@@ -73,6 +79,12 @@ export default class GameUI extends Phaser.Scene {
             fontStyle: 'bold'
         });
         levelText.setOrigin(0, 0.5);
+
+		this.levelBar = levelBar;
+        this.updateBar = UpdateBar;
+        this.strokeBar = strokeBar;
+        this.levelText = levelText;
+
 
 		const factor = this.scale.height / this.scale.width;
 
@@ -99,7 +111,7 @@ export default class GameUI extends Phaser.Scene {
 
 		this.jumpBtn.setScale(factor/2);
 		this.weveanaJoystick.setScale(factor/1.5);
-		console.log(this.game.device.os.desktop);
+		
 
 		this.fullScreenBtn.setInteractive();
 		this.fullScreenBtn.on("pointerdown", () => {
@@ -124,7 +136,38 @@ export default class GameUI extends Phaser.Scene {
 		this.scale.on('enterfullscreen', this.handleResize, this);
         this.scale.on('leavefullscreen', this.handleResize, this);
         window.addEventListener('resize', this.handleResize.bind(this));
+
+		// Escuchar el evento 'particleCollected'
+		const levelScene = this.scene.get('Level') as Phaser.Scene;
+		levelScene.events.on('particleCollected', this.updateLevelBar, this);
+
+
 	}
+
+	updateLevelBar(collectedParticles: number) {
+        this.collectedParticles += collectedParticles;
+	
+        // Calcular el progreso actual
+        const progress = this.collectedParticles / this.LevelReach;
+
+        // Actualizar la barra de progreso
+        this.updateBar.scaleX = progress;
+
+        // Verificar si el jugador ha alcanzado el nivel actual
+        if (this.collectedParticles >= this.LevelReach) {
+            this.level++;
+            this.LevelReach+= this.LevelReach * 0.5; // Incrementar el requisito de partículas para el siguiente nivel
+            this.collectedParticles = 0; // Reiniciar el conteo de partículas recolectadas
+
+            // Actualizar el texto del nivel
+            this.levelText.setText(`Lv.${this.level}`);
+
+            // Reiniciar la barra de progreso
+            this.updateBar.scaleX = 0;
+        }
+    }
+
+
 	handleResize() {
         const factor = this.scale.height / this.scale.width;
         this.jumpBtn.setScale(factor / 2);

@@ -40,7 +40,7 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 		this.scene.physics.add.overlap(this, this.player, this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 		
 		// Iniciar el temporizador para la destrucción automática
-       // this.scene.time.delayedCall(this.MaxKillTime, this.autoDestroy, [], this);
+        this.scene.time.delayedCall(this.MaxKillTime, this.autoDestroy, [], this);
 	}
 
 	autoDestroy() {
@@ -91,7 +91,7 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 			duration: 500,
 			callbackScope: this,
 			onComplete: function () {
-
+				(player as any).collectParticle(1);
 				this.destroy();
 			}
 

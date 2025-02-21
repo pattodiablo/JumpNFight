@@ -121,8 +121,8 @@ export default class Level extends Phaser.Scene {
         let numEnemies = 1; // Número inicial de enemigos a generar
         let minEnemyX = -3000; // Posición X mínima para los enemigos
         let maxEnemyX = 3000; // Posición X máxima para los enemigos
-        let minEnemyY = this.player.y-600; // Posición Y mínima para los enemigos
-        let maxEnemyY = this.scale.height - 1400; // Posición Y máxima para los enemigos
+        let minEnemyY = this.player.y-900; // Posición Y mínima para los enemigos
+        let maxEnemyY = this.scale.height - 1800; // Posición Y máxima para los enemigos
 
         const generateEnemies = () => {
             for (let i = 0; i < numEnemies; i++) {

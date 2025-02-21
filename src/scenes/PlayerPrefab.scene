@@ -257,6 +257,16 @@
             "type": {
                 "id": "number"
             }
+        },
+        {
+            "name": "collectedParticles",
+            "label": "collectedParticles",
+            "tooltip": "",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
         }
     ]
 }

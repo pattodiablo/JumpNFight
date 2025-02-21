@@ -49,6 +49,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public TouchY: number = 0;
 	public TouchJump: boolean = false;
 	public factor: number = 0.5;
+	public collectedParticles: number = 0;
 
 	/* START-USER-CODE */
 	create(){
@@ -369,6 +370,22 @@ export default class PlayerPrefab extends SpineGameObject {
             }
         }
     }
+
+
+	public setCollectParticles(particleValue:number) {
+		this.collectedParticles=particleValue;
+	}
+
+	public collectParticle(particleValue:number) {
+        this.collectedParticles+=particleValue;
+		this.scene.events.emit('particleCollected', particleValue);
+    }
+
+	public getCollectedParticles(): number {
+        return this.collectedParticles;
+    }
+
+
     /* END-USER-CODE */
 }
 
