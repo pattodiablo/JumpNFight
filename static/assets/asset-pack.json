@@ -22,6 +22,11 @@
                 "key": "EnemyV1-atlas"
             },
             {
+                "url": "assets/FullScreenBtn.png",
+                "type": "image",
+                "key": "FullScreenBtn"
+            },
+            {
                 "url": "assets/SpineAnimations/IdlePlayer/Idle.json",
                 "type": "spineJson",
                 "key": "Idle"

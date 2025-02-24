@@ -7,8 +7,9 @@ import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 import { SpinePlugin } from "@esotericsoftware/spine-phaser";
 import { SpineGameObjectBoundsProvider } from "@esotericsoftware/spine-phaser";
 import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser";
-/* START-USER-IMPORTS */
 
+/* START-USER-IMPORTS */
+import CollectableParticle from "./CollectableParticle";
 declare global {
 	namespace Phaser {
 		interface Scene {
@@ -123,6 +124,7 @@ export default class Enemy1 extends SpineGameObject {
 
 	handleDestroy() {
 		this.IsDestroyed = true;
+		this.generateParticles();
 		const destroyParticles =  this.scene.add.particles(0, 0, 'particleImage', {
 			x: this.x,
 			y: this.y,
@@ -142,17 +144,26 @@ export default class Enemy1 extends SpineGameObject {
 			destroyParticles.stop();
 			destroyParticles.destroy();
 			 // Eliminar el enemigo del grupo de enemigos
-			 (this.scene as any).enemies.remove(this);
-
 			 // Destruir el enemigo
 			 this.destroy();
 
 		}, [], this);
 		this.setVisible(false);
 		const enemyBody = this.body as Phaser.Physics.Arcade.Body;
+		(this.scene as any).enemies.remove(this);
 		enemyBody.setEnable(false);
 		//this.destroy();
 	}
+
+	generateParticles() {
+        const numParticles = Phaser.Math.Between(1, 3); // Número aleatorio de partículas entre 1 y 3
+        for (let i = 0; i < numParticles; i++) {
+            const x = this.x + Phaser.Math.Between(-10, 10); // Posición aleatoria cerca del enemigo
+            const y = this.y + Phaser.Math.Between(-10, 10); // Posición aleatoria cerca del enemigo
+            const particle = new CollectableParticle(this.scene, x, y);
+            this.scene.add.existing(particle);
+        }
+    }
 
 	createLaserParticles() {
 

@@ -1,0 +1,86 @@
+{
+    "id": "a3d683fa-68c9-4cbc-b5dc-f40fb34cbf02",
+    "sceneType": "PREFAB",
+    "settings": {
+        "exportClass": true,
+        "autoImport": true,
+        "preloadMethodName": "",
+        "preloadPackFiles": [],
+        "createMethodName": "",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
+        "borderWidth": 1280,
+        "borderHeight": 720
+    },
+    "displayList": [
+        {
+            "type": "Ellipse",
+            "id": "12416d2b-d4ba-4404-ab7e-228b4eb2c65f",
+            "label": "collectableParticle",
+            "scope": "PUBLIC",
+            "isFilled": true,
+            "fillColor": "#ff0000",
+            "width": 26,
+            "height": 26
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor - Scene Editor",
+        "url": "https://phaser.io/editor",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    },
+    "prefabProperties": [
+        {
+            "name": "attractionRange",
+            "label": "attractionRange",
+            "tooltip": "attractionRange",
+            "defValue": 600,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "attractionSpeed",
+            "label": "attractionSpeed",
+            "tooltip": "attractionSpeed",
+            "defValue": 1600,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "player",
+            "label": "player",
+            "tooltip": "player",
+            "defValue": "",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Phaser.GameObjects.Sprite "
+            }
+        },
+        {
+            "name": "isDestroyed",
+            "label": "isDestroyed",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "MaxKillTime",
+            "label": "MaxKillTime",
+            "tooltip": "",
+            "defValue": 10000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        }
+    ]
+}

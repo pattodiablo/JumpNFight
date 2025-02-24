@@ -19,12 +19,16 @@
             "id": "899453bf-fa2f-4675-af26-b94538b929c1",
             "unlock": [
                 "x",
-                "y"
+                "y",
+                "scaleX",
+                "scaleY"
             ],
             "label": "Player",
             "scope": "PUBLIC",
             "x": 900,
-            "y": -964
+            "y": -964,
+            "scaleX": 0.5,
+            "scaleY": 0.5
         },
         {
             "type": "TileSprite",

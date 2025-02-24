@@ -182,7 +182,7 @@
             "name": "laserColor",
             "label": "laserColor",
             "tooltip": "laserColor",
-            "defValue": "0000FF",
+            "defValue": "FF0000",
             "customDefinition": false,
             "type": {
                 "id": "string"
@@ -253,6 +253,16 @@
             "label": "factor",
             "tooltip": "factor",
             "defValue": 0.5,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "collectedParticles",
+            "label": "collectedParticles",
+            "tooltip": "",
+            "defValue": 0,
             "customDefinition": false,
             "type": {
                 "id": "number"
