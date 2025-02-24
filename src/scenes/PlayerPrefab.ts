@@ -51,6 +51,8 @@ export default class PlayerPrefab extends SpineGameObject {
 	public factor: number = 0.5;
 
 	/* START-USER-CODE */
+
+	
 	create(){
 
 		this.factor = this.scene.scale.height / this.scene.scale.width;
