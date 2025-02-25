@@ -212,7 +212,7 @@ createParticles() {
 
 		// Crea un suelo
 		if (this.add) {
-			const floor = this.add.rectangle(0, this.scale.height-600, this.scale.width, 500, 0x000000);
+			const floor = this.add.rectangle(0, this.scale.height-600, this.scale.width+1300, 500, 0x000000);
 			floor.setOrigin(0.5,0.5);
 			this.physics.add.existing(floor, true);
 			 // Agregar colisión entre el jugador y el suelo

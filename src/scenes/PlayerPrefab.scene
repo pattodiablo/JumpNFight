@@ -25,8 +25,6 @@
             "skinName": "default",
             "bpType": 1,
             "bpAnimation": "Idle",
-            "x": 187,
-            "y": 114,
             "scaleX": 0.5,
             "scaleY": 0.5
         }
@@ -184,7 +182,7 @@
             "name": "laserColor",
             "label": "laserColor",
             "tooltip": "laserColor",
-            "defValue": "0000FF",
+            "defValue": "FF0000",
             "customDefinition": false,
             "type": {
                 "id": "string"
@@ -255,6 +253,16 @@
             "label": "factor",
             "tooltip": "factor",
             "defValue": 0.5,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "collectedParticles",
+            "label": "collectedParticles",
+            "tooltip": "",
+            "defValue": 0,
             "customDefinition": false,
             "type": {
                 "id": "number"
