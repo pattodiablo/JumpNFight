@@ -267,6 +267,16 @@
             "type": {
                 "id": "number"
             }
+        },
+        {
+            "name": "IsRolling",
+            "label": "IsRolling",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
         }
     ]
 }

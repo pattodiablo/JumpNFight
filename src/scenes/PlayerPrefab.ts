@@ -50,6 +50,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public TouchJump: boolean = false;
 	public factor: number = 0.5;
 	public collectedParticles: number = 0;
+	public IsRolling: boolean = false;
 
 	/* START-USER-CODE */
 
@@ -90,6 +91,27 @@ export default class PlayerPrefab extends SpineGameObject {
 				   gameUIScene.events.on('joystickMove', this.handleJoystickMove, this);
 
 				   gameUIScene.events.on('jump', this.handleJump, this);
+	}
+
+	hideAndRoll(x:number,Y:number){
+		if(!this.IsRolling){
+			console.log("Hide and Roll");
+			this.IsRolling = true;
+			this.setAnimation("Roll", true);
+			const playerBody = this.body as Phaser.Physics.Arcade.Body;
+			playerBody.setEnable(false);
+			this.x = x;	// Mover el cañón a la posición del jugador
+			this.y = Y;	// Mover el cañón a la posición del jugador
+			this.scene.time.delayedCall(1000, () => {
+				this.IsRolling = false;
+				playerBody.setEnable(true);
+			
+				const velocity = 6000; // Velocidad del proyectil
+                const angle = Phaser.Math.DegToRad(45); // Convertir 45 grados a radianes
+                playerBody.setVelocity(Math.cos(angle) * velocity, -Math.sin(angle) * velocity);
+			});
+		}
+
 	}
 
 	handleJump(isJumping: boolean) {
