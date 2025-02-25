@@ -277,6 +277,16 @@
             "type": {
                 "id": "boolean"
             }
+        },
+        {
+            "name": "IsFallingAfterCannon",
+            "label": "IsFallingAfterCannon",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
         }
     ]
 }
