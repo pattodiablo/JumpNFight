@@ -12,7 +12,7 @@ import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser"
 export default class PlayerPrefab extends SpineGameObject {
 
 	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, boundsProvider?: SpineGameObjectBoundsProvider) {
-		super(scene, plugin, x ?? 0, y ?? 0, "Player", "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
+		super(scene, plugin, x ?? 187, y ?? 114, "Player", "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
 
 		this.setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 600), Phaser.Geom.Rectangle.Contains);
 		this.skeleton.setSkinByName("default");
@@ -41,7 +41,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public hasDoubleJumped: boolean = false;
 	public lastShotTime: number = 2000;
 	public shotInterval: number = 250;
-	public laserColor: string = "FF0000";
+	public laserColor: string = "0000FF";
 	public laserSpeed: number = 3000;
 	public laserDuration: number = 500;
 	public isInAir: boolean = false;
@@ -49,11 +49,10 @@ export default class PlayerPrefab extends SpineGameObject {
 	public TouchY: number = 0;
 	public TouchJump: boolean = false;
 	public factor: number = 0.5;
-	public collectedParticles: number = 0;
 
 	/* START-USER-CODE */
 
-	
+
 	create(){
 
 		this.factor = this.scene.scale.height / this.scene.scale.width;
