@@ -12,7 +12,7 @@ import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser"
 export default class PlayerPrefab extends SpineGameObject {
 
 	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, boundsProvider?: SpineGameObjectBoundsProvider) {
-		super(scene, plugin, x ?? 187, y ?? 114, "Player", "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
+		super(scene, plugin, x ?? 0, y ?? 0, "Player", "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
 
 		this.setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 600), Phaser.Geom.Rectangle.Contains);
 		this.skeleton.setSkinByName("default");
@@ -41,7 +41,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public hasDoubleJumped: boolean = false;
 	public lastShotTime: number = 2000;
 	public shotInterval: number = 250;
-	public laserColor: string = "0000FF";
+	public laserColor: string = "FF0000";
 	public laserSpeed: number = 3000;
 	public laserDuration: number = 500;
 	public isInAir: boolean = false;
@@ -49,6 +49,9 @@ export default class PlayerPrefab extends SpineGameObject {
 	public TouchY: number = 0;
 	public TouchJump: boolean = false;
 	public factor: number = 0.5;
+	public collectedParticles: number = 0;
+	public IsRolling: boolean = false;
+	public IsFallingAfterCannon: boolean = false;
 
 	/* START-USER-CODE */
 
@@ -89,6 +92,51 @@ export default class PlayerPrefab extends SpineGameObject {
 				   gameUIScene.events.on('joystickMove', this.handleJoystickMove, this);
 
 				   gameUIScene.events.on('jump', this.handleJump, this);
+	}
+
+	hideAndRoll(x:number,Y:number){
+		if(!this.IsRolling){
+			
+			this.IsRolling = true;
+			this.setAnimation("Roll", true);
+			const playerBody = this.body as Phaser.Physics.Arcade.Body;
+			playerBody.setEnable(false);
+			this.x = x;	// Mover el cañón a la posición del jugador
+			this.y = Y;	// Mover el cañón a la posición del jugador
+			this.scene.time.delayedCall(500, () => {
+				this.scene.cameras.main.shake(900, 0.1); // Duración de 500ms y intensidad de 0.1
+				const LaunchPartciles =  this.scene.add.particles(0, 0, 'particleImage', {
+					x: this.x,
+					y: this.y,
+					speed: { min: 3000, max: 12000 },
+					angle: { min: -20, max: -50 },
+					lifespan: { min: 30, max: 4000 },
+					scale: { start:0, end:  Phaser.Math.Between(1, 8) }, // Tamaño inicial aleatorio
+					quantity: 30,
+					maxParticles: 30,
+					frequency: 100,
+					gravityY: 3000
+		
+				});
+
+			});
+			this.scene.time.delayedCall(1000, () => {
+			
+				this.IsRolling = false;
+				playerBody.setEnable(true);
+				this.IsFallingAfterCannon = true;
+				const velocity = 12000; // Velocidad del proyectil
+                const angle = Phaser.Math.DegToRad(30); // Convertir 45 grados a radianes
+              	const xAngle = Math.cos(angle);
+				const yAngle = Math.sin(angle);
+				playerBody.setVelocity(xAngle * velocity, -yAngle * velocity);
+			
+		
+
+
+			});
+		}
+
 	}
 
 	handleJump(isJumping: boolean) {
@@ -317,6 +365,10 @@ export default class PlayerPrefab extends SpineGameObject {
 					this.IsFalling = true;
 					newAnimation = "Falling";
 					playerBody.setGravityY(this.playerGravity * this.fallMultiplier);
+					if(this.IsFallingAfterCannon){
+						this.IsFallingAfterCannon = false;
+						this.createalandingPlatform();
+					}
 				} else {
 					playerBody.setGravityY(this.playerGravity);
 				}
@@ -347,6 +399,20 @@ export default class PlayerPrefab extends SpineGameObject {
 	//	this.ArmsFollowMouse(this, this.scene.input.mousePointer);
 
 		this.update(delta);
+	}
+
+	createalandingPlatform(){
+		if (this.scene.add) {
+			console.log("Create Landing Platform");
+			const floor = this.scene.add.rectangle(this.x, this.scene.scale.height-1200, this.scene.scale.width+15000, 500, 0x000000);
+			floor.setOrigin(0,0.5);
+			this.scene.physics.add.existing(floor, true);
+			 // Agregar colisión entre el jugador y el suelo
+			 this.scene.physics.add.collider(this, floor);
+		
+
+		}
+
 	}
 
 	ArmsFollowMouse(p0: this, mouse: Phaser.Input.Pointer) {

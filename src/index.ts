@@ -139,7 +139,7 @@ window.addEventListener('load', function () {
                     // This will always request a commercialBreak when gameplay starts,
                     // set to false to disable this behaviour (recommended to have true,
                     // see Poki SDK docs for more details).
-                    autoCommercialBreak: true
+                    autoCommercialBreak: false
                   }
                 }
               ],

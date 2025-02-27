@@ -81,6 +81,16 @@
             "type": {
                 "id": "number"
             }
+        },
+        {
+            "name": "LevelPoins",
+            "label": "Property",
+            "tooltip": "",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
         }
     ]
 }

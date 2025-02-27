@@ -4,8 +4,8 @@
 /* START OF COMPILED CODE */
 
 import PlayerPrefab from "./PlayerPrefab";
+import Cannon from "./Cannon";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
-
 /* START-USER-IMPORTS */
 import Enemy1 from "./Enemy1";
 import CollectableParticle from "./CollectableParticle";
@@ -33,6 +33,10 @@ export default class Level extends Phaser.Scene {
 		// bg1
 		const bg1 = this.add.tileSprite(0, 0, 1920, 1080, "bg1");
 		bg1.setOrigin(0, 0);
+
+		// cannon
+		const cannon = new Cannon(this, -146, -883);
+		this.add.existing(cannon);
 
 		this.player = player;
 		this.bg1 = bg1;
@@ -212,7 +216,7 @@ createParticles() {
 
 		// Crea un suelo
 		if (this.add) {
-			const floor = this.add.rectangle(0, this.scale.height-600, this.scale.width, 500, 0x000000);
+			const floor = this.add.rectangle(0, this.scale.height-600, this.scale.width+1300, 500, 0x000000);
 			floor.setOrigin(0.5,0.5);
 			this.physics.add.existing(floor, true);
 			 // Agregar colisión entre el jugador y el suelo
