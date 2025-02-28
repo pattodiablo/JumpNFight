@@ -50,6 +50,7 @@ export default class Upgrade extends Phaser.GameObjects.Container {
 	private upgradeIcon: Phaser.GameObjects.Image;
 	private upgradeType: Phaser.GameObjects.Text;
 	private levelNumber: Phaser.GameObjects.Text;
+	public randomUpgrade: any = [];
 
 	/* START-USER-CODE */
 
@@ -60,12 +61,12 @@ export default class Upgrade extends Phaser.GameObjects.Container {
 	getRandomUpgrade(){
 		const parentContainer = this.parentContainer as any;
 		const upgrades = parentContainer.upgrades;
-	
+
 		if(upgrades != undefined){
-			const randomUpgrade: [number, string, string, number] = Phaser.Math.RND.pick(upgrades);
-			this.upgradeIcon.setTexture(randomUpgrade[1] as string);
-			this.upgradeType.text = randomUpgrade[2] as string;
-			let LevelNumber = randomUpgrade[3] as number;
+			this.randomUpgrade = Phaser.Math.RND.pick(upgrades);
+			this.upgradeIcon.setTexture(this.randomUpgrade[1] as string);
+			this.upgradeType.text = this.randomUpgrade[2] as string;
+			let LevelNumber = this.randomUpgrade[3] as number;
 			LevelNumber++;
 			this.levelNumber.text = LevelNumber.toString();
 		}

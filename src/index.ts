@@ -123,13 +123,14 @@ class CustomGameImpl extends Phaser.Game implements CustomGame {
 window.addEventListener('load', function () {
     
     const game = new CustomGameImpl({
-          /*
+ 
         width: window.innerWidth,
 		height:  window.innerHeight,
-        */
-        width: 1031,
-		height: 580,
-    
+ 
+           /*
+        width: 1920,
+		height: 1080,
+           */
 		backgroundColor: "#e2e2e2",
 		scale: {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,

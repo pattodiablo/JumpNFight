@@ -106,7 +106,7 @@
             "customDefinition": false,
             "type": {
                 "id": "expression",
-                "expressionType": "Array<number | string | string | number>"
+                "expressionType": "Array<any>"
             }
         },
         {
@@ -117,7 +117,7 @@
             "customDefinition": false,
             "type": {
                 "id": "expression",
-                "expressionType": "Array<number | string | string | number>"
+                "expressionType": "Array<any>"
             }
         },
         {
@@ -128,7 +128,7 @@
             "customDefinition": false,
             "type": {
                 "id": "expression",
-                "expressionType": "Array<number | string | string | number>"
+                "expressionType": "Array<any>"
             }
         },
         {
@@ -139,7 +139,7 @@
             "customDefinition": false,
             "type": {
                 "id": "expression",
-                "expressionType": "Array<number | string | string | number>"
+                "expressionType": "Array<any>"
             }
         },
         {
@@ -150,7 +150,7 @@
             "customDefinition": false,
             "type": {
                 "id": "expression",
-                "expressionType": "Array<number | string | string | number>"
+                "expressionType": "Array<any>"
             }
         },
         {
@@ -161,7 +161,7 @@
             "customDefinition": false,
             "type": {
                 "id": "expression",
-                "expressionType": "Array<number | string | string | number>"
+                "expressionType": "Array<any>"
             }
         },
         {
@@ -172,7 +172,7 @@
             "customDefinition": false,
             "type": {
                 "id": "expression",
-                "expressionType": "Array<number | string | string | number>"
+                "expressionType": "Array<any>"
             }
         },
         {
@@ -183,7 +183,7 @@
             "customDefinition": false,
             "type": {
                 "id": "expression",
-                "expressionType": "Array<number | string | string | number>"
+                "expressionType": "Array<any>"
             }
         },
         {
@@ -194,7 +194,7 @@
             "customDefinition": false,
             "type": {
                 "id": "expression",
-                "expressionType": "Array<number | string | string | number>"
+                "expressionType": "Array<any>"
             }
         },
         {
@@ -205,7 +205,7 @@
             "customDefinition": false,
             "type": {
                 "id": "expression",
-                "expressionType": "Array<number | string | string | number>"
+                "expressionType": "Array<any>"
             }
         },
         {

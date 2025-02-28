@@ -47,11 +47,9 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 
 		/* START-USER-CTR-CODE */
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
-	
+
 		/* END-USER-CTR-CODE */
 	}
-	
-	
 
 	private btn1: Phaser.GameObjects.Image;
 	private btn2: Phaser.GameObjects.Image;
@@ -59,16 +57,17 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	private upgrade1: Upgrade;
 	private upgrade2: Upgrade;
 	private upgrade3: Upgrade;
-	public PlayerSpeed: Array<number | string | string | number> = [100,"ShieldIcon","Player", 0];
-	public fallMultiplier: Array<number | string | string | number> = [0.5,"ShieldIcon","Player", 0];
-	public JumpVelocity: Array<number | string | string | number> = [100,"ShieldIcon","Player", 0];
-	public lastShotTime: Array<number | string | string | number> = [100,"ShieldIcon","Player", 0];
-	public shotInterval: Array<number | string | string | number> = [40,"ShieldIcon","Laser", 0];
-	public laserColor: Array<number | string | string | number> = [1,"LaserIcon","Laser", 0];
-	public laserSpeed: Array<number | string | string | number> = [100,"LaserIcon","Laser", 0];
-	public laserDuration: Array<number | string | string | number> = [100,"LaserIcon","Laser", 0];
-	public collectedParticles: Array<number | string | string | number> = [500,"ShieldIcon","Player", 0];
-	public CannonVelo: Array<number | string | string | number> = [1000,"MissileIcon","Cannon", 0];
+	public PlayerSpeed: Array<any> = [100,"ShieldIcon","Player", 0];
+	public fallMultiplier: Array<any> = [0.5,"ShieldIcon","Player", 0];
+	public JumpVelocity: Array<any> = [100,"ShieldIcon","Player", 0];
+	public lastShotTime: Array<any> = [100,"ShieldIcon","Player", 0];
+	public shotInterval: Array<any> = [40,"ShieldIcon","Laser", 0];
+	public laserColor: Array<any> = [1,"LaserIcon","Laser", 0];
+	public laserSpeed: Array<any> = [100,"LaserIcon","Laser", 0,"laserSpeed"];
+	public laserDuration: Array<any> = [100,"LaserIcon","Laser", 0];
+	public collectedParticles: Array<any> = [500,"ShieldIcon","Player", 0,];
+	public CannonVelo: Array<any> = [1000,"MissileIcon","Cannon", 0];
+	
 	public upgrades: Array<any> = [this.PlayerSpeed, this.fallMultiplier, this.JumpVelocity, this.lastShotTime, this.shotInterval, this.laserColor, this.laserSpeed, this.laserDuration, this.collectedParticles, this.CannonVelo];
 	public background!: Phaser.GameObjects.Rectangle;
 
@@ -94,7 +93,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		//this.add(this.background);
 		this.background.setDepth(-11);
 		console.log(this.background.parentContainer);
-		
+
 		this.btn1.scaleX = 0.4;
         this.btn1.scaleY = 0.4;
 		this.btn2.scaleX = 0.4;
@@ -119,7 +118,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.upgrade3.y = this.btn3.y;
 
 		this.background.x = width+width/2;
-	
+
 		this.btn1.y = this.scene.scale.height;
 		this.btn2.y = this.scene.scale.height;
 		this.btn3.y = this.scene.scale.height;
@@ -217,10 +216,21 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	addClickEvent(button: Phaser.GameObjects.Image, upgrade: Upgrade) {
         button.setInteractive();
         button.on('pointerdown', () => {
-          //  this.handleUpgradeClick(upgrade);
+
+          this.handleUpgradeClick(upgrade);
 		  this.closeUpgradeSystem();
+			
+
+		 
         });
     }
+
+	handleUpgradeClick(upgrade: Upgrade) {
+
+		console.log(upgrade.randomUpgrade);
+
+
+	}
 
 	closeUpgradeSystem() {
         this.scene.scene.resume('Level');
