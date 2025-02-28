@@ -11,7 +11,12 @@
 		"sourceMap": true,
 		"baseUrl": "./src",
 		"paths": {
-		  "~/*": ["./*"]
+		  "~/*": ["./*"],
+		  "@domain/*": ["domain/*"],
+		  "@infra/*": ["infraestructure/*"],
+		  "@ecs/*": ["infraestructure/ecs/*"],
+		  "@game/*": ["infraestructure/phaser/game/*"],
+		  "@scenes/*": ["scenes/*"]
 		},
         "outDir": "./dist",
 		"types": [

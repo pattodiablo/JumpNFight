@@ -1,0 +1,71 @@
+src
+├─ application
+├─ components
+│  ├─ Behaviors.components
+│  └─ StartAnimationComp.ts
+├─ domain
+│  ├─ models
+│  │  ├─ EntityData.ts
+│  │  ├─ GameObject.ts
+│  │  ├─ MovableEntity.ts
+│  │  └─ types
+│  │     └─ Shape.ts
+│  ├─ services
+│  │  └─ MovementUtil.ts
+│  └─ value-objects
+│     ├─ Size.ts
+│     ├─ Transform.ts
+│     ├─ Vector2.ts
+│     └─ Vector3.ts
+├─ index.html
+├─ index.ts
+├─ infraestructure
+│  ├─ ecs
+│  │  ├─ components
+│  │  │  ├─ MovementComponents.ts
+│  │  │  ├─ NavigationComponents.ts
+│  │  │  ├─ RenderComponents.ts
+│  │  │  └─ TransformComponents.ts
+│  │  ├─ decorators
+│  │  │  ├─ BaseDecorators.ts
+│  │  │  ├─ EntityDecorator.ts
+│  │  │  ├─ MovementDecorators.ts
+│  │  │  ├─ NavigationDecorators.ts
+│  │  │  ├─ RenderDecorators.ts
+│  │  │  └─ TransformDecorators.ts
+│  │  ├─ entities
+│  │  │  ├─ Entity.ts
+│  │  │  └─ IEntity.ts
+│  │  ├─ systems
+│  │  │  └─ MovementSystem.ts
+│  │  └─ value-objects
+│  │     ├─ ComponentData.ts
+│  │     └─ Schemas.ts
+│  └─ phaser
+│     └─ game
+│        ├─ behaviours
+│        │  ├─ Movement.ts
+│        │  └─ ShapeRender.ts
+│        ├─ builders
+│        │  ├─ BulletBuilder.ts
+│        │  └─ ObjectBuilder.ts
+│        └─ models
+│           ├─ GameObject.ts
+│           └─ Scene.ts
+└─ scenes
+   ├─ CollectableParticle.scene
+   ├─ CollectableParticle.ts
+   ├─ Enemy1.scene
+   ├─ Enemy1.ts
+   ├─ GameUI.scene
+   ├─ GameUI.ts
+   ├─ Level.scene
+   ├─ Level.ts
+   ├─ LevelV1.scene
+   ├─ LevelV1.ts
+   ├─ PlayerPrefab.scene
+   ├─ PlayerPrefab.ts
+   ├─ Preload.scene
+   ├─ Preload.ts
+   ├─ WeveanaJoystick.scene
+   └─ WeveanaJoystick.ts

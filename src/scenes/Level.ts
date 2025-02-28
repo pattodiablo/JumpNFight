@@ -9,10 +9,17 @@ import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
 import Enemy1 from "./Enemy1";
 import CollectableParticle from "./CollectableParticle";
+//#region NUEVO
+import { Scene } from "@game/models";
+import { BulletBuilder } from "@game/builders";
+import { Size, Vector2 } from "@domain/value-objects";
+import { DirectionSystem, GravitySystem, ShapeRenderSystem, TransformSystem, VelocitySystem} from "@ecs/systems";
+import { IGameObject } from "@domain/models";
+//#endregion NUEVO
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
 /* END-USER-IMPORTS */
 
-export default class Level extends Phaser.Scene {
+export default class Level extends Scene {
 
 	constructor() {
 		super("Level");
@@ -54,12 +61,51 @@ export default class Level extends Phaser.Scene {
     private platformBuffer: number = 20; // Número de plataformas de buffer por delante y por detrás del jugador
     public enemies!: Phaser.GameObjects.Group; // Grupo de enemigos
 
+    // Monobehaviours:
+    private _transform: TransformSystem = new TransformSystem(this);
+    private _render: ShapeRenderSystem = new ShapeRenderSystem(this);
+    private _calculateDirection: DirectionSystem = new DirectionSystem(this);
+    private _applyGravity: GravitySystem = new GravitySystem(this);
+    private _setVelocity: VelocitySystem = new VelocitySystem(this);
+
 	create() {
 
+        //#region Prueba creación de una bala [NUEVO!]
+        const bullet1: IGameObject = new BulletBuilder(this)
+            .setOrigin(new Vector2(0, 0))
+            .setColor(Phaser.Display.Color.HexStringToColor("FF0000").color)
+            .setSize(new Size(200, 25))
+            .setSpeed(1500)
+            .setTarget(new Vector2(100, -100))
+            .hasGravity(true)
+            .build();
+        
+        const bullet2: IGameObject = new BulletBuilder(this)
+            .setOrigin(new Vector2(0, 0))
+            .setColor(Phaser.Display.Color.HexStringToColor("00FF00").color)
+            .setSize(new Size(200, 25))
+            .setSpeed(1000)
+            .setTarget(new Vector2(100, -100))
+            .hasGravity(true)
+            .build();
+
+        const bullet3: IGameObject = new BulletBuilder(this)
+            .setOrigin(new Vector2(0, 0))
+            .setColor(Phaser.Display.Color.HexStringToColor("0000FF").color)
+            .setSize(new Size(200, 25))
+            .setSpeed(500)
+            .setTarget(new Vector2(100, -100))
+            .hasGravity(true)
+            .build();
+
+        this.addGameObject(bullet1);
+        this.addGameObject(bullet2);
+        this.addGameObject(bullet3);
+        //#endregion
 		this.editorCreate();
         this.createParticles();
 
-        const poki = this.plugins.get('poki');
+        const poki = this.plugins.get('pokii');
 
         if (poki) {
 
@@ -224,6 +270,12 @@ createParticles() {
 	}
 
 	update(time: number, delta: number): void {
+        this._transform.execute();
+        this._setVelocity.execute();
+        this._calculateDirection.execute();
+        this._applyGravity.execute();
+        this._render.execute();
+
 		//console.log(this.input.x);
 	 // 	this.player.updatePlayer(delta);
         this.updatePlatforms();
