@@ -49,6 +49,17 @@
             },
             "scaleX": 0.5,
             "scaleY": 0.5
+        },
+        {
+            "prefabId": "d9728530-f10a-40f1-b764-c71d209254c9",
+            "id": "483cafb1-14af-45af-9cbb-b3922076f607",
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "label": "upgradeBtn",
+            "x": 0,
+            "y": 0
         }
     ],
     "plainObjects": [],

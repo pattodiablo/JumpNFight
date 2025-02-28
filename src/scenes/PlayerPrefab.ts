@@ -12,7 +12,7 @@ import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser"
 export default class PlayerPrefab extends SpineGameObject {
 
 	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, boundsProvider?: SpineGameObjectBoundsProvider) {
-		super(scene, plugin, x ?? 0, y ?? 0, "Player", "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
+		super(scene, plugin, x ?? 210, y ?? 7, "Player", "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
 
 		this.setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 600), Phaser.Geom.Rectangle.Contains);
 		this.skeleton.setSkinByName("default");
@@ -52,6 +52,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public collectedParticles: number = 0;
 	public IsRolling: boolean = false;
 	public IsFallingAfterCannon: boolean = false;
+	public CannonVelo: number = 8000;
 
 	/* START-USER-CODE */
 
@@ -96,7 +97,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	hideAndRoll(x:number,Y:number){
 		if(!this.IsRolling){
-			
+
 			this.IsRolling = true;
 			this.setAnimation("Roll", true);
 			const playerBody = this.body as Phaser.Physics.Arcade.Body;
@@ -116,22 +117,22 @@ export default class PlayerPrefab extends SpineGameObject {
 					maxParticles: 30,
 					frequency: 100,
 					gravityY: 3000
-		
+
 				});
 
 			});
 			this.scene.time.delayedCall(1000, () => {
-			
+
 				this.IsRolling = false;
 				playerBody.setEnable(true);
 				this.IsFallingAfterCannon = true;
-				const velocity = 12000; // Velocidad del proyectil
+				const velocity = this.CannonVelo; // Velocidad del proyectil
                 const angle = Phaser.Math.DegToRad(30); // Convertir 45 grados a radianes
               	const xAngle = Math.cos(angle);
 				const yAngle = Math.sin(angle);
 				playerBody.setVelocity(xAngle * velocity, -yAngle * velocity);
-			
-		
+
+
 
 
 			});
@@ -409,7 +410,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			this.scene.physics.add.existing(floor, true);
 			 // Agregar colisión entre el jugador y el suelo
 			 this.scene.physics.add.collider(this, floor);
-		
+
 
 		}
 

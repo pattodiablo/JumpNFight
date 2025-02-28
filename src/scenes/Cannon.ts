@@ -16,7 +16,7 @@ export default class Cannon extends Phaser.GameObjects.Image {
 
 		/* START-USER-CTR-CODE */
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
-		this.scene.events.on("update", (time: number, delta: number) => this.update(delta));
+	
 		/* END-USER-CTR-CODE */
 	}
 
@@ -58,9 +58,6 @@ handlePlayerCollision(cannon: Phaser.GameObjects.GameObject, player: Phaser.Game
 
 }
 
-update(delta: number): void {
-
-}
 
 
 	/* END-USER-CODE */

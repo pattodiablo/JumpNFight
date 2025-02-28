@@ -25,6 +25,8 @@
             "skinName": "default",
             "bpType": 1,
             "bpAnimation": "Idle",
+            "x": 210,
+            "y": 7,
             "scaleX": 0.5,
             "scaleY": 0.5
         }
@@ -286,6 +288,16 @@
             "customDefinition": false,
             "type": {
                 "id": "boolean"
+            }
+        },
+        {
+            "name": "CannonVelo",
+            "label": "CannonVelo",
+            "tooltip": "",
+            "defValue": 8000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
             }
         }
     ]

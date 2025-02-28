@@ -6,7 +6,19 @@ import Preload from "./scenes/Preload";
 import { SpinePlugin } from "@esotericsoftware/spine-phaser";
 // @ts-ignore
 import { PokiPlugin } from '@poki/phaser-3';
-
+import WebFont from 'webfontloader';
+WebFont.load({
+    google: {
+      families: ["Bahiana"],
+    },
+    active: () => {
+      console.log('Fonts have been loaded');
+    },
+    inactive: () => {
+      console.log('Fonts could not be loaded');
+    },
+    timeout: 2000 // Set the timeout to two seconds
+  });
 var renderer: string;
 
 class Boot extends Phaser.Scene {
@@ -182,3 +194,4 @@ window.addEventListener('load', function () {
     }
    
 });
+

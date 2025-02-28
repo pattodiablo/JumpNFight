@@ -4,11 +4,11 @@
 /* START OF COMPILED CODE */
 
 import PlayerPrefab from "./PlayerPrefab";
-import Cannon from "./Cannon";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
 import Enemy1 from "./Enemy1";
 import CollectableParticle from "./CollectableParticle";
+import Cannon from "./Cannon";
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
 /* END-USER-IMPORTS */
 
@@ -34,10 +34,6 @@ export default class Level extends Phaser.Scene {
 		const bg1 = this.add.tileSprite(0, 0, 1920, 1080, "bg1");
 		bg1.setOrigin(0, 0);
 
-		// cannon
-		const cannon = new Cannon(this, -146, -883);
-		this.add.existing(cannon);
-
 		this.player = player;
 		this.bg1 = bg1;
 
@@ -50,13 +46,16 @@ export default class Level extends Phaser.Scene {
 	/* START-USER-CODE */
 
 
+
+	// Write your code here
     private currentPlatform!: Phaser.GameObjects.Rectangle;
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
     private currentAnimation: string = "Idle";
-	// Write your code here
 	private platforms!: Phaser.GameObjects.Group;
     private platformBuffer: number = 20; // Número de plataformas de buffer por delante y por detrás del jugador
     public enemies!: Phaser.GameObjects.Group; // Grupo de enemigos
+    private platformCount: number = 0; // Contador de plataformas creadas
+    private CannonCountDistance:number = 30;
 
 	create() {
 
@@ -209,6 +208,16 @@ createParticles() {
 
             previousPlatformX = platformX;
 
+            this.platformCount++;
+
+            // Agregar un prefab de tipo Cannon cada 30 plataformas
+            if (this.platformCount % this.CannonCountDistance === 0) {
+                const cannonX = platformX;
+                const cannonY = platformY - platformHeight - 100; // Ajustar la posición del Cannon
+                const cannon = new Cannon(this, cannonX, cannonY);
+                this.add.existing(cannon);
+            }
+
         }
     }
 
@@ -290,8 +299,19 @@ createParticles() {
                 this.platforms.add(platform);
 
                 maxPlatformX = platformX;
+                this.platformCount++;
+
+                // Agregar un prefab de tipo Cannon cada 30 plataformas
+                if (this.platformCount % this.CannonCountDistance === 0) {
+                    const cannonX = platformX;
+                    const cannonY = platformY - platformHeight - 100; // Ajustar la posición del Cannon
+                    const cannon = new Cannon(this, cannonX, cannonY);
+                    this.add.existing(cannon);
+                }
             }
         }
+
+
 
         // Destruir plataformas que están fuera del buffer
         this.platforms.getChildren().forEach((platform) => {

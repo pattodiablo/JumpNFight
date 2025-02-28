@@ -12,6 +12,11 @@
                 "key": "bg2"
             },
             {
+                "url": "assets/BulletIcon.png",
+                "type": "image",
+                "key": "BulletIcon"
+            },
+            {
                 "url": "assets/Cannon.png",
                 "type": "image",
                 "key": "Cannon"
@@ -47,6 +52,16 @@
                 "key": "JumpBtn"
             },
             {
+                "url": "assets/LaserIcon.png",
+                "type": "image",
+                "key": "LaserIcon"
+            },
+            {
+                "url": "assets/MissileIcon.png",
+                "type": "image",
+                "key": "MissileIcon"
+            },
+            {
                 "url": "assets/particleImage.png",
                 "type": "image",
                 "key": "particleImage"
@@ -65,6 +80,16 @@
                 "url": "assets/SpineAnimations/Player/Player.atlas",
                 "type": "spineAtlas",
                 "key": "Player-atlas"
+            },
+            {
+                "url": "assets/ShieldIcon.png",
+                "type": "image",
+                "key": "ShieldIcon"
+            },
+            {
+                "url": "assets/UpgradeBtn.png",
+                "type": "image",
+                "key": "UpgradeBtn"
             }
         ]
     },

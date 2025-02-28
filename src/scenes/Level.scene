@@ -42,17 +42,6 @@
             "originY": 0,
             "width": 1920,
             "height": 1080
-        },
-        {
-            "prefabId": "356f33bb-aa57-4e3d-a4a0-7cd36dd54b04",
-            "id": "566defad-b4cc-4626-8605-7251effb3541",
-            "unlock": [
-                "x",
-                "y"
-            ],
-            "label": "cannon",
-            "x": -146,
-            "y": -883
         }
     ],
     "plainObjects": [],
