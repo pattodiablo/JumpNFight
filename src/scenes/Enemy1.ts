@@ -218,7 +218,8 @@ export default class Enemy1 extends SpineGameObject {
 		// Manejar la colisión entre el láser y el jugador
 
     // Agregar un efecto de "camera shake"
-
+	const gameUI = this.scene.scene.get('GameUI') as any;
+	gameUI.updateLevelBar(-10);
 
 
 		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {

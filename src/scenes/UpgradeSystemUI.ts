@@ -57,22 +57,35 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	private upgrade1: Upgrade;
 	private upgrade2: Upgrade;
 	private upgrade3: Upgrade;
-	public PlayerSpeed: Array<any> = [200,"ShieldIcon","Player", 0,"PlayerSpeed","add"];
-	public fallMultiplier: Array<any> = [0.5,"ShieldIcon","Player", 0,"fallMultiplier","add"];
-	public JumpVelocity: Array<any> = [100,"ShieldIcon","Player", 0,"JumpVelocity","add"];
-	public lastShotTime: Array<any> = [100,"ShieldIcon","Player", 0,"lastShotTime","add"];
-	public shotInterval: Array<any> = [40,"ShieldIcon","Laser", 0,"shotInterval","add"];
-	public laserColor: Array<any> = [1,"LaserIcon","Laser", 0,"laserColor","add"];
-	public laserSpeed: Array<any> = [100,"LaserIcon","Laser", 0,"laserSpeed","add"];
-	public laserDuration: Array<any> = [100,"LaserIcon","Laser", 0,"laserDuration","add"];
-	public collectedParticles: Array<any> = [500,"ShieldIcon","Player", 0,"collectedParticles","add"];
-	public CannonVelo: Array<any> = [1000,"MissileIcon","Cannon", 0,"CannonVelo","add"];
+	public PlayerSpeed: Array<any> = [200,"RunningIcon","Player", 0,"PlayerSpeed","add","Player speed"];
+	public fallMultiplier: Array<any> = [0.5,"ShieldIcon","Player", 0,"fallMultiplier","add","Gravity when fall"];
+	public JumpVelocity: Array<any> = [100,"ShieldIcon","Player", 0,"JumpVelocity","add","Jump speed"];
+	public lastShotTime: Array<any> = [100,"ShieldIcon","Player", 0,"lastShotTime","add", "Last shot time"];
+	public shotInterval: Array<any> = [40,"ShieldIcon","Laser", 0,"shotInterval","add", "Shot interval"];
+	public laserColor: Array<any> = [1,"LaserIcon","Laser", 0,"laserColor","add", "laser color"];
+	public laserSpeed: Array<any> = [100,"LaserIcon","Laser", 0,"laserSpeed","add", "laser speed"];
+	public laserDuration: Array<any> = [100,"LaserIcon","Laser", 0,"laserDuration","add", "Laser duration"];
+	public collectedParticles: Array<any> = [500,"ShieldIcon","Player", 0,"collectedParticles","add", "Collected Particles"];
+	public CannonVelo: Array<any> = [1000,"MissileIcon","Cannon", 0,"CannonVelo","add", "Initial fire speed"];
 	public upgrades: Array<any> = [this.PlayerSpeed, this.fallMultiplier, this.JumpVelocity, this.lastShotTime, this.shotInterval, this.laserColor, this.laserSpeed, this.laserDuration, this.collectedParticles, this.CannonVelo];
 	public background!: Phaser.GameObjects.Rectangle;
+	public AvailableUpgrades: Array<any> = [...this.upgrades];
 
 	/* START-USER-CODE */
+create(){
+	this.alpha = 0;
 
-	create() {
+
+}
+	createUpgradeWindow() {
+		this.AvailableUpgrades = [...this.upgrades];
+
+		this.upgrade1.getRandomUpgrade(this.AvailableUpgrades);
+		this.upgrade2.getRandomUpgrade(this.AvailableUpgrades);
+		this.upgrade3.getRandomUpgrade(this.AvailableUpgrades);
+
+		this.alpha = 1;
+
 		this.scene.scene.pause('Level');
 		this.upgrade1.visible = true;
 		this.upgrade2.visible = true;			
@@ -232,8 +245,8 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.upgrades.forEach(upgrade => {
 
 			if(upgrade[4]==upgradeType.randomUpgrade[4]){
-				
-							
+
+
 				if (upgrade[4] == upgradeType.randomUpgrade[4]) {
 					if (upgradeType.randomUpgrade[2] == "Player") {
 						switch (upgradeType.randomUpgrade[5]) {
@@ -292,10 +305,13 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 
 	}
 
+
+
 	closeUpgradeSystem() {
         this.scene.scene.resume('Level');
 		this.background.destroy(); // Destruir el rectángulo
-        this.destroy(); // Destruir el contenedor UpgradeSystemUI
+		this.alpha = 0; // Ocultar el contenedor UpgradeSystemUI
+	//	this.destroy(); // Destruir el contenedor UpgradeSystemUI
     }
 
 	/* END-USER-CODE */

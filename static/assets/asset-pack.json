@@ -22,6 +22,11 @@
                 "key": "Cannon"
             },
             {
+                "url": "assets/CoreIcon.png",
+                "type": "image",
+                "key": "CoreIcon"
+            },
+            {
                 "url": "assets/SpineAnimations/Enemy1/EnemyV1.json",
                 "type": "spineJson",
                 "key": "EnemyV1"
@@ -80,6 +85,11 @@
                 "url": "assets/SpineAnimations/Player/Player.atlas",
                 "type": "spineAtlas",
                 "key": "Player-atlas"
+            },
+            {
+                "url": "assets/RunningIcon.png",
+                "type": "image",
+                "key": "RunningIcon"
             },
             {
                 "url": "assets/ShieldIcon.png",
