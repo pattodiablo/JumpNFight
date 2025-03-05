@@ -65,7 +65,7 @@ export default class Upgrade extends Phaser.GameObjects.Container {
 		if(upgrades != undefined){
 			this.randomUpgrade = Phaser.Math.RND.pick(upgrades);
 			this.upgradeIcon.setTexture(this.randomUpgrade[1] as string);
-			this.upgradeType.text = this.randomUpgrade[2] as string;
+			this.upgradeType.text = this.randomUpgrade[4] as string;
 			let LevelNumber = this.randomUpgrade[3] as number;
 			LevelNumber++;
 			this.levelNumber.text = LevelNumber.toString();

@@ -57,17 +57,16 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	private upgrade1: Upgrade;
 	private upgrade2: Upgrade;
 	private upgrade3: Upgrade;
-	public PlayerSpeed: Array<any> = [100,"ShieldIcon","Player", 0];
-	public fallMultiplier: Array<any> = [0.5,"ShieldIcon","Player", 0];
-	public JumpVelocity: Array<any> = [100,"ShieldIcon","Player", 0];
-	public lastShotTime: Array<any> = [100,"ShieldIcon","Player", 0];
-	public shotInterval: Array<any> = [40,"ShieldIcon","Laser", 0];
-	public laserColor: Array<any> = [1,"LaserIcon","Laser", 0];
-	public laserSpeed: Array<any> = [100,"LaserIcon","Laser", 0,"laserSpeed"];
-	public laserDuration: Array<any> = [100,"LaserIcon","Laser", 0];
-	public collectedParticles: Array<any> = [500,"ShieldIcon","Player", 0,];
-	public CannonVelo: Array<any> = [1000,"MissileIcon","Cannon", 0];
-	
+	public PlayerSpeed: Array<any> = [200,"ShieldIcon","Player", 0,"PlayerSpeed","add"];
+	public fallMultiplier: Array<any> = [0.5,"ShieldIcon","Player", 0,"fallMultiplier","add"];
+	public JumpVelocity: Array<any> = [100,"ShieldIcon","Player", 0,"JumpVelocity","add"];
+	public lastShotTime: Array<any> = [100,"ShieldIcon","Player", 0,"lastShotTime","add"];
+	public shotInterval: Array<any> = [40,"ShieldIcon","Laser", 0,"shotInterval","add"];
+	public laserColor: Array<any> = [1,"LaserIcon","Laser", 0,"laserColor","add"];
+	public laserSpeed: Array<any> = [100,"LaserIcon","Laser", 0,"laserSpeed","add"];
+	public laserDuration: Array<any> = [100,"LaserIcon","Laser", 0,"laserDuration","add"];
+	public collectedParticles: Array<any> = [500,"ShieldIcon","Player", 0,"collectedParticles","add"];
+	public CannonVelo: Array<any> = [1000,"MissileIcon","Cannon", 0,"CannonVelo","add"];
 	public upgrades: Array<any> = [this.PlayerSpeed, this.fallMultiplier, this.JumpVelocity, this.lastShotTime, this.shotInterval, this.laserColor, this.laserSpeed, this.laserDuration, this.collectedParticles, this.CannonVelo];
 	public background!: Phaser.GameObjects.Rectangle;
 
@@ -92,7 +91,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
         this.background.setOrigin(0.5, 0.5)
 		//this.add(this.background);
 		this.background.setDepth(-11);
-		console.log(this.background.parentContainer);
+
 
 		this.btn1.scaleX = 0.4;
         this.btn1.scaleY = 0.4;
@@ -219,16 +218,77 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 
           this.handleUpgradeClick(upgrade);
 		  this.closeUpgradeSystem();
-			
 
-		 
+
+
         });
     }
 
 	handleUpgradeClick(upgrade: Upgrade) {
+		const upgradeType = upgrade;
+		const currentLevel = this.scene.scene.get('Level') as any;
+		const propertyName = upgradeType.randomUpgrade[4];
 
-		console.log(upgrade.randomUpgrade);
+		this.upgrades.forEach(upgrade => {
 
+			if(upgrade[4]==upgradeType.randomUpgrade[4]){
+				
+							
+				if (upgrade[4] == upgradeType.randomUpgrade[4]) {
+					if (upgradeType.randomUpgrade[2] == "Player") {
+						switch (upgradeType.randomUpgrade[5]) {
+							case "add":
+								currentLevel.player[propertyName] += upgradeType.randomUpgrade[0];
+								break;
+							case "substract":
+								currentLevel.player[propertyName] -= upgradeType.randomUpgrade[0];
+								break;
+							case "multiply":
+								currentLevel.player[propertyName] *= upgradeType.randomUpgrade[0];
+								break;
+							case "divide":
+								currentLevel.player[propertyName] /= upgradeType.randomUpgrade[0];
+								break;
+						}
+						console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
+					} else if (upgradeType.randomUpgrade[2] == "Laser") {
+						switch (upgradeType.randomUpgrade[5]) {
+							case "add":
+								currentLevel.player[propertyName] += upgradeType.randomUpgrade[0];
+								break;
+							case "substract":
+								currentLevel.player[propertyName] -= upgradeType.randomUpgrade[0];
+								break;
+							case "multiply":
+								currentLevel.player[propertyName] *= upgradeType.randomUpgrade[0];
+								break;
+							case "divide":
+								currentLevel.player[propertyName] /= upgradeType.randomUpgrade[0];
+								break;
+						}
+						console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
+					} else if (upgradeType.randomUpgrade[2] == "Cannon") {
+						switch (upgradeType.randomUpgrade[5]) {
+							case "add":
+								currentLevel.player[propertyName] += upgradeType.randomUpgrade[0];
+								break;
+							case "substract":
+								currentLevel.player[propertyName] -= upgradeType.randomUpgrade[0];
+								break;
+							case "multiply":
+								currentLevel.player[propertyName] *= upgradeType.randomUpgrade[0];
+								break;
+							case "divide":
+								currentLevel.player[propertyName] /= upgradeType.randomUpgrade[0];
+								break;
+						}
+						console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
+					}
+				}
+
+
+			}
+		});
 
 	}
 
