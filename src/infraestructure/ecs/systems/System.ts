@@ -1,21 +1,17 @@
 import { Query, IWorld, Component, defineQuery, enterQuery, exitQuery } from "bitecs";
-import { IGameObject } from "~/domain/models";
-import { Scene } from "~/infraestructure/phaser/game/models/Scene";
-
-export interface ISystem {
-    enter(object: IGameObject): void;
-    update(object: IGameObject): void;
-    exit(object: IGameObject): void;
-}
+import { IScene, IGameObject } from "@domain/models";
+import { ISystem } from "./ISystem";
 
 export abstract class System implements ISystem {
-    protected _scene: Scene;
+    protected _scene: IScene;
+    protected _world: IWorld;
     private _query: Query<IWorld>;
     private _enterQuery: Query<IWorld>;
     private _exitQuery: Query<IWorld>;
 
-    constructor(scene: Scene, components: Component[]) {
+    constructor(scene: IScene, world: IWorld, components: Component[]) {
         this._scene = scene;
+        this._world = world;
         this._query = defineQuery(components);
         this._enterQuery = enterQuery(this._query);
         this._exitQuery = exitQuery(this._query);
@@ -28,7 +24,7 @@ export abstract class System implements ISystem {
     }
     
     private processEntities = (query: Query<IWorld>, callback: (object: IGameObject) => void): void => {
-        const entities = query(this._scene.world);
+        const entities = query(this._world);
         for (let i = 0; i < entities.length; i++) {
             const id: number = entities[i];
             const gameObject = this._scene.getGameObject(id);

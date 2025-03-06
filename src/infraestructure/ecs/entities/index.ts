@@ -1,2 +1,1 @@
-export * from "./Entity";
-export * from "./IEntity";
+export { Entity } from "./Entity";

@@ -1,5 +1,6 @@
-export * from "./ColorComponentData";
-export * from "./SizeComponentData";
-export * from "./Vector2ComponentData";
-export * from "./Vector3ComponentData";
-export * from "./IntegerComponentData";
+export { FloatComponentData } from "./FloatComponentData";
+export { SizeComponentData } from "./SizeComponentData";
+export { Vector2ComponentData } from "./Vector2ComponentData";
+export { Vector3ComponentData } from "./Vector3ComponentData";
+export { IntegerComponentData } from "./IntegerComponentData";
+export { AccelerationComponentData } from "./AccelerationComponentData";

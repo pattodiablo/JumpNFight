@@ -1,31 +1,46 @@
-import { IGameObject, Shape } from "@domain/models";
-import ShapeRender from "~/infraestructure/phaser/game/adapters/ShapeRender";
-import { Scene } from "@infra/phaser/game/models/Scene";
-import { PositionComponent, SizeComponent, ColorComponent } from "@ecs/components";
+import { IWorld } from "bitecs";
+
+import { Shape }                from "@domain/types";
+import { ShapeTypes }           from "@domain/enums";
+import { IGameObject, IScene }  from "@domain/models";
+import { RenderControllerBase } from "@domain/controllers";
+
+import 
+{
+    currentPosition,
+    size,
+    color,
+    currentPositionProxy,
+    sizeProxy,
+    colorProxy,
+
+} from "@ecs/components/instances";
+
 import { System } from "./System";
-import { FloatProxy, SizeProxy, Vector3Proxy } from "../components/proxies";
 
 export class ShapeRenderSystem extends System {
 
-    constructor(scene: Scene) {
-        super(scene, [PositionComponent, SizeComponent, ColorComponent]);
+    constructor(scene: IScene, world: IWorld) {
+        super(scene, world, [currentPosition, size, color]);
     }
     
     public enter(object: IGameObject): void {
-        const renderShape = object.getComponent(ShapeRender);
-        if (!renderShape) return;
-
-        const origin = new Vector3Proxy(PositionComponent, object.id);
-        const size = new SizeProxy(SizeComponent, object.id);
-        const color = new FloatProxy(ColorComponent, object.id);
+        console.log("ShapeRenderSystem: enter");
+        const shapeRenderController = object.getController(RenderControllerBase);
+        console.log(shapeRenderController);
+        if (shapeRenderController === undefined) return;
+        console
+        currentPositionProxy.entityId = object.uniqueId;
+        sizeProxy.entityId = object.uniqueId;
+        colorProxy.entityId = object.uniqueId;
 
         const shape: Shape = {
-            position: origin.vector2,
-            size: size.value,
-            color: color.value
+            type: ShapeTypes.ELLIPSE,
+            size: sizeProxy.value,
+            color: {name: "Red", number: colorProxy.value},
         };
 
-        renderShape.render(this._scene, shape);
+        shapeRenderController.render(this._scene, shape);
     }
 
     public update(object: IGameObject): void {

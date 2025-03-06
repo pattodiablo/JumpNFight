@@ -7,6 +7,10 @@ import { SpinePlugin } from "@esotericsoftware/spine-phaser";
 import { SpineGameObjectBoundsProvider } from "@esotericsoftware/spine-phaser";
 import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
+import { PhaserScene } from "~/presentation/phaser/models/PhaserScene";
+import { IGameObject } from "~/core/domain/models/IGameObject";
+
+import { BulletBuilder as ProjectileBuilder } from "~/presentation/phaser/builders";
 /* END-USER-IMPORTS */
 
 export default class PlayerPrefab extends SpineGameObject {
@@ -55,6 +59,16 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	
 	create(){
+		const bullet: IGameObject = new ProjectileBuilder(this.scene as PhaserScene)
+		.setOrigin({ x: 0, y: 0 })
+		.setColor(Phaser.Display.Color.HexStringToColor("0000FF").color)
+		.setSize({ width: 100, height: 20 })
+		.setAcceleration({ magnitude: 8000, initialSpeed: 1000 })
+		.setTarget({ x: 20, y: -100 })
+		.hasGravity(true)
+		.build();
+
+		(this.scene as PhaserScene).addGameObject(bullet);
 
 		this.factor = this.scene.scale.height / this.scene.scale.width;
 		this.flipX = true; // Flip horizontal
@@ -147,39 +161,60 @@ export default class PlayerPrefab extends SpineGameObject {
 	}
 
 	shootLaser(enemy: Phaser.GameObjects.Sprite) {
-		const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
-		const laser = this.scene.add.ellipse(this.x, this.y, 200, 30, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
-		laser.setDepth(-1);
-		this.scene.physics.add.existing(laser);
-		const laserBody = laser.body as Phaser.Physics.Arcade.Body;
-		laserBody.setAllowGravity(false);
+		// const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
+		// const laser = this.scene.add.ellipse(this.x, this.y, 200, 30, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
+		// laser.setDepth(-1);
+		// this.scene.physics.add.existing(laser);
+		// const laserBody = laser.body as Phaser.Physics.Arcade.Body;
+		// laserBody.setAllowGravity(false);
 
-		// Calcular la dirección del láser hacia el jugador
-		const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-		const velocityX = Math.cos(angle) * this.laserSpeed;
-		const velocityY = Math.sin(angle) * this.laserSpeed;
-		laserBody.setVelocity(velocityX, velocityY);
-		laser.rotation = angle;
-		// Establecer la duración del láser
-		laser.lifespan = this.laserDuration;
-		this.scene.time.addEvent({
-			delay: this.laserDuration,
-			callback: () => {
-				laser.destroy();
-			}
-		});
+		// // Calcular la dirección del láser hacia el jugador
+		// const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+		// const velocityX = Math.cos(angle) * this.laserSpeed;
+		// const velocityY = Math.sin(angle) * this.laserSpeed;
+		// laserBody.setVelocity(velocityX, velocityY);
+		// laser.rotation = angle;
+		// // Establecer la duración del láser
+		// laser.lifespan = this.laserDuration;
+		// this.scene.time.addEvent({
+		// 	delay: this.laserDuration,
+		// 	callback: () => {
+		// 		laser.destroy();
+		// 	}
+		// });
 
-		const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
+		// const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
 
-		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
+		// enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
 
-			if((enemy as any).IsNearPlayer){
-				this.scene.physics.add.overlap(laser, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
-			}
-		});
+		// 	if((enemy as any).IsNearPlayer){
+		// 		this.scene.physics.add.overlap(laser, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+		// 	}
+		// });
 		  // Agregar colisión entre el láser y el jugador
 
+		const offset = 200;
 
+		const bullet: IGameObject = new ProjectileBuilder(this.scene as PhaserScene)
+			.setOrigin({ x:this.x - offset, y:this.y})
+			.setColor(Phaser.Display.Color.HexStringToColor("F100FF").color)
+			.setSize({ width: 100, height: 20 })
+			.setAcceleration({ magnitude: 8000, initialSpeed: 1000 })
+			.setTarget({ x: enemy.x, y: enemy.y })
+			.hasGravity(true)
+			.build();
+
+		// const misile: IGameObject = new ProjectileBuilder(this.scene as Scene)
+		// 	.setOrigin(new Vector2(this.x, this.y - offset))
+		// 	.setColor(Phaser.Display.Color.HexStringToColor("00FF00").color)
+		// 	.setSize(new Size(150, 100))
+		// 	.setAcceleration(1000)
+		// 	.setTarget(new Vector2(this.x + 100, this.y - 1000))
+		// 	.hasGravity(true)
+		// 	.build();
+
+		(this.scene as PhaserScene).addGameObject(bullet);
+		// (this.scene as Scene).addGameObject(misile);
 	}
 
 	handleLaserCollision(laser: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {

@@ -1,32 +1,26 @@
-import { addComponent, ComponentType, IWorld } from "bitecs";
-import { IEntity } from "@infra/ecs/entities/IEntity";
+import { addComponent, ComponentType, ISchema, IWorld } from "bitecs";
+import IEntity from "./IEntity";
 
 export class Entity implements IEntity {
-    private _id: number;
-    private _world: IWorld;
+    private readonly _id: number;
+    private readonly _world: IWorld;
 
     constructor(id: number, world: IWorld) {
         this._id = id;
         this._world = world;
     }
 
-    public get id(): number {
-        return this._id;
-    }
-
-    public get world(): IWorld {
-        return this._world;
-    }
-    
-    public addComponent(component: ComponentType<any>): void {
+    addComponent<T extends ISchema>(component: ComponentType<T>): void {
         addComponent(this._world, component, this._id);
     }
 
-    public addComponents(): void {
-        // Nothing by now
+    public get uniqueId(): number {
+        return this._id;
     }
 
-    public initComponents(): void {
-        // nothing by now
+    public addComponentsRecursively(): void {
+    }
+
+    public initializeAllComponents(): void {
     }
 }

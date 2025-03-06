@@ -1,23 +1,25 @@
-import Physic from "~/infraestructure/phaser/game/adapters/Physic";
-import { Scene } from "~/infraestructure/phaser/game/models/Scene";
-import { GravityComponent } from "../components";
-import { BooleanProxy } from "../components/proxies";
+import { IWorld } from "bitecs";
+
+import { IGameObject, IScene }  from "@domain/models";
+import { PhysicControllerBase } from "@domain/controllers";
+
+import { hasGravity, hasGravityProxy } from "@ecs/components/instances";
+
 import { System } from "./System";
-import { IGameObject } from "~/domain/models";
 
 export class GravitySystem extends System {
 
-    constructor(scene: Scene) {
-        super(scene, [GravityComponent]);
+    constructor(scene: IScene, world: IWorld) {
+        super(scene, world, [hasGravity]);
     }
     
     public enter(object: IGameObject): void {
-        const physic = object.getComponent(Physic);
-        if (!physic) return;
+        const physicController = object.getController(PhysicControllerBase);
+        if (!physicController) return;
 
-        const hasGravity = new BooleanProxy(GravityComponent, object.id);
+        hasGravityProxy.entityId = object.uniqueId;
 
-        physic.activateGravity(hasGravity.value);
+        physicController.enableGravity(hasGravityProxy.value);
     }
 
     public update(object: IGameObject): void {

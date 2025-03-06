@@ -1,57 +1,117 @@
 src
-├─ application
 ├─ components
 │  ├─ Behaviors.components
 │  └─ StartAnimationComp.ts
-├─ domain
-│  ├─ models
-│  │  ├─ EntityData.ts
-│  │  ├─ GameObject.ts
-│  │  ├─ MovableEntity.ts
-│  │  └─ types
-│  │     └─ Shape.ts
-│  ├─ services
-│  │  └─ MovementUtil.ts
-│  └─ value-objects
-│     ├─ Size.ts
-│     ├─ Transform.ts
-│     ├─ Vector2.ts
-│     └─ Vector3.ts
+├─ core
+│  ├─ application
+│  └─ domain
+│     ├─ controllers
+│     │  ├─ index.ts
+│     │  ├─ PhysicControllerBase.ts
+│     │  ├─ RenderControllerBase.ts
+│     │  └─ TransformControllerBase.ts
+│     ├─ enums
+│     │  ├─ index.ts
+│     │  └─ ShapeTypes.ts
+│     ├─ index.ts
+│     ├─ models
+│     │  ├─ IController.ts
+│     │  ├─ IGameObject.ts
+│     │  ├─ index.ts
+│     │  └─ IScene.ts
+│     ├─ services
+│     │  ├─ index.ts
+│     │  ├─ MovementUtil.ts
+│     │  ├─ Vector2Utils.ts
+│     │  └─ Vector3Utils.ts
+│     └─ types
+│        ├─ Acceleration.ts
+│        ├─ Color.ts
+│        ├─ index.ts
+│        ├─ Shape.ts
+│        ├─ Size.ts
+│        ├─ Transform.ts
+│        ├─ Vector2.ts
+│        └─ Vector3.ts
 ├─ index.html
 ├─ index.ts
 ├─ infraestructure
 │  ├─ ecs
 │  │  ├─ components
-│  │  │  ├─ MovementComponents.ts
-│  │  │  ├─ NavigationComponents.ts
-│  │  │  ├─ RenderComponents.ts
-│  │  │  └─ TransformComponents.ts
-│  │  ├─ decorators
-│  │  │  ├─ BaseDecorators.ts
-│  │  │  ├─ EntityDecorator.ts
-│  │  │  ├─ MovementDecorators.ts
-│  │  │  ├─ NavigationDecorators.ts
-│  │  │  ├─ RenderDecorators.ts
-│  │  │  └─ TransformDecorators.ts
+│  │  │  ├─ decorators
+│  │  │  │  ├─ base
+│  │  │  │  │  ├─ AccelerationDecorator.ts
+│  │  │  │  │  ├─ BooleanDecorator.ts
+│  │  │  │  │  ├─ EntityDecorator.ts
+│  │  │  │  │  ├─ FloatDecorator.ts
+│  │  │  │  │  ├─ index.ts
+│  │  │  │  │  ├─ SizeDecorator.ts
+│  │  │  │  │  ├─ Vector2Decorator.ts
+│  │  │  │  │  └─ Vector3Decorator.ts
+│  │  │  │  └─ index.ts
+│  │  │  ├─ index.ts
+│  │  │  └─ proxies
+│  │  │     ├─ AccelerationProxy.ts
+│  │  │     ├─ BooleanProxy.ts
+│  │  │     ├─ ComponentProxy.ts
+│  │  │     ├─ FloatProxy.ts
+│  │  │     ├─ IComponentProxy.ts
+│  │  │     ├─ index.ts
+│  │  │     ├─ SizeProxy.ts
+│  │  │     ├─ Vector2Proxy.ts
+│  │  │     └─ Vector3Proxy.ts
 │  │  ├─ entities
 │  │  │  ├─ Entity.ts
-│  │  │  └─ IEntity.ts
+│  │  │  ├─ IEntity.ts
+│  │  │  └─ index.ts
+│  │  ├─ index.ts
 │  │  ├─ systems
-│  │  │  └─ MovementSystem.ts
+│  │  │  ├─ AccerationSystem.ts
+│  │  │  ├─ DirectionSystem.ts
+│  │  │  ├─ GravitySystem.ts
+│  │  │  ├─ index.ts
+│  │  │  ├─ ISystem.ts
+│  │  │  ├─ NavigationSystem.ts
+│  │  │  ├─ ShapeRenderSystem.ts
+│  │  │  ├─ System.ts
+│  │  │  ├─ TransformSystem.ts
+│  │  │  └─ VelocitySystem.ts
 │  │  └─ value-objects
-│  │     ├─ ComponentData.ts
-│  │     └─ Schemas.ts
+│  │     ├─ component-data
+│  │     │  ├─ AccelerationComponentData.ts
+│  │     │  ├─ FloatComponentData.ts
+│  │     │  ├─ index.ts
+│  │     │  ├─ IntegerComponentData.ts
+│  │     │  ├─ SizeComponentData.ts
+│  │     │  ├─ Vector2ComponentData.ts
+│  │     │  └─ Vector3ComponentData.ts
+│  │     ├─ index.ts
+│  │     └─ schemas
+│  │        ├─ AccelerationSchema.ts
+│  │        ├─ FloatSchema.ts
+│  │        ├─ index.ts
+│  │        ├─ IntegerSchema.ts
+│  │        ├─ SizeSchema.ts
+│  │        ├─ Vector2Schema.ts
+│  │        └─ Vector3Schema.ts
+│  └─ index.ts
+├─ presentation
+│  ├─ index.ts
 │  └─ phaser
-│     └─ game
-│        ├─ behaviours
-│        │  ├─ Movement.ts
-│        │  └─ ShapeRender.ts
-│        ├─ builders
-│        │  ├─ BulletBuilder.ts
-│        │  └─ ObjectBuilder.ts
-│        └─ models
-│           ├─ GameObject.ts
-│           └─ Scene.ts
+│     ├─ builders
+│     │  ├─ BulletBuilder.ts
+│     │  ├─ index.ts
+│     │  └─ ObjectBuilder.ts
+│     ├─ controllers
+│     │  ├─ index.ts
+│     │  ├─ PhysicController.ts
+│     │  ├─ ShapeRenderController.ts
+│     │  └─ TransformController.ts
+│     ├─ index.ts
+│     └─ models
+│        ├─ index.ts
+│        ├─ PhaserGameObject.ts
+│        └─ PhaserScene.ts
 └─ scenes
    ├─ CollectableParticle.scene
    ├─ CollectableParticle.ts

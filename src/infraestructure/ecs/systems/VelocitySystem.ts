@@ -1,29 +1,38 @@
+import { IWorld } from "bitecs";
+
+import { IGameObject, IScene } from "@domain/models";
 import { MovementUtil } from "@domain/services";
-import { PositionComponent, TargetComponent, SpeedComponent } from "@ecs/components";
-import { Scene } from "~/infraestructure/phaser/game/models/Scene";
-import { FloatProxy, Vector2Proxy, Vector3Proxy } from "../components/proxies";
-import Physic from "~/infraestructure/phaser/game/adapters/Physic";
+import { PhysicControllerBase } from "@domain/controllers";
+
+import {
+
+    direction,
+    speed,
+    directionProxy,
+    speedProxy,
+
+} from "@ecs/components/instances";
+
 import { System } from "./System";
-import { IGameObject } from "~/domain/models";
 
 export class VelocitySystem extends System {
 
-    constructor(scene: Scene) {
-        super(scene, [PositionComponent, SpeedComponent, TargetComponent]);
+    constructor(scene: IScene, world: IWorld) {
+        super(scene, world, [speed, direction]);
     }
     
     public enter(object: IGameObject): void {
-        const physic = object.getComponent(Physic);
+        const physic = object.getController(PhysicControllerBase);
         if (!physic) return;
 
-        const origin = new Vector3Proxy(PositionComponent, object.id);
-        const target = new Vector2Proxy(TargetComponent, object.id);
-        const speed = new FloatProxy(SpeedComponent, object.id)
+        speedProxy.entityId = object.uniqueId;
+        directionProxy.entityId = object.uniqueId;
 
-        const direction = MovementUtil.calculateDirection(origin.vector2, target.vector);
-        const velocity = MovementUtil.calculateVelocity(direction, speed.value);
+        const velocity = MovementUtil.calculateVelocity(
+            directionProxy.vector, speedProxy.value
+        );
 
-        physic.setVelocity(velocity);
+        physic.velocity = velocity;
     }
 
     public update(object: IGameObject): void {
@@ -32,4 +41,3 @@ export class VelocitySystem extends System {
     public exit(object: IGameObject): void {
     }
 }
-

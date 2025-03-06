@@ -52,12 +52,13 @@ module.exports = {
         extensions: [".tsx", ".ts", ".js"],
         alias: {
             "~": path.resolve(__dirname, "src"),
-            "@domain": path.resolve(__dirname, "src/domain"),
-            "@infra": path.resolve(__dirname, "src/infraestructure"),
+            "@core": path.resolve(__dirname, "src/core"),
+            "@domain": path.resolve(__dirname, "src/core/domain"),
+            "@application": path.resolve(__dirname, "src/core/application"),
+            "@presentation": path.resolve(__dirname, "src/presentation"),
+            "@infraestructure": path.resolve(__dirname, "src/infraestructure"),
             "@ecs": path.resolve(__dirname, "src/infraestructure/ecs"),
-            "@game": path.resolve(__dirname, "src/infraestructure/phaser/game"),
-            "@scenes": path.resolve(__dirname, "src/scenes"),
-        }
+        },
     },
     devServer: {
         historyApiFallback: true,

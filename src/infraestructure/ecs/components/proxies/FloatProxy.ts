@@ -1,26 +1,19 @@
 import { ComponentType } from "bitecs";
-import { FloatSchema } from "../../value-objects";
+import { FloatSchema } from "@ecs/value-objects/schemas";
 import { ComponentProxy } from "./ComponentProxy";
 
 export class FloatProxy extends ComponentProxy<FloatSchema> {
 
-    constructor(component: ComponentType<FloatSchema>, id: number) {
+    constructor(component: ComponentType<FloatSchema>);
+    constructor(component: ComponentType<FloatSchema>, id?: number) {
         super(component, id);
     }
 
-    //#region Getters
-    
     public get value(): number {
-        return this.component.value[this.id];
+        return this._component.value[this.entityId];
     }
 
-    //#endregion Getters
-
-    //#region Setters
-
-    public set(value: number) {
-        this.component.value[this.id] = value;
+    public set value(value: number) {
+        this._component.value[this.entityId] = value;
     }
-
-    //#endregion Setters
 }

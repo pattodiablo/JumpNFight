@@ -1,10 +1,8 @@
-// ECS
-import { ComponentType, IWorld } from "bitecs";
+import { ComponentType, ISchema } from "bitecs";
 
-export interface IEntity {
-    addComponent(component: ComponentType<any>): void;
-    addComponents(): void;
-    initComponents(): void;
-    get id(): number;
-    get world(): IWorld;
+export default interface IEntity {
+    readonly uniqueId: number;
+    addComponent<T extends ISchema>(component: ComponentType<T>): void;
+    addComponentsRecursively(): void;
+    initializeAllComponents(): void;
 }

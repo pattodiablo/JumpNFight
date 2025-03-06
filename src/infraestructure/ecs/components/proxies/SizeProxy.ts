@@ -1,40 +1,37 @@
-import { ComponentType } from "bitecs";
-import { Size, Vector2 } from "~/domain/value-objects";
-import { SizeSchema } from "../../value-objects";
+import { Size, Vector2 } from "@domain/types";
 import { ComponentProxy } from "./ComponentProxy";
+import { SizeSchema } from "@ecs/value-objects/schemas";
+import { size } from "@ecs/components/instances";
 
 export class SizeProxy extends ComponentProxy<SizeSchema> {
 
-    constructor(component: ComponentType<SizeSchema>, id: number) {
-        super(component, id);
+    constructor();
+    constructor(id?: number | undefined) {
+        super(size, id);
     }
 
-    //#region Getters
     public get width(): number {
-        return this.component.width[this.id];
+        return this._component.width[this.entityId];
     }
 
     public get height(): number {
-        return this.component.height[this.id];
+        return this._component.height[this.entityId];
     }
 
     public get value(): Size {
-        return new Size(this.width, this.height);
+        return {width:this.width, height:this.height};
     }
 
-    //#endregion Getters
-    //#region Setters
     public set width(value: number) {
-        this.component.width[this.id] = value;
+        this._component.width[this.entityId] = value;
     }
 
     public set height(value: number) {
-        this.component.height[this.id] = value;
+        this._component.height[this.entityId] = value;
     }
 
     public set value(value: Vector2) {
-        this.component.width[this.id] = value.x;
-        this.component.height[this.id] = value.y;
+        this._component.width[this.entityId] = value.x;
+        this._component.height[this.entityId] = value.y;
     }
-
 }
