@@ -4,6 +4,7 @@ import {
 
     AccelerationSchema,
     FloatSchema,
+    IndexSchema,
     IntegerSchema,
     SizeSchema,
     Vector2Schema,
@@ -15,6 +16,7 @@ import {
 
     AccelerationComponentData,
     FloatComponentData,
+    IndexComponentData,
     IntegerComponentData,
     SizeComponentData,
     Vector2ComponentData,
@@ -69,3 +71,7 @@ export const rotation
 export const scale        
     : ComponentType<Vector2Schema>      
     = defineComponent(Vector2ComponentData)
+
+export const textureId
+    : ComponentType<IndexSchema>
+    = defineComponent(IndexComponentData)

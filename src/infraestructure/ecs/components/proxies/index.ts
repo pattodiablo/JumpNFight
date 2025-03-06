@@ -6,3 +6,4 @@ export { IComponentProxy } from "./IComponentProxy";
 export { ComponentProxy } from "./ComponentProxy";
 export { SizeProxy } from "./SizeProxy";
 export { AccelerationProxy } from "./AccelerationProxy";
+export { IndexProxy } from "./IndexProxy";

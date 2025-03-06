@@ -9,8 +9,8 @@ import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser"
 /* START-USER-IMPORTS */
 import { PhaserScene } from "~/presentation/phaser/models/PhaserScene";
 import { IGameObject } from "~/core/domain/models/IGameObject";
+import { ColoredBulletBuilder, TexturedBulletBuilder } from "~/presentation/phaser/builders";
 
-import { BulletBuilder as ProjectileBuilder } from "~/presentation/phaser/builders";
 /* END-USER-IMPORTS */
 
 export default class PlayerPrefab extends SpineGameObject {
@@ -59,7 +59,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	
 	create(){
-		const bullet: IGameObject = new ProjectileBuilder(this.scene as PhaserScene)
+		const bullet: IGameObject = new ColoredBulletBuilder(this.scene as PhaserScene)
 		.setOrigin({ x: 0, y: 0 })
 		.setColor(Phaser.Display.Color.HexStringToColor("0000FF").color)
 		.setSize({ width: 100, height: 20 })
@@ -195,12 +195,21 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		const offset = 200;
 
-		const bullet: IGameObject = new ProjectileBuilder(this.scene as PhaserScene)
-			.setOrigin({ x:this.x - offset, y:this.y})
+		const bullet: IGameObject = new ColoredBulletBuilder(this.scene as PhaserScene)
+			.setOrigin({ x:this.x, y:this.y })
 			.setColor(Phaser.Display.Color.HexStringToColor("F100FF").color)
-			.setSize({ width: 100, height: 20 })
-			.setAcceleration({ magnitude: 8000, initialSpeed: 1000 })
-			.setTarget({ x: enemy.x, y: enemy.y })
+			.setSize({ width: 200, height: 20 })
+			.setAcceleration({ magnitude: 9000, initialSpeed: 1000 })
+			.setTarget({ x:enemy.x, y:enemy.y })
+			.hasGravity(true)
+			.build();
+
+		const bullet2: IGameObject = new TexturedBulletBuilder(this.scene as PhaserScene)
+			.setOrigin({ x:this.x, y:this.y })
+			.setTextureKey("missile")
+			.setSize({ width: 100, height: 100 })
+			.setAcceleration({ magnitude: 8000, initialSpeed: 0 })
+			.setTarget({ x:enemy.x, y:enemy.y })
 			.hasGravity(true)
 			.build();
 
@@ -214,6 +223,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		// 	.build();
 
 		(this.scene as PhaserScene).addGameObject(bullet);
+		(this.scene as PhaserScene).addGameObject(bullet2);
 		// (this.scene as Scene).addGameObject(misile);
 	}
 

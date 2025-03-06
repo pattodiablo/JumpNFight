@@ -12,6 +12,11 @@
                 "key": "bg2"
             },
             {
+                "url": "assets/missileV1.png",
+                "type": "image",
+                "key": "missile"
+            },
+            {
                 "url": "assets/SpineAnimations/Enemy1/EnemyV1.json",
                 "type": "spineJson",
                 "key": "EnemyV1"

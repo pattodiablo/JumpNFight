@@ -1,10 +1,11 @@
 import { Vector2 } from "@domain/types";
 import { TransformControllerBase } from "@domain/controllers";
-import { PhaserGameObject } from "../models";
+import { IGameObject } from "~/core/domain";
 
-export class TransformController extends TransformControllerBase<PhaserGameObject> {
+export class TransformController<T extends IGameObject & Phaser.GameObjects.Components.Transform>
+ extends TransformControllerBase<T> {
 
-    constructor(name: string, gameObject: PhaserGameObject) {
+    constructor(name: string, gameObject: T) {
         super(name, gameObject);
     }
 

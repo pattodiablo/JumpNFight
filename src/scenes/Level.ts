@@ -20,6 +20,7 @@ import
     GravitySystem,
     NavigationSystem,
     ShapeRenderSystem,
+    TextureRenderSystem,
     TransformSystem,
 
 } from "@ecs/systems";
@@ -70,11 +71,12 @@ export default class Level extends PhaserScene {
 
     // Systems
     private _transform: TransformSystem = new TransformSystem(this, this.world);
-    private _render: ShapeRenderSystem = new ShapeRenderSystem(this, this.world);
+    private _shapeRender: ShapeRenderSystem = new ShapeRenderSystem(this, this.world);
     private _calculateDirection: DirectionSystem = new DirectionSystem(this, this.world);
     private _applyGravity: GravitySystem = new GravitySystem(this, this.world);
     private _navigation: NavigationSystem = new NavigationSystem(this, this.world);
     private _setAcceleration: AccelerationSystem = new AccelerationSystem(this, this.world);
+    private _textureRender: TextureRenderSystem = new TextureRenderSystem(this, this.world);
 
 	create() {
 		this.editorCreate();
@@ -129,7 +131,6 @@ export default class Level extends PhaserScene {
 		this.createFloor();
 		this.createPlatforms();
         this.createEnemies();
-
 
 	}
 
@@ -250,7 +251,8 @@ createParticles() {
         this._setAcceleration.execute();
         this._calculateDirection.execute();
         this._applyGravity.execute();
-        this._render.execute();
+        this._shapeRender.execute();
+        this._textureRender.execute();
 
 		//console.log(this.input.x);
 	 // 	this.player.updatePlayer(delta);

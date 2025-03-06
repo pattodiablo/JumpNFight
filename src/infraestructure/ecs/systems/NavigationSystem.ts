@@ -24,7 +24,7 @@ export class NavigationSystem extends System {
     }
 
     public enter(object: IGameObject): void {
-        const physic = object.getController(PhysicControllerBase);
+        const physic = object.controllerManager.getController(PhysicControllerBase);
         if (!physic) return;
 
         currentPositionProxy.entityId = object.uniqueId;

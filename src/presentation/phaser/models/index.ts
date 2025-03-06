@@ -1,2 +1,2 @@
-export { PhaserGameObject } from "./PhaserGameObject";
+export { Graphic, Sprite } from "./PhaserGameObject";
 export { PhaserScene } from "./PhaserScene";

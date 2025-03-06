@@ -5,6 +5,7 @@ import {
     
     BooleanDecorator,
     FloatDecorator,
+    IndexDecorator,
     Vector2Decorator,
     Vector3Decorator,
 
@@ -16,6 +17,7 @@ import {
     currentPosition,
     direction,
     hasGravity,
+    textureId,
     previousPosition,
     rotation,
     scale,
@@ -99,10 +101,18 @@ export class RotationDecorator extends FloatDecorator {
     }
 }
 
-export class ScaleComponentDecorator extends Vector2Decorator {
+export class ScaleDecorator extends Vector2Decorator {
     constructor(entity: IEntity);
     constructor(entity: IEntity, value: Vector2);
     constructor(entity: IEntity, value?: Vector2) {
         super(entity, scale, value);
+    }
+}
+
+export class TextureIdDecorator extends IndexDecorator {
+    constructor(entity: IEntity);
+    constructor(entity: IEntity, value: number);
+    constructor(entity: IEntity, value?: number) {
+        super(entity, textureId , value);
     }
 }

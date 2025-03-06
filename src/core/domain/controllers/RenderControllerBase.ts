@@ -1,7 +1,7 @@
-import { Shape } from "~/core/domain/types";
 import { IController } from "../models/IController";
 import { IScene } from "../models/IScene";
 import { IGameObject } from "../models";
+import { Renderable } from "../types";
 
 export abstract class RenderControllerBase<T extends IGameObject> 
 implements IController<T> {
@@ -13,5 +13,5 @@ implements IController<T> {
         this.gameObject = gameObject;
     }
 
-    public abstract render(scene: IScene, shape: Shape): void;
+    public abstract render(scene: IScene, renderable: Renderable): void;
 }

@@ -2,10 +2,12 @@ import { IController } from "./IController";
 
 export interface IGameObject {
     readonly uniqueId: number;
+    readonly controllerManager: IControllerManager;
+}
+
+export interface IControllerManager {
     readonly controllers: Map<abstract new (...args: any[]) => IController<IGameObject>, IController<IGameObject>>;
     
-    getPhysicBody<T>(): T;
-
     addController<T extends IController<IGameObject>>
         (component: T): void;
 

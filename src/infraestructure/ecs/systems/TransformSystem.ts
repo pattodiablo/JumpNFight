@@ -23,7 +23,7 @@ export class TransformSystem extends System {
     }
 
     public enter(object: IGameObject): void {
-        const transfromController = object.getController(TransformControllerBase);
+        const transfromController = object.controllerManager.getController(TransformControllerBase);
         if (transfromController === undefined) return;
 
         currentPositionProxy.entityId = object.uniqueId;
@@ -32,7 +32,7 @@ export class TransformSystem extends System {
     }
 
     public update(object: IGameObject): void {
-        const transfromController = object.getController(TransformControllerBase);
+        const transfromController = object.controllerManager.getController(TransformControllerBase);
         if (transfromController === undefined) return;
 
         previousPositionProxy.entityId = object.uniqueId;

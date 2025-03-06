@@ -14,7 +14,7 @@ export class GravitySystem extends System {
     }
     
     public enter(object: IGameObject): void {
-        const physicController = object.getController(PhysicControllerBase);
+        const physicController = object.controllerManager.getController(PhysicControllerBase);
         if (!physicController) return;
 
         hasGravityProxy.entityId = object.uniqueId;

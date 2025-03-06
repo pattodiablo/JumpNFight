@@ -22,7 +22,7 @@ export class AccelerationSystem extends System {
     }
 
     public enter(object: IGameObject): void {
-        const physicController = object.getController(PhysicControllerBase);
+        const physicController = object.controllerManager.getController(PhysicControllerBase);
         if (physicController === undefined) return;
 
         directionProxy.entityId = object.uniqueId;

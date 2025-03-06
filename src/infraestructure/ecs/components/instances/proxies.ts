@@ -10,6 +10,7 @@ import {
     speed,
     target,
     velocity,
+    textureId,
 
 } from "./components";
 
@@ -21,6 +22,7 @@ import {
     BooleanProxy,
     SizeProxy,
     AccelerationProxy,
+    IndexProxy,
     
 } from "../proxies";
 
@@ -59,3 +61,6 @@ export const rotationProxy
 
 export const scaleProxy 
     = new Vector2Proxy(scale);
+
+export const textureIdProxy
+    = new IndexProxy(textureId);

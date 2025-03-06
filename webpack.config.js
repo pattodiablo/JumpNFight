@@ -37,8 +37,8 @@ module.exports = {
                 exclude: /node_modules/,
             },
             {
-                test: /\.json/,
-                type: "asset/resource",
+                test: /\.json$/,
+                type: "json",
                 exclude: /node_modules/,
             },
             {
