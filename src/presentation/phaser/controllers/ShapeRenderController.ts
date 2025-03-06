@@ -9,7 +9,6 @@ export class ShapeRenderController extends RenderControllerBase<PhaserGameObject
     }
 
     public render(scene: PhaserScene, shape: Shape): void {
-        console.log("RENDERING...");
         this.gameObject.clear();
         this.gameObject.fillStyle(shape.color.number, 1);
         this.gameObject.fillEllipse(0, 0, shape.size.width, shape.size.height);

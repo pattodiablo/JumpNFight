@@ -25,11 +25,9 @@ export class ShapeRenderSystem extends System {
     }
     
     public enter(object: IGameObject): void {
-        console.log("ShapeRenderSystem: enter");
         const shapeRenderController = object.getController(RenderControllerBase);
-        console.log(shapeRenderController);
         if (shapeRenderController === undefined) return;
-        console
+        
         currentPositionProxy.entityId = object.uniqueId;
         sizeProxy.entityId = object.uniqueId;
         colorProxy.entityId = object.uniqueId;
