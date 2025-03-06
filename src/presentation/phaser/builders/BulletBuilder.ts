@@ -92,7 +92,7 @@ export class ColoredBulletBuilder extends BaseProjectileBuilder {
         return this;
     }
 
-    public build(): IGameObject {
+    public build(): Graphic {
         this.addComponents();
         const object = new Graphic(this._entity.uniqueId, this._scene);
         this.addControllers(object);
@@ -114,7 +114,7 @@ export class ColoredBulletBuilder extends BaseProjectileBuilder {
 }
 
 import { TextureIdDecorator } from "@ecs/components/decorators";
-import { TextureRenderController } from "../controllers/ShapeRenderController";
+import { TextureRenderController } from "../controllers/TextureRenderController";
 import { AssetUtils } from "../../../../static/AssetUtils";
 
 export class TexturedBulletBuilder extends BaseProjectileBuilder {
@@ -125,7 +125,7 @@ export class TexturedBulletBuilder extends BaseProjectileBuilder {
         return this;
     }
 
-    public build(): IGameObject {
+    public build(): Sprite {
         this.addComponents();
         const object = new Sprite(this._entity.uniqueId, this._scene);
         this.addControllers(object);
@@ -139,7 +139,7 @@ export class TexturedBulletBuilder extends BaseProjectileBuilder {
         if (textureId === undefined) {
             throw new Error(`Texture key ${this._textureId} not found`);
         }
-        
+
         this._entity = new TextureIdDecorator(this._entity, textureId);
         this._entity.addComponentsRecursively();
         this._entity.initializeAllComponents();

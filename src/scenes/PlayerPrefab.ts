@@ -10,6 +10,7 @@ import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser"
 import { PhaserScene } from "~/presentation/phaser/models/PhaserScene";
 import { IGameObject } from "~/core/domain/models/IGameObject";
 import { ColoredBulletBuilder, TexturedBulletBuilder } from "~/presentation/phaser/builders";
+import { Graphic, Sprite } from "~/presentation";
 
 /* END-USER-IMPORTS */
 
@@ -174,7 +175,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		// const velocityY = Math.sin(angle) * this.laserSpeed;
 		// laserBody.setVelocity(velocityX, velocityY);
 		// laser.rotation = angle;
-		// // Establecer la duración del láser
+		// Establecer la duración del láser
 		// laser.lifespan = this.laserDuration;
 		// this.scene.time.addEvent({
 		// 	delay: this.laserDuration,
@@ -191,11 +192,9 @@ export default class PlayerPrefab extends SpineGameObject {
 		// 		this.scene.physics.add.overlap(laser, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 		// 	}
 		// });
-		  // Agregar colisión entre el láser y el jugador
+		//   Agregar colisión entre el láser y el jugador
 
-		const offset = 200;
-
-		const bullet: IGameObject = new ColoredBulletBuilder(this.scene as PhaserScene)
+		const bullet: Graphic = new ColoredBulletBuilder(this.scene as PhaserScene)
 			.setOrigin({ x:this.x, y:this.y })
 			.setColor(Phaser.Display.Color.HexStringToColor("F100FF").color)
 			.setSize({ width: 200, height: 20 })
@@ -203,15 +202,31 @@ export default class PlayerPrefab extends SpineGameObject {
 			.setTarget({ x:enemy.x, y:enemy.y })
 			.hasGravity(true)
 			.build();
-
-		const bullet2: IGameObject = new TexturedBulletBuilder(this.scene as PhaserScene)
+		
+		const bullet2: Sprite = new TexturedBulletBuilder(this.scene as PhaserScene)
 			.setOrigin({ x:this.x, y:this.y })
 			.setTextureKey("missile")
-			.setSize({ width: 100, height: 100 })
-			.setAcceleration({ magnitude: 8000, initialSpeed: 0 })
+			.setSize({ width: 300, height: 150 })
+			.setAcceleration({ magnitude: 3000, initialSpeed: -100 })
 			.setTarget({ x:enemy.x, y:enemy.y })
 			.hasGravity(true)
 			.build();
+
+		this.scene.time.addEvent({
+			delay: 10000,
+			callback: () => {
+				bullet2.destroy();
+			}
+		});
+
+		const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
+
+		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
+
+			if((enemy as any).IsNearPlayer){
+				this.scene.physics.add.overlap(bullet2, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+			}
+		});
 
 		// const misile: IGameObject = new ProjectileBuilder(this.scene as Scene)
 		// 	.setOrigin(new Vector2(this.x, this.y - offset))
