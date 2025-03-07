@@ -1,0 +1,12 @@
+{
+    "folder-color.pathColors": [
+        {
+            "folderPath": "JumpNFight\\src\\infraestructure\\ecs\\components\\proxies\\",
+            "color": "foldercolorizer.color_660066"
+        },
+        {
+            "folderPath": "JumpNFight\\src\\",
+            "color": "foldercolorizer.color_006633"
+        }
+    ]
+}

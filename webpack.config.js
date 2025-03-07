@@ -37,8 +37,8 @@ module.exports = {
                 exclude: /node_modules/,
             },
             {
-                test: /\.json/,
-                type: "asset/resource",
+                test: /\.json$/,
+                type: "json",
                 exclude: /node_modules/,
             },
             {
@@ -50,6 +50,15 @@ module.exports = {
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
+        alias: {
+            "~": path.resolve(__dirname, "src"),
+            "@core": path.resolve(__dirname, "src/core"),
+            "@domain": path.resolve(__dirname, "src/core/domain"),
+            "@application": path.resolve(__dirname, "src/core/application"),
+            "@presentation": path.resolve(__dirname, "src/presentation"),
+            "@infraestructure": path.resolve(__dirname, "src/infraestructure"),
+            "@ecs": path.resolve(__dirname, "src/infraestructure/ecs"),
+        },
     },
     devServer: {
         historyApiFallback: true,
