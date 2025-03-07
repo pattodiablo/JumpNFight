@@ -21,7 +21,7 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 	}
 
 	public attractionRange: number = 600;
-	public attractionSpeed: number = 1600;
+	public attractionSpeed: number = 2000;
 	public player!: Phaser.GameObjects.Sprite ;
 	public isDestroyed: boolean = false;
 	public MaxKillTime: number = 10000;

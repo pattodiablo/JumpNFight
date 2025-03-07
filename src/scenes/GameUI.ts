@@ -60,7 +60,7 @@ export default class GameUI extends Phaser.Scene {
 	public levelBar!: Phaser.GameObjects.Rectangle;
 	public updateBar!: Phaser.GameObjects.Rectangle;
 	public strokeBar!: Phaser.GameObjects.Graphics;
-	private level: number = 1;
+	public level: number = 1;
 	private LevelReach: number = 40;
 	private collectedParticles: number = 0;
 	// Write your code here
@@ -80,7 +80,7 @@ export default class GameUI extends Phaser.Scene {
         strokeBar.lineStyle(6, 0x000000); // Grosor de 2 píxeles y color blanco
 		strokeBar.strokeRoundedRect(this.scale.width / 4-2, 13, this.scale.width / 2+4, 35, 10); // Dibuja el rectángulo con bordes redondeados
 
-		const levelText = this.add.text(this.scale.width / 4+10, 30, 'Energy', {
+		const levelText = this.add.text(this.scale.width / 4+10, 30, 'Level 1', {
 			fontFamily: 'Bahiana',
             fontSize: '24px',
             color: '#e1e1e1',
@@ -168,7 +168,7 @@ console.log(this.collectedParticles);
             this.collectedParticles = 0; // Reiniciar el conteo de partículas recolectadas
 
             // Actualizar el texto del nivel
-            this.levelText.setText(`Energy x ${this.level}`);
+            this.levelText.setText(`Level ${this.level}`);
 
             // Reiniciar la barra de progreso
             this.updateBar.scaleX = 0;

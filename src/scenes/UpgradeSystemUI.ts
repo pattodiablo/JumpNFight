@@ -61,7 +61,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	public fallMultiplier: Array<any> = [0.5,"ShieldIcon","Player", 0,"fallMultiplier","add","Gravity when fall"];
 	public JumpVelocity: Array<any> = [100,"ShieldIcon","Player", 0,"JumpVelocity","add","Jump speed"];
 	public lastShotTime: Array<any> = [100,"ShieldIcon","Player", 0,"lastShotTime","add", "Last shot time"];
-	public shotInterval: Array<any> = [40,"ShieldIcon","Laser", 0,"shotInterval","add", "Shot interval"];
+	public shotInterval: Array<any> = [8,"LaserIcon","Laser", 0,"shotInterval","substract", "Shot interval"];
 	public laserColor: Array<any> = [1,"LaserIcon","Laser", 0,"laserColor","add", "laser color"];
 	public laserSpeed: Array<any> = [100,"LaserIcon","Laser", 0,"laserSpeed","add", "laser speed"];
 	public laserDuration: Array<any> = [100,"LaserIcon","Laser", 0,"laserDuration","add", "Laser duration"];
