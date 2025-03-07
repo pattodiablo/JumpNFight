@@ -6,7 +6,19 @@ import Preload from "./scenes/Preload";
 import { SpinePlugin } from "@esotericsoftware/spine-phaser";
 // @ts-ignore
 import { PokiPlugin } from '@poki/phaser-3';
-
+import WebFont from 'webfontloader';
+WebFont.load({
+    google: {
+      families: ["Bahiana"],
+    },
+    active: () => {
+      console.log('Fonts have been loaded');
+    },
+    inactive: () => {
+      console.log('Fonts could not be loaded');
+    },
+    timeout: 2000 // Set the timeout to two seconds
+  });
 var renderer: string;
 
 class Boot extends Phaser.Scene {
@@ -111,13 +123,14 @@ class CustomGameImpl extends Phaser.Game implements CustomGame {
 window.addEventListener('load', function () {
     
     const game = new CustomGameImpl({
-          /*
+ 
         width: window.innerWidth,
 		height:  window.innerHeight,
-        */
-        width: 1031,
-		height: 580,
-    
+ 
+           /*
+        width: 1920,
+		height: 1080,
+           */
 		backgroundColor: "#e2e2e2",
 		scale: {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
@@ -139,7 +152,7 @@ window.addEventListener('load', function () {
                     // This will always request a commercialBreak when gameplay starts,
                     // set to false to disable this behaviour (recommended to have true,
                     // see Poki SDK docs for more details).
-                    autoCommercialBreak: true
+                    autoCommercialBreak: false
                   }
                 }
               ],
@@ -182,3 +195,4 @@ window.addEventListener('load', function () {
     }
    
 });
+

@@ -5,6 +5,7 @@ import PlayerPrefab from "./PlayerPrefab";
 /* START OF COMPILED CODE */
 
 import WeveanaJoystick from "./WeveanaJoystick";
+import UpgradeSystemUI from "./UpgradeSystemUI";
 /* START-USER-IMPORTS */
 
 /* END-USER-IMPORTS */
@@ -39,9 +40,14 @@ export default class GameUI extends Phaser.Scene {
 		fullScreenBtn.scaleX = 0.5;
 		fullScreenBtn.scaleY = 0.5;
 
+		// UpgradeSystem
+		const upgradeSystem = new UpgradeSystemUI(this, 0, 0);
+		this.add.existing(upgradeSystem);
+
 		this.weveanaJoystick = weveanaJoystick;
 		this.jumpBtn = jumpBtn;
 		this.fullScreenBtn = fullScreenBtn;
+		this.upgradeSystem = upgradeSystem;
 
 		this.events.emit("scene-awake");
 	}
@@ -49,13 +55,14 @@ export default class GameUI extends Phaser.Scene {
 	public weveanaJoystick!: WeveanaJoystick;
 	public jumpBtn!: Phaser.GameObjects.Image;
 	public fullScreenBtn!: Phaser.GameObjects.Image;
+	public upgradeSystem!: UpgradeSystemUI;
 
 	/* START-USER-CODE */
 	public levelText!: Phaser.GameObjects.Text;
 	public levelBar!: Phaser.GameObjects.Rectangle;
 	public updateBar!: Phaser.GameObjects.Rectangle;
 	public strokeBar!: Phaser.GameObjects.Graphics;
-	private level: number = 1;
+	public level: number = 1;
 	private LevelReach: number = 40;
 	private collectedParticles: number = 0;
 	// Write your code here
@@ -74,8 +81,9 @@ export default class GameUI extends Phaser.Scene {
 		const strokeBar = this.add.graphics();
         strokeBar.lineStyle(6, 0x000000); // Grosor de 2 píxeles y color blanco
 		strokeBar.strokeRoundedRect(this.scale.width / 4-2, 13, this.scale.width / 2+4, 35, 10); // Dibuja el rectángulo con bordes redondeados
-		
-		const levelText = this.add.text(this.scale.width / 4+10, 30, 'Lv.1', {
+
+		const levelText = this.add.text(this.scale.width / 4+10, 30, 'Level 1', {
+			fontFamily: 'Bahiana',
             fontSize: '24px',
             color: '#e1e1e1',
             fontStyle: 'bold'
@@ -113,7 +121,7 @@ export default class GameUI extends Phaser.Scene {
 
 		this.jumpBtn.setScale(factor/2);
 		this.weveanaJoystick.setScale(factor/1.5);
-		
+
 
 		this.fullScreenBtn.setInteractive();
 		this.fullScreenBtn.on("pointerdown", () => {
@@ -131,7 +139,7 @@ export default class GameUI extends Phaser.Scene {
 			this.jumpBtn.setVisible(false);
 			this.fullScreenBtn.setVisible(false);
 			}else{
-			
+
 			this.fullScreenBtn.setPosition(this.scale.width-this.scale.width*0.05,this.scale.height-this.scale.height*0.1);
 
 		}
@@ -160,7 +168,7 @@ export default class GameUI extends Phaser.Scene {
 
 	updateLevelBar(collectedParticles: number) {
         this.collectedParticles += collectedParticles;
-	
+console.log(this.collectedParticles);
         // Calcular el progreso actual
         const progress = this.collectedParticles / this.LevelReach;
 
@@ -174,11 +182,14 @@ export default class GameUI extends Phaser.Scene {
             this.collectedParticles = 0; // Reiniciar el conteo de partículas recolectadas
 
             // Actualizar el texto del nivel
-            this.levelText.setText(`Lv.${this.level}`);
+            this.levelText.setText(`Level ${this.level}`);
 
             // Reiniciar la barra de progreso
             this.updateBar.scaleX = 0;
-        }
+        }else if(this.collectedParticles < 0){
+			this.collectedParticles = 0;
+			this.updateBar.scaleX = 0;
+		}
     }
 
 

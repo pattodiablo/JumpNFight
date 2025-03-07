@@ -7,7 +7,6 @@ import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 import { SpinePlugin } from "@esotericsoftware/spine-phaser";
 import { SpineGameObjectBoundsProvider } from "@esotericsoftware/spine-phaser";
 import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser";
-
 /* START-USER-IMPORTS */
 import CollectableParticle from "./CollectableParticle";
 declare global {
@@ -43,10 +42,11 @@ export default class Enemy1 extends SpineGameObject {
 	public laserColor: string = "#ff0000";
 	public lastShotTime: number = 400;
 	public shotInterval: number = 2500;
-	public shootingRadius: number = 1200;
+	public shootingRadius: number = 2000;
 	public IsNearPlayer: boolean = false;
 	public EnemyLife: number = 3;
 	public IsDestroyed: boolean = false;
+	public EnemyDamage: number = 10;
 
 	/* START-USER-CODE */
 	create(){
@@ -60,7 +60,7 @@ export default class Enemy1 extends SpineGameObject {
 		this.animationState.setAnimation(0, "Idle", true);
 
 		    // Generar un factor aleatorio entre 0.5 y 1.5
-			const randomFactor = Phaser.Math.FloatBetween(0.5, 3);
+			const randomFactor = Phaser.Math.FloatBetween(0.5, 6);
 			// Multiplicar la velocidad original del enemigo por el factor aleatorio
 			this.EnemyVelo *= randomFactor;
 
@@ -109,9 +109,9 @@ export default class Enemy1 extends SpineGameObject {
 				}
 
 			// Verificar si el enemigo está a 3000 píxeles a la izquierda de la cámara
-			if (this.x < this.scene.cameras.main.worldView.x - 3000) {
+			if (this.x < this.scene.cameras.main.worldView.x - 13000) {
 				// Reaparecer a 3000 píxeles a la derecha de la cámara
-				this.x = this.scene.cameras.main.worldView.x + this.scene.cameras.main.width + 3000;
+				this.x = this.scene.cameras.main.worldView.x + this.scene.cameras.main.width + 13000;
 			}
 
 			if (this.EnemyLife <= 0 && !this.IsDestroyed) {
@@ -218,7 +218,9 @@ export default class Enemy1 extends SpineGameObject {
 		// Manejar la colisión entre el láser y el jugador
 
     // Agregar un efecto de "camera shake"
-
+	const gameUI = this.scene.scene.get('GameUI') as any;
+	const EnergyLevel = gameUI.level;
+	gameUI.updateLevelBar(-this.EnemyDamage*EnergyLevel);
 
 
 		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {

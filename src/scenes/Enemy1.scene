@@ -105,7 +105,7 @@
             "name": "shootingRadius",
             "label": "shootingRadius",
             "tooltip": "shootingRadius",
-            "defValue": 1200,
+            "defValue": 2000,
             "customDefinition": false,
             "type": {
                 "id": "number"
@@ -139,6 +139,16 @@
             "customDefinition": false,
             "type": {
                 "id": "boolean"
+            }
+        },
+        {
+            "name": "EnemyDamage",
+            "label": "EnemyDamage",
+            "tooltip": "",
+            "defValue": 10,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
             }
         }
     ]

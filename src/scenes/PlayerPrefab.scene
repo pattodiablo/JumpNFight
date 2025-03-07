@@ -25,6 +25,8 @@
             "skinName": "default",
             "bpType": 1,
             "bpAnimation": "Idle",
+            "x": 210,
+            "y": 7,
             "scaleX": 0.5,
             "scaleY": 0.5
         }
@@ -263,6 +265,36 @@
             "label": "collectedParticles",
             "tooltip": "",
             "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "IsRolling",
+            "label": "IsRolling",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "IsFallingAfterCannon",
+            "label": "IsFallingAfterCannon",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "CannonVelo",
+            "label": "CannonVelo",
+            "tooltip": "",
+            "defValue": 8000,
             "customDefinition": false,
             "type": {
                 "id": "number"

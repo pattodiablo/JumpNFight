@@ -5,10 +5,10 @@
 
 import PlayerPrefab from "./PlayerPrefab";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
-
 /* START-USER-IMPORTS */
 import Enemy1 from "./Enemy1";
 import CollectableParticle from "./CollectableParticle";
+import Cannon from "./Cannon";
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
 /* END-USER-IMPORTS */
 
@@ -46,13 +46,17 @@ export default class Level extends Phaser.Scene {
 	/* START-USER-CODE */
 
 
+
+	// Write your code here
     private currentPlatform!: Phaser.GameObjects.Rectangle;
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
     private currentAnimation: string = "Idle";
-	// Write your code here
 	private platforms!: Phaser.GameObjects.Group;
     private platformBuffer: number = 20; // Número de plataformas de buffer por delante y por detrás del jugador
     public enemies!: Phaser.GameObjects.Group; // Grupo de enemigos
+    private platformCount: number = 0; // Contador de plataformas creadas
+    private CannonCountDistance:number = 30;
+    private firtCannonPlaced = false;
 
 	create() {
 
@@ -118,10 +122,10 @@ export default class Level extends Phaser.Scene {
 
         // Parámetros iniciales para la generación de enemigos
         let numEnemies = 1; // Número inicial de enemigos a generar
-        let minEnemyX = -3000; // Posición X mínima para los enemigos
-        let maxEnemyX = 3000; // Posición X máxima para los enemigos
+        let minEnemyX = this.cameras.main.x-5000; // Posición X mínima para los enemigos
+        let maxEnemyX = this.cameras.main.x+5000; // Posición X máxima para los enemigos
         let minEnemyY = this.player.y-900; // Posición Y mínima para los enemigos
-        let maxEnemyY = this.scale.height - 1800; // Posición Y máxima para los enemigos
+        let maxEnemyY = this.scale.height - 2000; // Posición Y máxima para los enemigos
 
         const generateEnemies = () => {
             for (let i = 0; i < numEnemies; i++) {
@@ -135,8 +139,7 @@ export default class Level extends Phaser.Scene {
 
             // Incrementar la dificultad
             numEnemies += 2; // Incrementar el número de enemigos
-            minEnemyX += 2000; // Incrementar la posición X mínima
-            maxEnemyX += 200; // Incrementar la posición X máxima
+       
         };
 
         const checkAndGenerateEnemies = () => {
@@ -204,6 +207,22 @@ createParticles() {
 
             previousPlatformX = platformX;
 
+            this.platformCount++;
+            if (this.platformCount % 5 === 0 && !this.firtCannonPlaced) {
+                this.firtCannonPlaced = true;
+                const cannonX = platformX;
+                const cannonY = platformY - platformHeight - 100; // Ajustar la posición del Cannon
+                const cannon = new Cannon(this, cannonX, cannonY);
+                this.add.existing(cannon);
+            }
+            // Agregar un prefab de tipo Cannon cada 30 plataformas
+            if (this.platformCount % this.CannonCountDistance === 0) {
+                const cannonX = platformX;
+                const cannonY = platformY - platformHeight - 100; // Ajustar la posición del Cannon
+                const cannon = new Cannon(this, cannonX, cannonY);
+                this.add.existing(cannon);
+            }
+
         }
     }
 
@@ -211,7 +230,7 @@ createParticles() {
 
 		// Crea un suelo
 		if (this.add) {
-			const floor = this.add.rectangle(0, this.scale.height-600, this.scale.width, 500, 0x000000);
+			const floor = this.add.rectangle(0, this.scale.height-600, this.scale.width+1300, 500, 0x000000);
 			floor.setOrigin(0.5,0.5);
 			this.physics.add.existing(floor, true);
 			 // Agregar colisión entre el jugador y el suelo
@@ -229,6 +248,10 @@ createParticles() {
         //track de player metros
         this.events.emit("playerMove", this.player.x);
         if (this.player.y > 2000) {
+            const gameUI = this.scene.get('GameUI') as any;
+            const EnergyLevel = gameUI.level;
+            gameUI.updateLevelBar(-25*EnergyLevel);
+
             if (this.currentPlatform) {
                 this.player.x = this.currentPlatform.x;
                 this.player.y = this.currentPlatform.y - 1800;
@@ -242,8 +265,8 @@ createParticles() {
          // Actualizar la posición de bg1 para crear el efecto parallax
          this.bg1.tilePositionX = this.cameras.main.scrollX * 0.01;
          this.bg1.tilePositionY = this.cameras.main.scrollY * 0.05;
-         this.bg1.x = this.cameras.main.scrollX-2000;
-         this.bg1.y = this.cameras.main.scrollY-1300;
+         this.bg1.x = this.cameras.main.scrollX-this.bg1.width/2;
+         this.bg1.y = this.cameras.main.scrollY-this.bg1.height/2;
     }
 
 	updatePlatforms() {
@@ -285,8 +308,20 @@ createParticles() {
                 this.platforms.add(platform);
 
                 maxPlatformX = platformX;
+                this.platformCount++;
+
+               
+                // Agregar un prefab de tipo Cannon cada 30 plataformas
+                if (this.platformCount % this.CannonCountDistance === 0) {
+                    const cannonX = platformX;
+                    const cannonY = platformY - platformHeight - 100; // Ajustar la posición del Cannon
+                    const cannon = new Cannon(this, cannonX, cannonY);
+                    this.add.existing(cannon);
+                }
             }
         }
+
+
 
         // Destruir plataformas que están fuera del buffer
         this.platforms.getChildren().forEach((platform) => {
@@ -345,7 +380,7 @@ createParticles() {
 			const platformWidth = 400;
 			const platformHeight = 400;
 
-			const newPlatform = this.add.rectangle(midX, midY, platformWidth, platformHeight, 0xff0000) as Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
+			const newPlatform = this.add.rectangle(midX, midY, platformWidth, platformHeight, 0x000000) as Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
 			newPlatform.setOrigin(0.5, 0.5);
 			this.physics.add.existing(newPlatform, true);
 
