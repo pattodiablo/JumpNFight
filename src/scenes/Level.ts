@@ -10,10 +10,26 @@ import Enemy1 from "./Enemy1";
 import CollectableParticle from "./CollectableParticle";
 import Cannon from "./Cannon";
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
+
+import { PhaserScene } from "@presentation/phaser/models";
+import 
+{
+
+    DynamicMotionSystem,
+    DirectionSystem,
+    GravitySystem,
+    NavigationSystem,
+    ShapeRenderSystem,
+    TextureRenderSystem,
+    TransformSystem,
+
+} from "@ecs/systems";
+import { AccelerationService } from "~/core/application/services";
+
 /* END-USER-IMPORTS */
 
-export default class Level extends Phaser.Scene {
-    // contador inicializador
+export default class Level extends PhaserScene {
+
 	constructor() {
 		super("Level");
 
@@ -58,11 +74,21 @@ export default class Level extends Phaser.Scene {
     private CannonCountDistance:number = 3;
     private firtCannonPlaced = false;
 
-	create() {
+    // Systems
+    private _transform: TransformSystem = new TransformSystem(this, this.world);
+    private _shapeRender: ShapeRenderSystem = new ShapeRenderSystem(this, this.world);
+    private _calculateDirection: DirectionSystem = new DirectionSystem(this, this.world);
+    private _applyGravity: GravitySystem = new GravitySystem(this, this.world);
+    private _navigation: NavigationSystem = new NavigationSystem(this, this.world);
+    private _setAcceleration: DynamicMotionSystem = new DynamicMotionSystem(this, this.world, new AccelerationService());
+    private _textureRender: TextureRenderSystem = new TextureRenderSystem(this, this.world);
 
+
+	create() {
 		this.editorCreate();
         this.createParticles();
-        const poki = this.plugins.get('poki');
+
+        const poki = this.plugins.get('pokii');
 
         if (poki) {
 
@@ -111,7 +137,6 @@ export default class Level extends Phaser.Scene {
 		this.createFloor();
 		this.createPlatforms();
         this.createEnemies();
-
 
 	}
 
@@ -243,6 +268,14 @@ createParticles() {
 	}
 
 	update(time: number, delta: number): void {
+        this._transform.execute();
+        this._navigation.execute();
+        this._setAcceleration.execute();
+        this._calculateDirection.execute();
+        this._applyGravity.execute();
+        this._shapeRender.execute();
+        this._textureRender.execute();
+
 		//console.log(this.input.x);
 	 // 	this.player.updatePlayer(delta);
         this.updatePlatforms();
