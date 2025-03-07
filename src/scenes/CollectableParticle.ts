@@ -21,10 +21,11 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 	}
 
 	public attractionRange: number = 600;
-	public attractionSpeed: number = 1600;
+	public attractionSpeed: number = 2000;
 	public player!: Phaser.GameObjects.Sprite ;
 	public isDestroyed: boolean = false;
 	public MaxKillTime: number = 10000;
+	public LevelPoins: number = 0;
 
 	/* START-USER-CODE */
 
@@ -38,7 +39,7 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 		body.setImmovable(true);
 		this.player = (this.scene as Phaser.Scene & { player: Phaser.GameObjects.Sprite }).player;
 		this.scene.physics.add.overlap(this, this.player, this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
-		
+
 		// Iniciar el temporizador para la destrucción automática
         this.scene.time.delayedCall(this.MaxKillTime, this.autoDestroy, [], this);
 	}
@@ -66,7 +67,7 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
             }
         } catch (error) {
 			this.destroy();
-          
+
         }
     }
 
