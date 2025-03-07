@@ -72,8 +72,9 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	
 
 	/* START-USER-CODE */
-	public MissileSize: Array<any> = [2,"MissileIcon","Player", 0,"MissileSize","multiply", "Missile size"];
-	public upgrades: Array<any> = [this.PlayerSpeed, this.fallMultiplier, this.JumpVelocity, this.lastShotTime, this.shotInterval, this.laserColor, this.laserSpeed, this.laserDuration, this.collectedParticles, this.CannonVelo,this.MissileSize];	
+	public MissileSize: Array<any> = [10,"MissileIcon","Player", 0,"MissileSize","multiply", "Missile size"];
+	// public upgrades: Array<any> = [this.PlayerSpeed, this.fallMultiplier, this.JumpVelocity, this.lastShotTime, this.shotInterval, this.laserColor, this.laserSpeed, this.laserDuration, this.collectedParticles, this.CannonVelo,this.MissileSize];	
+	public upgrades: Array<any> = [this.MissileSize];	
 	public AvailableUpgrades: Array<any> = [...this.upgrades];
 
 	create(){
