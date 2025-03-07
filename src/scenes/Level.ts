@@ -71,7 +71,7 @@ export default class Level extends PhaserScene {
     private platformBuffer: number = 20; // Número de plataformas de buffer por delante y por detrás del jugador
     public enemies!: Phaser.GameObjects.Group; // Grupo de enemigos
     private platformCount: number = 0; // Contador de plataformas creadas
-    private CannonCountDistance:number = 30;
+    private CannonCountDistance:number = 3;
     private firtCannonPlaced = false;
 
     // Systems

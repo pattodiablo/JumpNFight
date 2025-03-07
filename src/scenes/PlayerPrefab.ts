@@ -60,7 +60,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public CannonVelo: number = 8000;
 
 	/* START-USER-CODE */
-
+	public MissileSize: number = 2;
 	private _graphics: Phaser.GameObjects.Graphics = this.scene.add.graphics();
 
 	create(){
