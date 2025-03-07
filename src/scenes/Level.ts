@@ -228,6 +228,7 @@ createParticles() {
         this.updatePlatforms();
         //track de player metros
         this.events.emit("playerMove", this.player.x);
+        
         if (this.player.y > 2000) {
             if (this.currentPlatform) {
                 this.player.x = this.currentPlatform.x;
