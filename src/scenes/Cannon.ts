@@ -30,14 +30,21 @@ create() {
 	this.scene.physics.add.existing(this);
 	const cannonBody = this.body as Phaser.Physics.Arcade.Body;
 	cannonBody.setCollideWorldBounds(false);
-	cannonBody.setAllowGravity(false);
-	cannonBody.setImmovable(true);
-	cannonBody.setCircle(this.width /3);
+	cannonBody.setAllowGravity(true);
+	cannonBody.setSize(this.texture.source[0].width/2, this.texture.source[0].height);
+	cannonBody.setOffset(this.texture.source[0].width/4, 0);
+
 	this.setDepth(1000);
 
 	const player = (this.scene as Phaser.Scene & { player: Phaser.GameObjects.Sprite }).player;
 	this.scene.physics.add.overlap(this, player, this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
+	const platforms = (this.scene as Phaser.Scene & { platforms: Phaser.GameObjects.Group }).platforms;
+	this.scene.physics.add.collider(this, platforms, this.handleFloorColision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+
+
+}
+handleFloorColision(cannon: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 
 }
 
