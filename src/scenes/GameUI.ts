@@ -38,13 +38,14 @@ export default class GameUI extends Phaser.Scene {
 		fullScreenBtn.scaleX = 0.5;
 		fullScreenBtn.scaleY = 0.5;
 
-		// upgradeBtn
-		const upgradeBtn = new UpgradeSystemUI(this, 0, 0);
-		this.add.existing(upgradeBtn);
+		// UpgradeSystem
+		const upgradeSystem = new UpgradeSystemUI(this, 0, 0);
+		this.add.existing(upgradeSystem);
 
 		this.weveanaJoystick = weveanaJoystick;
 		this.jumpBtn = jumpBtn;
 		this.fullScreenBtn = fullScreenBtn;
+		this.upgradeSystem = upgradeSystem;
 
 		this.events.emit("scene-awake");
 	}
@@ -52,6 +53,7 @@ export default class GameUI extends Phaser.Scene {
 	public weveanaJoystick!: WeveanaJoystick;
 	public jumpBtn!: Phaser.GameObjects.Image;
 	public fullScreenBtn!: Phaser.GameObjects.Image;
+	public upgradeSystem!: UpgradeSystemUI;
 
 	/* START-USER-CODE */
 	public levelText!: Phaser.GameObjects.Text;
@@ -78,7 +80,7 @@ export default class GameUI extends Phaser.Scene {
         strokeBar.lineStyle(6, 0x000000); // Grosor de 2 píxeles y color blanco
 		strokeBar.strokeRoundedRect(this.scale.width / 4-2, 13, this.scale.width / 2+4, 35, 10); // Dibuja el rectángulo con bordes redondeados
 
-		const levelText = this.add.text(this.scale.width / 4+10, 30, 'Lv.1', {
+		const levelText = this.add.text(this.scale.width / 4+10, 30, 'Energy', {
 			fontFamily: 'Bahiana',
             fontSize: '24px',
             color: '#e1e1e1',
@@ -147,12 +149,12 @@ export default class GameUI extends Phaser.Scene {
 		const levelScene = this.scene.get('Level') as Phaser.Scene;
 		levelScene.events.on('particleCollected', this.updateLevelBar, this);
 
-		
+
 	}
 
 	updateLevelBar(collectedParticles: number) {
         this.collectedParticles += collectedParticles;
-
+console.log(this.collectedParticles);
         // Calcular el progreso actual
         const progress = this.collectedParticles / this.LevelReach;
 
@@ -166,11 +168,14 @@ export default class GameUI extends Phaser.Scene {
             this.collectedParticles = 0; // Reiniciar el conteo de partículas recolectadas
 
             // Actualizar el texto del nivel
-            this.levelText.setText(`Lv.${this.level}`);
+            this.levelText.setText(`Energy x ${this.level}`);
 
             // Reiniciar la barra de progreso
             this.updateBar.scaleX = 0;
-        }
+        }else if(this.collectedParticles < 0){
+			this.collectedParticles = 0;
+			this.updateBar.scaleX = 0;
+		}
     }
 
 

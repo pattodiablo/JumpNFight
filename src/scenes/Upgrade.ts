@@ -55,24 +55,34 @@ export default class Upgrade extends Phaser.GameObjects.Container {
 	/* START-USER-CODE */
 
 	create(){
-		this.getRandomUpgrade();
+	//	this.getRandomUpgrade();
 	}
 
-	getRandomUpgrade(){
-		const parentContainer = this.parentContainer as any;
-		const upgrades = parentContainer.upgrades;
-
-		if(upgrades != undefined){
+	getRandomUpgrade(AvailableUpgrades: any) {
+		const MAX_LEVEL = 3;
+		const upgrades = AvailableUpgrades.filter((upgrade: any) => upgrade[3] < MAX_LEVEL);
+	
+		if (upgrades.length > 0) {
 			this.randomUpgrade = Phaser.Math.RND.pick(upgrades);
+			AvailableUpgrades.splice(AvailableUpgrades.indexOf(this.randomUpgrade), 1);
 			this.upgradeIcon.setTexture(this.randomUpgrade[1] as string);
-			this.upgradeType.text = this.randomUpgrade[4] as string;
+			this.upgradeType.text = this.randomUpgrade[6] as string;
 			let LevelNumber = this.randomUpgrade[3] as number;
 			LevelNumber++;
-			this.levelNumber.text = LevelNumber.toString();
+			const gameUI = this.scene.scene.get('GameUI') as any;
+			const originalUpgrade = gameUI.upgradeSystem.upgrades.find((upgrade: any) => upgrade[4] === this.randomUpgrade[4]);
+			if (originalUpgrade) {
+				originalUpgrade[3] = LevelNumber;
+			}
+	
+			if (LevelNumber >= MAX_LEVEL) {
+				this.levelNumber.text = "MAX";
+			} else {
+				this.levelNumber.text = LevelNumber.toString();
+			}
+		} else {
+			console.log("No upgrades available below max level");
 		}
-
-
-
 	}
 	/* END-USER-CODE */
 }

@@ -57,7 +57,8 @@
                 "x",
                 "y"
             ],
-            "label": "upgradeBtn",
+            "label": "UpgradeSystem",
+            "scope": "PUBLIC",
             "x": 0,
             "y": 0
         }

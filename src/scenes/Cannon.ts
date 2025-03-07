@@ -1,6 +1,8 @@
 
 // You can write more code here
 
+import GameUI from "./GameUI";
+
 /* START OF COMPILED CODE */
 
 /* START-USER-IMPORTS */
@@ -42,7 +44,9 @@ create() {
 handlePlayerCollision(cannon: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 
 	if (this.IsActiveCannon){
-	
+		const gameUI = this.scene.scene.get('GameUI') as any;
+		gameUI.upgradeSystem.createUpgradeWindow();
+
 		const playerSprite = player as Phaser.GameObjects.Sprite & { hideAndRoll: (x:number,y:number) => void };
 		playerSprite.hideAndRoll(this.x, this.y);
 		this.IsActiveCannon = false;
