@@ -45,7 +45,7 @@
             "name": "attractionSpeed",
             "label": "attractionSpeed",
             "tooltip": "attractionSpeed",
-            "defValue": 1600,
+            "defValue": 2000,
             "customDefinition": false,
             "type": {
                 "id": "number"
@@ -77,6 +77,16 @@
             "label": "MaxKillTime",
             "tooltip": "",
             "defValue": 10000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "LevelPoins",
+            "label": "Property",
+            "tooltip": "",
+            "defValue": 0,
             "customDefinition": false,
             "type": {
                 "id": "number"

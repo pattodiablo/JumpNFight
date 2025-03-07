@@ -1,0 +1,245 @@
+{
+    "id": "d9728530-f10a-40f1-b764-c71d209254c9",
+    "sceneType": "PREFAB",
+    "settings": {
+        "exportClass": true,
+        "autoImport": true,
+        "preloadMethodName": "",
+        "preloadPackFiles": [],
+        "createMethodName": "",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
+        "borderWidth": 1920,
+        "borderHeight": 1080
+    },
+    "displayList": [
+        {
+            "type": "Container",
+            "id": "7001bd8d-0087-4ff4-8097-965d92863bfa",
+            "label": "container_1",
+            "blendMode": -1,
+            "list": [
+                {
+                    "type": "Image",
+                    "id": "17f3d470-b402-4779-af5c-94f04c491592",
+                    "label": "Btn1",
+                    "scope": "CLASS",
+                    "texture": {
+                        "key": "UpgradeBtn"
+                    },
+                    "x": 517,
+                    "y": 582
+                },
+                {
+                    "type": "Image",
+                    "id": "1d8fcddb-a0ab-4a6a-ac91-796f812ca4de",
+                    "label": "Btn2",
+                    "scope": "CLASS",
+                    "texture": {
+                        "key": "UpgradeBtn"
+                    },
+                    "x": 1017,
+                    "y": 582
+                },
+                {
+                    "type": "Image",
+                    "id": "0b00987f-cf49-416e-8782-8b164032768e",
+                    "label": "Btn3",
+                    "scope": "CLASS",
+                    "texture": {
+                        "key": "UpgradeBtn"
+                    },
+                    "x": 1502,
+                    "y": 582
+                },
+                {
+                    "prefabId": "c1686fb2-8c77-4417-971a-d14fbe8d9aba",
+                    "id": "daa5a129-4c22-4022-850f-b789376cc449",
+                    "unlock": [
+                        "x",
+                        "y"
+                    ],
+                    "label": "upgrade1",
+                    "scope": "CLASS",
+                    "x": 526,
+                    "y": 569
+                },
+                {
+                    "prefabId": "c1686fb2-8c77-4417-971a-d14fbe8d9aba",
+                    "id": "4b8eb3ee-44d8-40e7-9a28-e282803a470e",
+                    "unlock": [
+                        "x",
+                        "y"
+                    ],
+                    "label": "upgrade2",
+                    "scope": "CLASS",
+                    "x": 1017,
+                    "y": 545
+                },
+                {
+                    "prefabId": "c1686fb2-8c77-4417-971a-d14fbe8d9aba",
+                    "id": "53b25531-33d9-45a0-97da-9a0e16b1eb19",
+                    "unlock": [
+                        "x",
+                        "y"
+                    ],
+                    "label": "upgrade3",
+                    "scope": "CLASS",
+                    "x": 1504,
+                    "y": 569
+                }
+            ]
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor - Scene Editor",
+        "url": "https://phaser.io/editor",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    },
+    "prefabProperties": [
+        {
+            "name": "PlayerSpeed",
+            "label": "PlayerSpeed",
+            "tooltip": "PlayerSpeed",
+            "defValue": "[200,\"RunningIcon\",\"Player\", 0,\"PlayerSpeed\",\"add\",\"Player speed\"]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "fallMultiplier",
+            "label": "fallMultiplier",
+            "tooltip": "fallMultiplier",
+            "defValue": "[0.5,\"ShieldIcon\",\"Player\", 0,\"fallMultiplier\",\"add\",\"Gravity when fall\"]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "JumpVelocity",
+            "label": "JumpVelocity",
+            "tooltip": "JumpVelocity",
+            "defValue": "[100,\"ShieldIcon\",\"Player\", 0,\"JumpVelocity\",\"add\",\"Jump speed\"]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "lastShotTime",
+            "label": "lastShotTime",
+            "tooltip": "lastShotTime",
+            "defValue": "[100,\"ShieldIcon\",\"Player\", 0,\"lastShotTime\",\"add\", \"Last shot time\"]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "shotInterval",
+            "label": "shotInterval",
+            "tooltip": "shotInterval",
+            "defValue": "[8,\"LaserIcon\",\"Laser\", 0,\"shotInterval\",\"substract\", \"Shot interval\"]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "laserColor",
+            "label": "laserColor",
+            "tooltip": "laserColor",
+            "defValue": "[1,\"LaserIcon\",\"Laser\", 0,\"laserColor\",\"add\", \"laser color\"]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "laserSpeed",
+            "label": "laserSpeed",
+            "tooltip": "laserSpeed",
+            "defValue": "[100,\"LaserIcon\",\"Laser\", 0,\"laserSpeed\",\"add\", \"laser speed\"]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "laserDuration",
+            "label": "laserDuration",
+            "tooltip": "laserDuration",
+            "defValue": "[100,\"LaserIcon\",\"Laser\", 0,\"laserDuration\",\"add\", \"Laser duration\"]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "collectedParticles",
+            "label": "collectedParticles",
+            "tooltip": "collectedParticles",
+            "defValue": "[500,\"ShieldIcon\",\"Player\", 0,\"collectedParticles\",\"add\", \"Collected Particles\"]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "CannonVelo",
+            "label": "CannonVelo",
+            "tooltip": "CannonVelo",
+            "defValue": "[1000,\"MissileIcon\",\"Cannon\", 0,\"CannonVelo\",\"add\", \"Initial fire speed\"]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "upgrades",
+            "label": "upgrades",
+            "tooltip": "upgrades",
+            "defValue": "[this.PlayerSpeed, this.fallMultiplier, this.JumpVelocity, this.lastShotTime, this.shotInterval, this.laserColor, this.laserSpeed, this.laserDuration, this.collectedParticles, this.CannonVelo]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        },
+        {
+            "name": "background",
+            "label": "background",
+            "tooltip": "background",
+            "defValue": "",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Phaser.GameObjects.Rectangle"
+            }
+        },
+        {
+            "name": "AvailableUpgrades",
+            "label": "AvailableUpgrades",
+            "tooltip": "",
+            "defValue": "[...this.upgrades]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "Array<any>"
+            }
+        }
+    ]
+}

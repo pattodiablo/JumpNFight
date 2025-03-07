@@ -1,0 +1,96 @@
+{
+    "id": "c1686fb2-8c77-4417-971a-d14fbe8d9aba",
+    "sceneType": "PREFAB",
+    "settings": {
+        "exportClass": true,
+        "autoImport": true,
+        "preloadMethodName": "",
+        "preloadPackFiles": [],
+        "createMethodName": "",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
+        "borderWidth": 1920,
+        "borderHeight": 1080
+    },
+    "displayList": [
+        {
+            "type": "Container",
+            "id": "9948ca72-61b1-4a71-bbc3-0282ae794790",
+            "label": "container_1",
+            "blendMode": -1,
+            "list": [
+                {
+                    "type": "Image",
+                    "id": "19210ad7-5753-4f0e-9c61-3bfd823f93b0",
+                    "label": "upgradeIcon",
+                    "scope": "CLASS",
+                    "texture": {
+                        "key": "BulletIcon"
+                    },
+                    "y": -46
+                },
+                {
+                    "type": "Text",
+                    "id": "e1f52308-c972-4812-a39b-e4141e25426c",
+                    "label": "UpgradeType",
+                    "scope": "CLASS",
+                    "y": 72,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "UpgradeType",
+                    "align": "right",
+                    "fontFamily": "Arial",
+                    "fontSize": "30px",
+                    "color": "#fffff"
+                },
+                {
+                    "type": "Text",
+                    "id": "114e5521-ae86-46fe-bfb7-7804e87c1910",
+                    "label": "LevelText",
+                    "x": -16,
+                    "y": 106,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "level",
+                    "align": "right",
+                    "fontFamily": "Arial",
+                    "fontSize": "30px",
+                    "color": "#fffff"
+                },
+                {
+                    "type": "Text",
+                    "id": "1458dd89-7d2e-4d15-9495-b51ede59d3f7",
+                    "label": "LevelNumber",
+                    "scope": "CLASS",
+                    "x": 23,
+                    "y": 106,
+                    "originY": 0.5,
+                    "text": "0",
+                    "align": "right",
+                    "fontFamily": "Arial",
+                    "fontSize": "30px",
+                    "color": "#fffff"
+                }
+            ]
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor - Scene Editor",
+        "url": "https://phaser.io/editor",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    },
+    "prefabProperties": [
+        {
+            "name": "randomUpgrade",
+            "label": "randomUpgrade",
+            "tooltip": "",
+            "defValue": "[]",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "any"
+            }
+        }
+    ]
+}
