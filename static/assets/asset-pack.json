@@ -69,7 +69,7 @@
             {
                 "url": "assets/MissileIcon.png",
                 "type": "image",
-                "key": "MissileIcon"
+                "key": "missile"
             },
             {
                 "url": "assets/particleImage.png",
