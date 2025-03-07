@@ -126,11 +126,9 @@ window.addEventListener('load', function () {
  
         width: window.innerWidth,
 		height:  window.innerHeight,
- 
-           /*
-        width: 1920,
-		height: 1080,
-           */
+        // width: 1920,
+		// height: 1080,
+           
 		backgroundColor: "#e2e2e2",
 		scale: {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
@@ -185,6 +183,11 @@ window.addEventListener('load', function () {
             pixelArt: false, // Habilita el modo de pixel art
             antialias: true, // Desactiva el antialiasing
             roundPixels: true // Redondea las posiciones de los píxeles
+        },
+        //Mejorar rendimiento para otras computadoras limitando los FPS
+        fps: {
+            target: 60, // Configura el objetivo de FPS
+            forceSetTimeOut: true // Fuerza el uso de setTimeout para controlar los FPS
         }
 	});
 

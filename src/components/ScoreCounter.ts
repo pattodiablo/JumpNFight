@@ -15,7 +15,7 @@ export default class ScoreCounter {
     constructor(scene: Phaser.Scene, x: number, y: number) {
         this.text = scene.add.text(x, y, "Metros: 1", {
             fontSize: "30px", 
-            fontFamily: "Arial", 
+            fontFamily: "Bahiana", 
             color: "#000000", 
             fontStyle: "bold", 
         });
