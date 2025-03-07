@@ -55,7 +55,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public CannonVelo: number = 8000;
 
 	/* START-USER-CODE */
-
+	public MissileSize: number = 2;
 
 	create(){
 
