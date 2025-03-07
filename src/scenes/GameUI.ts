@@ -168,7 +168,7 @@ export default class GameUI extends Phaser.Scene {
 
 	updateLevelBar(collectedParticles: number) {
         this.collectedParticles += collectedParticles;
-console.log(this.collectedParticles);
+
         // Calcular el progreso actual
         const progress = this.collectedParticles / this.LevelReach;
 
