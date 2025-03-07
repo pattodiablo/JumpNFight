@@ -22,17 +22,17 @@ export class VelocitySystem extends System {
     }
     
     public enter(object: IGameObject): void {
-        const physic = object.controllerManager.getController(PhysicControllerBase);
+        const physic = object.controllers.get(PhysicControllerBase);
         if (!physic) return;
 
-        speedProxy.entityId = object.uniqueId;
-        directionProxy.entityId = object.uniqueId;
+        speedProxy.entityId = object.id;
+        directionProxy.entityId = object.id;
 
         const velocity = MovementUtil.calculateVelocity(
             directionProxy.vector, speedProxy.value
         );
 
-        physic.velocity = velocity;
+        physic.setVelocity(velocity);
     }
 
     public update(object: IGameObject): void {

@@ -24,11 +24,11 @@ export class ShapeRenderSystem extends System {
     }
     
     public enter(object: IGameObject): void {
-        const shapeRenderController = object.controllerManager.getController(RenderControllerBase);
+        const shapeRenderController = object.controllers.get(RenderControllerBase);
         if (shapeRenderController === undefined) return;
 
-        sizeProxy.entityId = object.uniqueId;
-        colorProxy.entityId = object.uniqueId;
+        sizeProxy.entityId = object.id;
+        colorProxy.entityId = object.id;
 
         const shape = {
             type: ShapeTypes.ELLIPSE,
@@ -53,11 +53,11 @@ export class TextureRenderSystem extends System {
     }
     
     public enter(object: IGameObject): void {
-        const textureRenderController = object.controllerManager.getController(RenderControllerBase);
+        const textureRenderController = object.controllers.get(RenderControllerBase);
         if (textureRenderController === undefined) return;
 
-        sizeProxy.entityId = object.uniqueId;
-        textureIdProxy.entityId = object.uniqueId;
+        sizeProxy.entityId = object.id;
+        textureIdProxy.entityId = object.id;
 
         const texture = {
             size: sizeProxy.value,

@@ -23,17 +23,17 @@ export abstract class System implements ISystem {
         this.processEntities(this._exitQuery, this.exit.bind(this));
     }
     
-    private processEntities = (query: Query<IWorld>, callback: (object: IGameObject) => void): void => {
+    private processEntities(query: Query<IWorld>, callback: (gameObject: IGameObject) => void): void {
         const entities = query(this._world);
         for (let i = 0; i < entities.length; i++) {
             const id: number = entities[i];
             const gameObject = this._scene.getGameObject(id);
-            if (!gameObject) continue;
+            if (gameObject === undefined) continue;
             callback(gameObject);
         }
     };
 
-    public abstract enter(object: IGameObject): void;
-    public abstract update(object: IGameObject): void;
-    public abstract exit(object: IGameObject): void;
+    public enter(gameObject: IGameObject): void {}
+    public update(gameObject: IGameObject): void {}
+    public exit(gameObject: IGameObject): void {}
 }

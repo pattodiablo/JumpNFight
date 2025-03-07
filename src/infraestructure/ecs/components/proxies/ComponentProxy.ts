@@ -1,7 +1,7 @@
 import { ISchema, ComponentType } from "bitecs";
 import { IComponentProxy } from "./IComponentProxy";
 
-export abstract class ComponentProxy<T extends ISchema> implements IComponentProxy<T> {
+export abstract class ComponentProxy<T extends ISchema> implements IComponentProxy {
     protected _component: ComponentType<T>;
     private _id: number;
 
@@ -18,9 +18,5 @@ export abstract class ComponentProxy<T extends ISchema> implements IComponentPro
 
     public set entityId(value: number) {
         this._id = value;
-    }
-
-    public set component(value: ComponentType<T>) {
-        this._component = value;
     }
 }

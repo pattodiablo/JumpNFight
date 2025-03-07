@@ -27,11 +27,11 @@ export class DirectionSystem extends System {
 
     public update(object: IGameObject): void {
 
-        const transfromController = object.controllerManager.getController(TransformControllerBase);
+        const transfromController = object.controllers.get(TransformControllerBase);
         if (transfromController === undefined) return;
 
-        previousPositionProxy.entityId = object.uniqueId;
-        currentPositionProxy.entityId = object.uniqueId;
+        previousPositionProxy.entityId = object.id;
+        currentPositionProxy.entityId = object.id;
 
         const direction = MovementUtil.calculateDirection(
                 previousPositionProxy.vector2, currentPositionProxy.vector2

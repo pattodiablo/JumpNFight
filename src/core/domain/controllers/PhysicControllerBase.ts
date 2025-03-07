@@ -1,8 +1,7 @@
 import { IController, IGameObject } from "@domain/models";
 import { Vector2 } from "@domain/types";
 
-export abstract class PhysicControllerBase<T extends IGameObject>
-implements IController<T> {
+export abstract class PhysicControllerBase<T extends IGameObject> implements IController<T> {
     public readonly name: string;
     public readonly gameObject: T;
 
@@ -11,7 +10,7 @@ implements IController<T> {
         this.gameObject = gameObject;
     }
     
-    public abstract set velocity(vector: Vector2);
-    public abstract set acceleration(vector: Vector2);
+    public abstract setVelocity(velocity: Vector2): void;
+    public abstract setAcceleration(acceleration: Vector2): void;
     public abstract enableGravity(enable: boolean): void;
 }

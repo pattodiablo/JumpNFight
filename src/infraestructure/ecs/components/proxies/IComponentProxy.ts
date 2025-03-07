@@ -1,7 +1,4 @@
-import { ComponentType, ISchema } from "bitecs";
-
-export interface IComponentProxy<T extends ISchema> {
+export interface IComponentProxy {
     get entityId(): number;
     set entityId(value: number);
-    set component(value: ComponentType<T>)
 }

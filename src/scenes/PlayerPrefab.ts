@@ -186,8 +186,8 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		const missile: Sprite = new TexturedBulletBuilder(this.scene as PhaserScene)
 			.setOrigin({ x:this.x, y:this.y })
-			.setTextureKey("missile")
-			.setSize({ width: 300, height: 150 })
+			.setTextureKey("bg1")
+			.setSize({ width: 100, height: 100 })
 			.setAcceleration({ magnitude: 3000, initialSpeed: -100 })
 			.setTarget({ x:enemy.x, y:enemy.y })
 			.hasGravity(true)

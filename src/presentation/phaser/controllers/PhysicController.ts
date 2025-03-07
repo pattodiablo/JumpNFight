@@ -2,8 +2,9 @@ import { Vector2 } from "@domain/types";
 import { PhysicControllerBase } from "@domain/controllers";
 import { IGameObject } from "~/core/domain";
 
-export class PhaserPhysicController<T extends Phaser.GameObjects.GameObject & IGameObject> 
-extends PhysicControllerBase<T> {
+type PhaserGameObject = Phaser.GameObjects.GameObject;
+
+export class PhaserPhysicController<T extends PhaserGameObject & IGameObject> extends PhysicControllerBase<T> {
 
     constructor(name: string, object: T) {
         super(name, object);
@@ -14,11 +15,11 @@ extends PhysicControllerBase<T> {
         return this.gameObject.body as Phaser.Physics.Arcade.Body;
     }
 
-    public set velocity(vector: Vector2) {
+    public setVelocity(vector: Vector2): void {
         this.physicBody.setVelocity(vector.x, vector.y);
     }
 
-    public set acceleration(vector: Vector2) {
+    public setAcceleration(vector: Vector2): void {
         this.physicBody.setAcceleration(vector.x, vector.y);
     }
 

@@ -1,47 +1,39 @@
+import { AccelerationService } from "@application/services";
+import { IGameObject, IScene } from "@domain/models";
+import { AccelerationVector, Vector2 } from "@domain/types";
+import { acceleration, accelerationProxy, direction, directionProxy } from "@ecs/components";
+
 import { IWorld } from "bitecs";
-
-import { IScene, IGameObject }  from "@domain/models";
-import { MovementUtil }         from "@domain/services";
-import { PhysicControllerBase } from "@domain/controllers";
-
-import { 
-
-    direction,
-    acceleration,
-    directionProxy,
-    accelerationProxy,
-
-} from "@ecs/components";
 
 import { System } from "./System";
 
-export class AccelerationSystem extends System {
+export class DynamicMotionSystem extends System {
+    private _accelerationService: AccelerationService;
 
-    constructor(scene: IScene, world: IWorld) {
+    constructor(scene: IScene, world: IWorld, accelerationService: AccelerationService) {
         super(scene, world, [acceleration, direction]);
+        this._accelerationService = accelerationService
     }
 
-    public enter(object: IGameObject): void {
-        const physicController = object.controllerManager.getController(PhysicControllerBase);
-        if (physicController === undefined) return;
-
-        directionProxy.entityId = object.uniqueId;
-        accelerationProxy.entityId = object.uniqueId;
-
-        const velocity 
-            = MovementUtil.calculateVelocity(directionProxy.vector, 
-                accelerationProxy.initialSpeed);
-        const acceleration 
-            = MovementUtil.calculateVelocity(directionProxy.vector,
-                accelerationProxy.magnitude);
-
-        physicController.velocity = velocity;
-        physicController.acceleration = acceleration;
-    }
-
-    public update(object: IGameObject): void {
-    }
-
-    public exit(object: IGameObject): void {
+    public enter(gameObject: IGameObject): void {
+        this._accelerationService.apply(
+            gameObject, dynamicMotionProxy.getAccelerationVector(gameObject.id)
+        );
     }
 }
+
+class DynamicMotionProxy {
+    public getAccelerationVector(entityId: number): AccelerationVector {
+    
+        accelerationProxy.entityId = entityId;
+        directionProxy.entityId = entityId;
+    
+        return {
+            direction: directionProxy.vector,
+            magnitude: accelerationProxy.magnitude,
+            initialSpeed: accelerationProxy.initialSpeed
+        };
+    }
+}
+
+const dynamicMotionProxy = new DynamicMotionProxy();

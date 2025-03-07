@@ -8,8 +8,10 @@ export const Vector2Utils = {
         return magnitude !== 0 ? { x: vector.x / magnitude, y: vector.y / magnitude } : Vector2Utils.zero();
     },
 
-    scale: (vector: Vector2, value: number): Vector2 => {
-        return { x: vector.x * value, y: vector.y * value };
+    scale: (vector: Vector2, scalar: number): Vector2 => {
+        if (Vector2Utils.isZero(vector)) return Vector2Utils.zero();
+        const normalizedVector = Vector2Utils.normalize(vector);
+        return { x: normalizedVector.x * scalar, y: normalizedVector.y * scalar };
     },
 
     multiply: (a: Vector2, b: Vector2): Vector2 => {

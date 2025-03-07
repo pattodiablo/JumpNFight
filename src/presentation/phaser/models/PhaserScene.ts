@@ -12,7 +12,7 @@ export class PhaserScene extends Phaser.Scene implements IScene {
     }
 
     public addGameObject(gameObject: IGameObject): void {
-        this.gameObjects.set(gameObject.uniqueId, gameObject)
+        this.gameObjects.set(gameObject.id, gameObject)
     }
 
     public getGameObject(id: number): IGameObject | undefined {

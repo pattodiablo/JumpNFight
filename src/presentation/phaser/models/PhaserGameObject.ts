@@ -22,7 +22,7 @@ export class ControllerManager implements IControllerManager {
         this.controllers.set(controllerClass, component);
     }
 
-    public getController<T extends IController<IGameObject>>
+    public get<T extends IController<IGameObject>>
     (controllerClass: new (...args: any[]) => T): T | undefined {
         const controller = this.controllers.get(controllerClass);
         return controller instanceof controllerClass ? controller as T : undefined;
@@ -41,22 +41,22 @@ export class ControllerManager implements IControllerManager {
 
 export class Graphic 
 extends Phaser.GameObjects.Graphics implements IGameObject {
-    public readonly uniqueId: number;
-    public readonly controllerManager: IControllerManager = new ControllerManager();
+    public readonly id: number;
+    public readonly controllers: IControllerManager = new ControllerManager();
     
     constructor(id: number, scene: PhaserScene) {
         super(scene);
-        this.uniqueId = id;
+        this.id = id;
     }
 }
 
 export class Sprite 
 extends Phaser.GameObjects.Image implements IGameObject {
-    public readonly uniqueId: number;
-    public readonly controllerManager: IControllerManager = new ControllerManager();
+    public readonly id: number;
+    public readonly controllers: IControllerManager = new ControllerManager();
     
     constructor(id: number, scene: PhaserScene) {
         super(scene, 0, 0, '');
-        this.uniqueId = id;
+        this.id = id;
     }
 }

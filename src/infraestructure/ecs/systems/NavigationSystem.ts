@@ -24,12 +24,12 @@ export class NavigationSystem extends System {
     }
 
     public enter(object: IGameObject): void {
-        const physic = object.controllerManager.getController(PhysicControllerBase);
+        const physic = object.controllers.get(PhysicControllerBase);
         if (!physic) return;
 
-        currentPositionProxy.entityId = object.uniqueId;
-        targetProxy.entityId = object.uniqueId;
-        directionProxy.entityId = object.uniqueId;
+        currentPositionProxy.entityId = object.id;
+        targetProxy.entityId = object.id;
+        directionProxy.entityId = object.id;
 
         directionProxy.vector = MovementUtil.calculateDirection(
             currentPositionProxy.vector2, targetProxy.vector

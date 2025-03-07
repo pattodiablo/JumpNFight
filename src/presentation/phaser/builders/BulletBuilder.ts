@@ -107,9 +107,9 @@ export class ColoredBulletBuilder extends BaseProjectileBuilder {
     }
 
     protected addControllers(object: Graphic): void {
-        object.controllerManager.addController(new TransformController("transform", object));
-        object.controllerManager.addController(new ShapeRenderController("shape", object));
-        object.controllerManager.addController(new PhaserPhysicController("physic", object));
+        object.controllers.addController(new TransformController("transform", object));
+        object.controllers.addController(new ShapeRenderController("shape", object));
+        object.controllers.addController(new PhaserPhysicController("physic", object));
     }
 }
 
@@ -146,9 +146,9 @@ export class TexturedBulletBuilder extends BaseProjectileBuilder {
     }
 
     protected addControllers(object: Sprite): void {
-        object.controllerManager.addController(new TransformController("transform", object));
-        object.controllerManager.addController(new PhaserPhysicController("physic", object));
-        object.controllerManager.addController(new TextureRenderController("texture", object));
+        object.controllers.addController(new TransformController("transform", object));
+        object.controllers.addController(new PhaserPhysicController("physic", object));
+        object.controllers.addController(new TextureRenderController("texture", object));
     }
 }
 

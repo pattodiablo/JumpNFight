@@ -15,7 +15,7 @@ import { PhaserScene } from "@presentation/phaser/models";
 import 
 {
 
-    AccelerationSystem,
+    DynamicMotionSystem,
     DirectionSystem,
     GravitySystem,
     NavigationSystem,
@@ -24,6 +24,7 @@ import
     TransformSystem,
 
 } from "@ecs/systems";
+import { AccelerationService } from "~/core/application/services";
 
 /* END-USER-IMPORTS */
 
@@ -75,7 +76,7 @@ export default class Level extends PhaserScene {
     private _calculateDirection: DirectionSystem = new DirectionSystem(this, this.world);
     private _applyGravity: GravitySystem = new GravitySystem(this, this.world);
     private _navigation: NavigationSystem = new NavigationSystem(this, this.world);
-    private _setAcceleration: AccelerationSystem = new AccelerationSystem(this, this.world);
+    private _setAcceleration: DynamicMotionSystem = new DynamicMotionSystem(this, this.world, new AccelerationService());
     private _textureRender: TextureRenderSystem = new TextureRenderSystem(this, this.world);
 
 	create() {

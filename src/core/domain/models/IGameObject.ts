@@ -1,8 +1,8 @@
 import { IController } from "./IController";
 
 export interface IGameObject {
-    readonly uniqueId: number;
-    readonly controllerManager: IControllerManager;
+    readonly id: number;
+    readonly controllers: IControllerManager;
 }
 
 export interface IControllerManager {
@@ -11,7 +11,7 @@ export interface IControllerManager {
     addController<T extends IController<IGameObject>>
         (component: T): void;
 
-    getController<T extends IController<IGameObject>>
+    get<T extends IController<IGameObject>>
         (componentClass: abstract new (...args: any[]) => T): T | undefined;
 
     hasController<T extends IController<IGameObject>>
