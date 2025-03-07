@@ -1,6 +1,7 @@
 
 // You can write more code here
-
+import ScoreCounter from "../components/ScoreCounter";
+import PlayerPrefab from "./PlayerPrefab";
 /* START OF COMPILED CODE */
 
 import WeveanaJoystick from "./WeveanaJoystick";
@@ -10,7 +11,8 @@ import UpgradeSystemUI from "./UpgradeSystemUI";
 /* END-USER-IMPORTS */
 
 export default class GameUI extends Phaser.Scene {
-
+	private scoreCounter!: ScoreCounter;
+	private playerX!: number;
 	constructor() {
 		super("GameUI");
 
@@ -148,8 +150,20 @@ export default class GameUI extends Phaser.Scene {
 		// Escuchar el evento 'particleCollected'
 		const levelScene = this.scene.get('Level') as Phaser.Scene;
 		levelScene.events.on('particleCollected', this.updateLevelBar, this);
+		
+		//posicion pantalla ScoreCounter
+		this.scoreCounter = new ScoreCounter(this, 20, 20);
+		// cambia el tamaño del valor
+		this.scoreCounter.setScaleFactor(0.01);
+		// Espera a que el jugador aparezca para fijar la posición inicial
+		levelScene.events.once("playerMove", (playerX: number) => {
+			this.scoreCounter.setInitialX(playerX);
+		});
 
-
+		// Luego escucha los movimientos del jugador
+		levelScene.events.on("playerMove", (playerX: number) => {
+			this.scoreCounter.update(playerX);
+		});
 	}
 
 	updateLevelBar(collectedParticles: number) {

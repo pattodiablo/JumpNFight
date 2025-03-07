@@ -13,7 +13,7 @@ type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: 
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
-
+    // contador inicializador
 	constructor() {
 		super("Level");
 
@@ -62,7 +62,6 @@ export default class Level extends Phaser.Scene {
 
 		this.editorCreate();
         this.createParticles();
-
         const poki = this.plugins.get('poki');
 
         if (poki) {
@@ -247,7 +246,8 @@ createParticles() {
 		//console.log(this.input.x);
 	 // 	this.player.updatePlayer(delta);
         this.updatePlatforms();
-
+        //track de player metros
+        this.events.emit("playerMove", this.player.x);
         if (this.player.y > 2000) {
             const gameUI = this.scene.get('GameUI') as any;
             const EnergyLevel = gameUI.level;
@@ -268,7 +268,6 @@ createParticles() {
          this.bg1.tilePositionY = this.cameras.main.scrollY * 0.05;
          this.bg1.x = this.cameras.main.scrollX-this.bg1.width/2;
          this.bg1.y = this.cameras.main.scrollY-this.bg1.height/2;
-
     }
 
 	updatePlatforms() {
