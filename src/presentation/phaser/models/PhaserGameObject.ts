@@ -1,5 +1,5 @@
 import { IGameObject, IController } from "@domain/models";
-import { PhaserScene } from ".";
+import  PhaserScene  from "./PhaserScene";
 import { IControllerManager } from "~/core/domain/models/IGameObject";
 
 export class ControllerManager implements IControllerManager {

@@ -299,6 +299,36 @@
             "type": {
                 "id": "number"
             }
+        },
+        {
+            "name": "SawMissileInterval",
+            "label": "SawMissileInterval",
+            "tooltip": "",
+            "defValue": 4000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "LastSawMissileTime",
+            "label": "LastSawMissileTime",
+            "tooltip": "",
+            "defValue": 4000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "lastShotTimeMissile",
+            "label": "lastShotTimeMissile",
+            "tooltip": "",
+            "defValue": 2000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
         }
     ]
 }

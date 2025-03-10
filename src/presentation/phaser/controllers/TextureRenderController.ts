@@ -1,8 +1,8 @@
 import { RenderControllerBase } from "@core/domain/controllers";
 import { IImage } from "@domain/types";
 import { AssetUtils } from "../../../../static/AssetUtils";
-import { Sprite, PhaserScene } from "../models";
-
+import { Sprite } from "../models";
+import PhaserScene from "../models/PhaserScene";
 
 export class TextureRenderController extends RenderControllerBase<Sprite> {
 

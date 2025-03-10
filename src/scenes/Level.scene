@@ -6,6 +6,7 @@
         "snapHeight": 604.1008274744254,
         "exportClass": true,
         "autoImport": true,
+        "superClassName": "PhaserScene",
         "preloadPackFiles": [],
         "createMethodName": "editorCreate",
         "sceneKey": "Level",
@@ -42,6 +43,17 @@
             "originY": 0,
             "width": 1920,
             "height": 1080
+        },
+        {
+            "prefabId": "1c411440-0cf7-458e-bc09-becc67ef3be4",
+            "id": "9341e164-8f1a-4c39-8a2d-4a37781a1818",
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "label": "sawBullet",
+            "x": 174,
+            "y": 109
         }
     ],
     "plainObjects": [],

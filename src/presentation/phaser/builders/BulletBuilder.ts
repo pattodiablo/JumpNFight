@@ -13,7 +13,8 @@ import {
     HasGravityDecorator,
 } from "@ecs/components/decorators";
 
-import { PhaserScene, Graphic, Sprite } from "@presentation/phaser/models";
+import { Graphic, Sprite } from "@presentation/phaser/models";
+import PhaserScene from "../models/PhaserScene";
 import { PhaserPhysicController, ShapeRenderController, TransformController } from "@presentation/phaser/controllers";
 
 import { ObjectBuilder } from "./ObjectBuilder";

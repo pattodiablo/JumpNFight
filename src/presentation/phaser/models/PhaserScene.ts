@@ -1,7 +1,7 @@
 import { createWorld, IWorld } from "bitecs";
 import { IGameObject, IScene } from "@domain/models";
 
-export class PhaserScene extends Phaser.Scene implements IScene {
+export default class PhaserScene extends Phaser.Scene implements IScene {
     public readonly gameObjects: Map<number, IGameObject>;
     public readonly world: IWorld;
 

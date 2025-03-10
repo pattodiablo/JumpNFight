@@ -1,5 +1,6 @@
 import { RenderControllerBase } from "@domain/controllers";
-import { PhaserScene, Graphic } from "../models";
+import { Graphic } from "../models";
+import PhaserScene from "../models/PhaserScene";
 import { IShape } from "@domain/types";
 
 export class ShapeRenderController extends RenderControllerBase<Graphic> {

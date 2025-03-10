@@ -3,7 +3,9 @@
 
 /* START OF COMPILED CODE */
 
+import PhaserScene from "../presentation/phaser/models/PhaserScene";
 import PlayerPrefab from "./PlayerPrefab";
+import SawBullet from "./SawBullet";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
 import Enemy1 from "./Enemy1";
@@ -11,7 +13,7 @@ import CollectableParticle from "./CollectableParticle";
 import Cannon from "./Cannon";
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
 
-import { PhaserScene } from "@presentation/phaser/models";
+
 import 
 {
 
@@ -50,6 +52,10 @@ export default class Level extends PhaserScene {
 		const bg1 = this.add.tileSprite(0, 0, 1920, 1080, "bg1");
 		bg1.setOrigin(0, 0);
 
+		// sawBullet
+		const sawBullet = new SawBullet(this, 174, 109);
+		this.add.existing(sawBullet);
+
 		this.player = player;
 		this.bg1 = bg1;
 
@@ -71,10 +77,11 @@ export default class Level extends PhaserScene {
     private platformBuffer: number = 20; // Número de plataformas de buffer por delante y por detrás del jugador
     public enemies!: Phaser.GameObjects.Group; // Grupo de enemigos
     private platformCount: number = 0; // Contador de plataformas creadas
-    private CannonCountDistance:number = 3;
+    private CannonCountDistance:number = 30;
     private firtCannonPlaced = false;
 
     // Systems
+
     private _transform: TransformSystem = new TransformSystem(this, this.world);
     private _shapeRender: ShapeRenderSystem = new ShapeRenderSystem(this, this.world);
     private _calculateDirection: DirectionSystem = new DirectionSystem(this, this.world);
@@ -82,7 +89,6 @@ export default class Level extends PhaserScene {
     private _navigation: NavigationSystem = new NavigationSystem(this, this.world);
     private _setAcceleration: DynamicMotionSystem = new DynamicMotionSystem(this, this.world, new AccelerationService());
     private _textureRender: TextureRenderSystem = new TextureRenderSystem(this, this.world);
-
 
 	create() {
 		this.editorCreate();
@@ -164,7 +170,7 @@ export default class Level extends PhaserScene {
 
             // Incrementar la dificultad
             numEnemies += 2; // Incrementar el número de enemigos
-       
+
         };
 
         const checkAndGenerateEnemies = () => {
@@ -344,7 +350,7 @@ createParticles() {
                 maxPlatformX = platformX;
                 this.platformCount++;
 
-               
+
                 // Agregar un prefab de tipo Cannon cada CannonCountDistance plataformas
                 if (this.platformCount % this.CannonCountDistance === 0) {
 

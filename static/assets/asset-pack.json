@@ -27,11 +27,6 @@
                 "key": "CoreIcon"
             },
             {
-                "url": "assets/missileV1.png",
-                "type": "image",
-                "key": "missile"
-            },
-            {
                 "url": "assets/SpineAnimations/Enemy1/EnemyV1.json",
                 "type": "spineJson",
                 "key": "EnemyV1"
@@ -67,6 +62,11 @@
                 "key": "LaserIcon"
             },
             {
+                "url": "assets/missileV1.png",
+                "type": "image",
+                "key": "missile"
+            },
+            {
                 "url": "assets/MissileIcon.png",
                 "type": "image",
                 "key": "missile"
@@ -95,6 +95,11 @@
                 "url": "assets/RunningIcon.png",
                 "type": "image",
                 "key": "RunningIcon"
+            },
+            {
+                "url": "assets/sawBullet.png",
+                "type": "image",
+                "key": "sawBullet"
             },
             {
                 "url": "assets/ShieldIcon.png",
