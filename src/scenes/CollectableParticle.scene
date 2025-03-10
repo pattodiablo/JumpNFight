@@ -45,7 +45,7 @@
             "name": "attractionSpeed",
             "label": "attractionSpeed",
             "tooltip": "attractionSpeed",
-            "defValue": 1600,
+            "defValue": 2000,
             "customDefinition": false,
             "type": {
                 "id": "number"

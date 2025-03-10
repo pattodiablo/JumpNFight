@@ -1,6 +1,7 @@
 
 // You can write more code here
-
+import ScoreCounter from "../components/ScoreCounter";
+import PlayerPrefab from "./PlayerPrefab";
 /* START OF COMPILED CODE */
 
 import WeveanaJoystick from "./WeveanaJoystick";
@@ -10,7 +11,8 @@ import UpgradeSystemUI from "./UpgradeSystemUI";
 /* END-USER-IMPORTS */
 
 export default class GameUI extends Phaser.Scene {
-
+	private scoreCounter!: ScoreCounter;
+	private playerX!: number;
 	constructor() {
 		super("GameUI");
 
@@ -60,7 +62,7 @@ export default class GameUI extends Phaser.Scene {
 	public levelBar!: Phaser.GameObjects.Rectangle;
 	public updateBar!: Phaser.GameObjects.Rectangle;
 	public strokeBar!: Phaser.GameObjects.Graphics;
-	private level: number = 1;
+	public level: number = 1;
 	private LevelReach: number = 40;
 	private collectedParticles: number = 0;
 	// Write your code here
@@ -80,7 +82,7 @@ export default class GameUI extends Phaser.Scene {
         strokeBar.lineStyle(6, 0x000000); // Grosor de 2 píxeles y color blanco
 		strokeBar.strokeRoundedRect(this.scale.width / 4-2, 13, this.scale.width / 2+4, 35, 10); // Dibuja el rectángulo con bordes redondeados
 
-		const levelText = this.add.text(this.scale.width / 4+10, 30, 'Energy', {
+		const levelText = this.add.text(this.scale.width / 4+10, 30, 'Level 1', {
 			fontFamily: 'Bahiana',
             fontSize: '24px',
             color: '#e1e1e1',
@@ -148,13 +150,25 @@ export default class GameUI extends Phaser.Scene {
 		// Escuchar el evento 'particleCollected'
 		const levelScene = this.scene.get('Level') as Phaser.Scene;
 		levelScene.events.on('particleCollected', this.updateLevelBar, this);
+		
+		//posicion pantalla ScoreCounter
+		this.scoreCounter = new ScoreCounter(this, 20, 20);
+		// cambia el tamaño del valor
+		this.scoreCounter.setScaleFactor(0.01);
+		// Espera a que el jugador aparezca para fijar la posición inicial
+		levelScene.events.once("playerMove", (playerX: number) => {
+			this.scoreCounter.setInitialX(playerX);
+		});
 
-
+		// Luego escucha los movimientos del jugador
+		levelScene.events.on("playerMove", (playerX: number) => {
+			this.scoreCounter.update(playerX);
+		});
 	}
 
 	updateLevelBar(collectedParticles: number) {
         this.collectedParticles += collectedParticles;
-console.log(this.collectedParticles);
+
         // Calcular el progreso actual
         const progress = this.collectedParticles / this.LevelReach;
 
@@ -168,7 +182,7 @@ console.log(this.collectedParticles);
             this.collectedParticles = 0; // Reiniciar el conteo de partículas recolectadas
 
             // Actualizar el texto del nivel
-            this.levelText.setText(`Energy x ${this.level}`);
+            this.levelText.setText(`Level ${this.level}`);
 
             // Reiniciar la barra de progreso
             this.updateBar.scaleX = 0;
