@@ -48,6 +48,16 @@
             "type": {
                 "id": "number"
             }
+        },
+        {
+            "name": "LifeTime",
+            "label": "LifeTime",
+            "tooltip": "LifeTime",
+            "defValue": 3000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
         }
     ]
 }

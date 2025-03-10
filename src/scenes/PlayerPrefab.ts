@@ -218,7 +218,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 					// Shoot bullet
 					this.scene.time.delayedCall(100, () => {
-						this.shootBullet(enemy);
+					//	this.shootBullet(enemy);
 					});
 
 					this.lastShotTime = this.scene.time.now;
