@@ -5,7 +5,6 @@
 
 import PhaserScene from "../presentation/phaser/models/PhaserScene";
 import PlayerPrefab from "./PlayerPrefab";
-import SawBullet from "./SawBullet";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
 import Enemy1 from "./Enemy1";
@@ -51,10 +50,6 @@ export default class Level extends PhaserScene {
 		// bg1
 		const bg1 = this.add.tileSprite(0, 0, 1920, 1080, "bg1");
 		bg1.setOrigin(0, 0);
-
-		// sawBullet
-		const sawBullet = new SawBullet(this, 174, 109);
-		this.add.existing(sawBullet);
 
 		this.player = player;
 		this.bg1 = bg1;
@@ -285,6 +280,7 @@ createParticles() {
 		//console.log(this.input.x);
 	 // 	this.player.updatePlayer(delta);
         this.updatePlatforms();
+        this.updateWorldBounds();
         //track de player metros
         this.events.emit("playerMove", this.player.x);
         if (this.player.y > 2000) {
@@ -434,6 +430,20 @@ createParticles() {
 			(currentPlatform as CustomRectangle).hasCreatedMidPlatform = true;
 		}
 	}
+}
+
+updateWorldBounds() {
+    const camera = this.cameras.main;
+    const worldBounds = this.physics.world.bounds;
+
+    // Actualizar los límites del mundo según la posición de la cámara
+    worldBounds.x = camera.worldView.x;
+    worldBounds.y = camera.worldView.y;
+    worldBounds.width = camera.worldView.width;
+    worldBounds.height = camera.worldView.height;
+
+    // Asegurarse de que el cuerpo del sawBullet colisione con los nuevos límites del mundo
+ 
 }
 	/* END-USER-CODE */
 }

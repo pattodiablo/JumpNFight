@@ -10,7 +10,7 @@ import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser"
 import  PhaserScene  from "~/presentation/phaser/models/PhaserScene";
 import { ColoredBulletBuilder, TexturedBulletBuilder } from "~/presentation/phaser/builders";
 import { Graphic, Sprite } from "~/presentation";
-
+import SawBullet from "./SawBullet";
 /* END-USER-IMPORTS */
 
 export default class PlayerPrefab extends SpineGameObject {
@@ -218,7 +218,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 					// Shoot bullet
 					this.scene.time.delayedCall(100, () => {
-						//this.shootBullet(enemy);
+						this.shootBullet(enemy);
 					});
 
 					this.lastShotTime = this.scene.time.now;
@@ -240,40 +240,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	shootSawBullet(enemy: Phaser.GameObjects.Sprite) {
 
-		const missile: Sprite = new TexturedBulletBuilder(this.scene as PhaserScene)
-		.setOrigin({ x:this.x, y:this.y })
-		.setTextureKey("sawBullet")
-		.setSize({ width: this.MissileSize*1.5, height: this.MissileSize *1.5})
-	//	.setAcceleration({ magnitude: 0, initialSpeed: -3000 })
-		.build();
-
-		console.log(missile);
-		const missileBody = missile.body as Phaser.Physics.Arcade.Body;
-	//	missileBody.setCollideWorldBounds(true);
-		missileBody.setBounce(1); // Hacer que el misil rebote completamente
- 
-		// Duración
-		this.scene.time.addEvent({
-			delay: 10000,
-			callback: () => {
-				missile.destroy();
-			}
-		});
-		missile.scene.events.on("update", (time: number, delta: number) => this.handleMissileBoundsCollision(missile as any));
-
-		missileBody.setVelocityX(1000);
-		
-		// Colisión
-		const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
-
-		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
-
-			if((enemy as any).IsNearPlayer){
-				this.scene.physics.add.overlap(missile, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
-			}
-		});
-
-		(this.scene as PhaserScene).addGameObject(missile);
+		const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
 
 	
 	}

@@ -1,40 +1,53 @@
 {
     "id": "1c411440-0cf7-458e-bc09-becc67ef3be4",
+    "sceneType": "PREFAB",
     "settings": {
-        "createMethodName": "",
-        "preloadMethodName": "",
-        "compilerOutputLanguage": "TYPE_SCRIPT",
         "exportClass": true,
         "autoImport": true,
-        "importFileExtension": false,
-        "generateAwakeHandler": false,
-        "compilerInsertSpaces": false,
-        "compilerTabSize": 4,
+        "preloadMethodName": "",
+        "preloadPackFiles": [],
+        "createMethodName": "",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
         "borderWidth": 1280,
-        "borderHeight": 720,
-        "borderX": 0,
-        "borderY": 0
+        "borderHeight": 720
     },
-    "sceneType": "PREFAB",
     "displayList": [
         {
-            "unlock": [
-                "x",
-                "y"
-            ],
             "type": "Image",
             "id": "00b18ce5-5fa6-4b50-9602-0d28d8d1f8ed",
             "label": "sawBullet",
             "texture": {
                 "key": "sawBullet"
-            },
-            "x": 0,
-            "y": 0
+            }
         }
     ],
+    "plainObjects": [],
     "meta": {
-        "app": "Phaser Editor 2D - Scene Editor",
-        "url": "https://phasereditor2d.com",
-        "contentType": "phasereditor2d.core.scene.SceneContentType"
-    }
+        "app": "Phaser Editor - Scene Editor",
+        "url": "https://phaser.io/editor",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    },
+    "prefabProperties": [
+        {
+            "name": "BulletGravity",
+            "label": "BulletGravity",
+            "tooltip": "BulletGravity",
+            "defValue": 100,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "BulletVelocity",
+            "label": "BulletVelocity",
+            "tooltip": "BulletVelocity",
+            "defValue": 2000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        }
+    ]
 }
