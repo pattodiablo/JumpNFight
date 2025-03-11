@@ -329,6 +329,37 @@
             "type": {
                 "id": "number"
             }
+        },
+        {
+            "name": "Shield",
+            "label": "Shield",
+            "tooltip": "",
+            "defValue": "",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "any"
+            }
+        },
+        {
+            "name": "IsShieldActive",
+            "label": "IsShieldActive",
+            "tooltip": "",
+            "defValue": true,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "ShieldLife",
+            "label": "ShieldLife",
+            "tooltip": "",
+            "defValue": 3,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
         }
     ]
 }

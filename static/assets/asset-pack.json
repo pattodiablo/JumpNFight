@@ -92,6 +92,11 @@
                 "key": "Player-atlas"
             },
             {
+                "url": "assets/PlayerShield.png",
+                "type": "image",
+                "key": "PlayerShield"
+            },
+            {
                 "url": "assets/RunningIcon.png",
                 "type": "image",
                 "key": "RunningIcon"

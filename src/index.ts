@@ -178,7 +178,7 @@ window.addEventListener('load', function () {
             default: 'arcade',
             arcade: {
                 gravity: { x:0,y: 300 }, // Configura la gravedad en el eje Y
-                debug: true // Activa la depuración de colisiones
+                debug: false // Activa la depuración de colisiones
             }
         },
 		render: {

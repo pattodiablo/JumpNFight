@@ -221,7 +221,9 @@ export default class Enemy1 extends SpineGameObject {
 	const gameUI = this.scene.scene.get('GameUI') as any;
 	const EnergyLevel = gameUI.level;
 	gameUI.updateLevelBar(-this.EnemyDamage*EnergyLevel);
+		// Reducir la vida del jugador
 
+		( player as any).handleDamage(this.EnemyDamage);
 
 		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {
 			x: (laser as Phaser.GameObjects.Ellipse).x,

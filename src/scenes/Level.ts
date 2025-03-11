@@ -443,7 +443,7 @@ updateWorldBounds() {
     worldBounds.height = camera.worldView.height;
 
     // Asegurarse de que el cuerpo del sawBullet colisione con los nuevos límites del mundo
- 
+
 }
 	/* END-USER-CODE */
 }

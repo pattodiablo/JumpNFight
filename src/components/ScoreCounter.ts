@@ -13,9 +13,9 @@ export default class ScoreCounter {
     private maxMeters: number = 1; // Máxima distancia alcanzada en metros
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
-        this.text = scene.add.text(x, y, "Metros: 1", {
+        this.text = scene.add.text(x, y, "Distance: 1", {
             fontSize: "30px", 
-            fontFamily: "Arial", 
+            fontFamily: "Bahiana", 
             color: "#000000", 
             fontStyle: "bold", 
         });
@@ -32,13 +32,14 @@ export default class ScoreCounter {
     }
 
     public update(playerX: number) {
+      
         // Calcula la distancia recorrida en metros
         const distance = Math.floor((playerX - this.initialX) * this.scaleFactor) + 1;
 
         // Si el jugador se mueve hacia atrás, mantenemos el valor máximo alcanzado
         this.maxMeters = Math.max(this.maxMeters, distance);
 
-        this.text.setText(`Metros: ${this.maxMeters}`);
+        this.text.setText(`Distance: ${this.maxMeters}`);
     }
 }
 /* END OF COMPILED CODE */

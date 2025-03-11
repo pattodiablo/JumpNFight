@@ -11,6 +11,8 @@ import  PhaserScene  from "~/presentation/phaser/models/PhaserScene";
 import { ColoredBulletBuilder, TexturedBulletBuilder } from "~/presentation/phaser/builders";
 import { Graphic, Sprite } from "~/presentation";
 import SawBullet from "./SawBullet";
+import PlayerShield from "./PlayerShield";
+
 /* END-USER-IMPORTS */
 
 export default class PlayerPrefab extends SpineGameObject {
@@ -60,6 +62,9 @@ export default class PlayerPrefab extends SpineGameObject {
 	public SawMissileInterval: number = 4000;
 	public LastSawMissileTime: number = 4000;
 	public lastShotTimeMissile: number = 2000;
+	public Shield!: any;
+	public IsShieldActive: boolean = true;
+	public ShieldLife: number = 3;
 
 	/* START-USER-CODE */
 	public MissileSize: number = 100;
@@ -69,6 +74,10 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		this.factor = this.scene.scale.height / this.scene.scale.width;
 		this.flipX = true; // Flip horizontal
+		this.Shield = this.scene.add.sprite(0, 0, 'PlayerShield');
+		this.scene.add.existing(this.Shield);
+
+
 
 		this.scene.physics.add.existing(this);
         const playerBody = this.body as Phaser.Physics.Arcade.Body;
@@ -103,7 +112,7 @@ export default class PlayerPrefab extends SpineGameObject {
 				   gameUIScene.events.on('jump', this.handleJump, this);
 
 
-		
+
 	}
 
 	hideAndRoll(x:number,Y:number){
@@ -192,7 +201,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		enemies.forEach((enemy: Phaser.GameObjects.Sprite) => {
 
-			
+
 			if((enemy as any).IsNearPlayer){
 
 				// Cast ray
@@ -242,19 +251,19 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
 
-	
+
 	}
 
 	handleMissileBoundsCollision(missile: Phaser.GameObjects.Sprite) {
 		const camera = this.scene.cameras.main;
-		
+
 		const missileBody = missile.body as Phaser.Physics.Arcade.Body;
-	
+
 		 if (missile.x > camera.worldView.x + camera.worldView.width-100) {
-		
+
 			missileBody.velocity.x *= -1;
 		}
-	
+
 	}
 
 	shootMisile(enemy: Phaser.GameObjects.Sprite) {
@@ -379,8 +388,9 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		this.scanAndDestroy();
 
+		this.Shield.x = this.x;
+        this.Shield.y = this.y;
 
-		   
 		if (this.scene.time.now > this.SawMissileInterval + this.LastSawMissileTime) {
 
 			this.createLaserParticles();
@@ -389,13 +399,13 @@ export default class PlayerPrefab extends SpineGameObject {
 			const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
 			enemies.forEach((enemy: Phaser.GameObjects.Sprite) => {
 				this.scene.time.delayedCall(100, () => {
-				
+
 					this.shootSawBullet(enemy);
 				});
 
 				this.SawMissileInterval = this.scene.time.now;
 			});
-			
+
 		}
 
 
@@ -512,6 +522,64 @@ export default class PlayerPrefab extends SpineGameObject {
 	//	this.ArmsFollowMouse(this, this.scene.input.mousePointer);
 
 		this.update(delta);
+	}
+
+
+	handleDamage(EnemyDamage: number) {
+		if(this.IsShieldActive){
+			this.ShieldLife -= EnemyDamage;
+			if(this.ShieldLife<=this.ShieldLife/2 && this.ShieldLife>0){
+				console.log("Shield Life: "+this.ShieldLife);
+				this.scene.tweens.add({
+                    targets: this.Shield,
+					alpha: {from: 1, to: 0.5},
+                    duration: 100,	
+					repeat: 10,
+                    ease: 'Bounce.easeOut'
+                });
+			}else if(this.ShieldLife<=0){
+			
+				this.scene.tweens.add({
+                    targets: this.Shield,
+					alpha: {from: 1, to: 0.1},
+                    duration: 50,					
+					repeat: 15,
+                    ease: 'Bounce.easeOut',
+					onComplete: () => {
+						this.IsShieldActive = false;
+						this.Shield.setVisible(false);
+					}
+                });
+			
+				
+			}
+
+		}
+
+		this.scene.time.addEvent({
+            delay: 5000, // Tiempo en milisegundos (5 segundos)
+            callback: () => {
+                this.restoreShieldLife();
+            }
+        });
+
+	}
+
+	restoreShieldLife() {
+		this.ShieldLife = 3; // Restaurar la vida del escudo a su valor original
+		this.IsShieldActive = true;
+		this.Shield.setVisible(true);
+		this.Shield.setAlpha(0.1);
+		console.log("Shield Life restored to: " + this.ShieldLife);
+		this.scene.tweens.add({
+			targets: this.Shield,
+			alpha: {from: 0.1, to:1},
+			duration: 50,
+			repeat: 10,
+			ease: 'Bounce.easeIn',
+			
+		});
+	
 	}
 
 	createalandingPlatform(){
