@@ -62,9 +62,14 @@
                 "key": "LaserIcon"
             },
             {
+                "url": "assets/missileV1.png",
+                "type": "image",
+                "key": "missile"
+            },
+            {
                 "url": "assets/MissileIcon.png",
                 "type": "image",
-                "key": "MissileIcon"
+                "key": "missile"
             },
             {
                 "url": "assets/particleImage.png",
@@ -90,6 +95,11 @@
                 "url": "assets/RunningIcon.png",
                 "type": "image",
                 "key": "RunningIcon"
+            },
+            {
+                "url": "assets/sawBullet.png",
+                "type": "image",
+                "key": "sawBullet"
             },
             {
                 "url": "assets/ShieldIcon.png",

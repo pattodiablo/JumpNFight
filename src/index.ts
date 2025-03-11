@@ -184,7 +184,8 @@ window.addEventListener('load', function () {
 		render: {
             pixelArt: false, // Habilita el modo de pixel art
             antialias: true, // Desactiva el antialiasing
-            roundPixels: true // Redondea las posiciones de los píxeles
+            roundPixels: true, // Redondea las posiciones de los píxeles
+          
         }
 	});
 

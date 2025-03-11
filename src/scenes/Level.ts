@@ -3,6 +3,7 @@
 
 /* START OF COMPILED CODE */
 
+import PhaserScene from "../presentation/phaser/models/PhaserScene";
 import PlayerPrefab from "./PlayerPrefab";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
@@ -10,10 +11,26 @@ import Enemy1 from "./Enemy1";
 import CollectableParticle from "./CollectableParticle";
 import Cannon from "./Cannon";
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
+
+
+import 
+{
+
+    DynamicMotionSystem,
+    DirectionSystem,
+    GravitySystem,
+    NavigationSystem,
+    ShapeRenderSystem,
+    TextureRenderSystem,
+    TransformSystem,
+
+} from "@ecs/systems";
+import { AccelerationService } from "~/core/application/services";
+
 /* END-USER-IMPORTS */
 
-export default class Level extends Phaser.Scene {
-    // contador inicializador
+export default class Level extends PhaserScene {
+
 	constructor() {
 		super("Level");
 
@@ -55,14 +72,24 @@ export default class Level extends Phaser.Scene {
     private platformBuffer: number = 20; // Número de plataformas de buffer por delante y por detrás del jugador
     public enemies!: Phaser.GameObjects.Group; // Grupo de enemigos
     private platformCount: number = 0; // Contador de plataformas creadas
-    private CannonCountDistance:number = 3;
+    private CannonCountDistance:number = 30;
     private firtCannonPlaced = false;
 
-	create() {
+    // Systems
 
+    private _transform: TransformSystem = new TransformSystem(this, this.world);
+    private _shapeRender: ShapeRenderSystem = new ShapeRenderSystem(this, this.world);
+    private _calculateDirection: DirectionSystem = new DirectionSystem(this, this.world);
+    private _applyGravity: GravitySystem = new GravitySystem(this, this.world);
+    private _navigation: NavigationSystem = new NavigationSystem(this, this.world);
+    private _setAcceleration: DynamicMotionSystem = new DynamicMotionSystem(this, this.world, new AccelerationService());
+    private _textureRender: TextureRenderSystem = new TextureRenderSystem(this, this.world);
+
+	create() {
 		this.editorCreate();
         this.createParticles();
-        const poki = this.plugins.get('poki');
+
+        const poki = this.plugins.get('pokii');
 
         if (poki) {
 
@@ -112,7 +139,6 @@ export default class Level extends Phaser.Scene {
 		this.createPlatforms();
         this.createEnemies();
 
-
 	}
 
 
@@ -139,7 +165,7 @@ export default class Level extends Phaser.Scene {
 
             // Incrementar la dificultad
             numEnemies += 2; // Incrementar el número de enemigos
-       
+
         };
 
         const checkAndGenerateEnemies = () => {
@@ -243,9 +269,18 @@ createParticles() {
 	}
 
 	update(time: number, delta: number): void {
+        this._transform.execute();
+        this._navigation.execute();
+        this._setAcceleration.execute();
+        this._calculateDirection.execute();
+        this._applyGravity.execute();
+        this._shapeRender.execute();
+        this._textureRender.execute();
+
 		//console.log(this.input.x);
 	 // 	this.player.updatePlayer(delta);
         this.updatePlatforms();
+        this.updateWorldBounds();
         //track de player metros
         this.events.emit("playerMove", this.player.x);
         if (this.player.y > 2000) {
@@ -311,7 +346,7 @@ createParticles() {
                 maxPlatformX = platformX;
                 this.platformCount++;
 
-               
+
                 // Agregar un prefab de tipo Cannon cada CannonCountDistance plataformas
                 if (this.platformCount % this.CannonCountDistance === 0) {
 
@@ -395,6 +430,20 @@ createParticles() {
 			(currentPlatform as CustomRectangle).hasCreatedMidPlatform = true;
 		}
 	}
+}
+
+updateWorldBounds() {
+    const camera = this.cameras.main;
+    const worldBounds = this.physics.world.bounds;
+
+    // Actualizar los límites del mundo según la posición de la cámara
+    worldBounds.x = camera.worldView.x;
+    worldBounds.y = camera.worldView.y;
+    worldBounds.width = camera.worldView.width;
+    worldBounds.height = camera.worldView.height;
+
+    // Asegurarse de que el cuerpo del sawBullet colisione con los nuevos límites del mundo
+ 
 }
 	/* END-USER-CODE */
 }

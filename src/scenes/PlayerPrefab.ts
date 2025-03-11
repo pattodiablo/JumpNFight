@@ -7,6 +7,10 @@ import { SpinePlugin } from "@esotericsoftware/spine-phaser";
 import { SpineGameObjectBoundsProvider } from "@esotericsoftware/spine-phaser";
 import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
+import  PhaserScene  from "~/presentation/phaser/models/PhaserScene";
+import { ColoredBulletBuilder, TexturedBulletBuilder } from "~/presentation/phaser/builders";
+import { Graphic, Sprite } from "~/presentation";
+import SawBullet from "./SawBullet";
 /* END-USER-IMPORTS */
 
 export default class PlayerPrefab extends SpineGameObject {
@@ -53,9 +57,13 @@ export default class PlayerPrefab extends SpineGameObject {
 	public IsRolling: boolean = false;
 	public IsFallingAfterCannon: boolean = false;
 	public CannonVelo: number = 8000;
+	public SawMissileInterval: number = 4000;
+	public LastSawMissileTime: number = 4000;
+	public lastShotTimeMissile: number = 2000;
 
 	/* START-USER-CODE */
-	public MissileSize: number = 2;
+	public MissileSize: number = 100;
+	private _graphics: Phaser.GameObjects.Graphics = this.scene.add.graphics();
 
 	create(){
 
@@ -93,6 +101,9 @@ export default class PlayerPrefab extends SpineGameObject {
 				   gameUIScene.events.on('joystickMove', this.handleJoystickMove, this);
 
 				   gameUIScene.events.on('jump', this.handleJump, this);
+
+
+		
 	}
 
 	hideAndRoll(x:number,Y:number){
@@ -179,55 +190,135 @@ export default class PlayerPrefab extends SpineGameObject {
 	scanAndDestroy() {
 		const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
 
-		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
+		enemies.forEach((enemy: Phaser.GameObjects.Sprite) => {
 
+			
 			if((enemy as any).IsNearPlayer){
-				if (this.scene.time.now > this.lastShotTime + this.shotInterval) {
+
+				// Cast ray
+				this.castRay(enemy);
+
+				if (this.scene.time.now > this.lastShotTimeMissile + 1000) {
+
 					this.createLaserParticles();
+
+					// Shoot misile
 					this.scene.time.delayedCall(100, () => {
-						this.shootLaser(enemy as Phaser.GameObjects.Sprite);
+						this.shootMisile(enemy);
 					});
+
+					this.lastShotTimeMissile = this.scene.time.now;
+				}
+
+
+
+				if (this.scene.time.now > this.lastShotTime + this.shotInterval) {
+
+					this.createLaserParticles();
+
+					// Shoot bullet
+					this.scene.time.delayedCall(100, () => {
+					//	this.shootBullet(enemy);
+					});
+
 					this.lastShotTime = this.scene.time.now;
 				}
 
+			} else {
+				this._graphics.clear();	// Borra el rayo
 			}
+
 		});
 	}
 
-	shootLaser(enemy: Phaser.GameObjects.Sprite) {
-		const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
-		const laser = this.scene.add.ellipse(this.x, this.y, 200, 30, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
-		laser.setDepth(-1);
-		this.scene.physics.add.existing(laser);
-		const laserBody = laser.body as Phaser.Physics.Arcade.Body;
-		laserBody.setAllowGravity(false);
+	castRay(enemy: Phaser.GameObjects.Sprite) {
 
-		// Calcular la dirección del láser hacia el jugador
-		const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-		const velocityX = Math.cos(angle) * this.laserSpeed;
-		const velocityY = Math.sin(angle) * this.laserSpeed;
-		laserBody.setVelocity(velocityX, velocityY);
-		laser.rotation = angle;
-		// Establecer la duración del láser
-		laser.lifespan = this.laserDuration;
+		this._graphics.clear();
+		this._graphics.lineStyle(4, 0xff0000, 1);
+        this._graphics.strokeLineShape(new Phaser.Geom.Line(this.x, this.y, enemy.x, enemy.y));
+	}
+
+	shootSawBullet(enemy: Phaser.GameObjects.Sprite) {
+
+		const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
+
+	
+	}
+
+	handleMissileBoundsCollision(missile: Phaser.GameObjects.Sprite) {
+		const camera = this.scene.cameras.main;
+		
+		const missileBody = missile.body as Phaser.Physics.Arcade.Body;
+	
+		 if (missile.x > camera.worldView.x + camera.worldView.width-100) {
+		
+			missileBody.velocity.x *= -1;
+		}
+	
+	}
+
+	shootMisile(enemy: Phaser.GameObjects.Sprite) {
+
+		const missile: Sprite = new TexturedBulletBuilder(this.scene as PhaserScene)
+			.setOrigin({ x:this.x, y:this.y })
+			.setTextureKey("missile")
+			.setSize({ width: this.MissileSize, height: this.MissileSize })
+			.setAcceleration({ magnitude: 3000, initialSpeed: -100 })
+			.setTarget({ x:enemy.x, y:enemy.y })
+			.hasGravity(true)
+			.build();
+
+		// Duración
 		this.scene.time.addEvent({
-			delay: this.laserDuration,
+			delay: 10000,
 			callback: () => {
-				laser.destroy();
+				missile.destroy();
 			}
 		});
 
+		// Colisión
 		const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
 
 		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
 
 			if((enemy as any).IsNearPlayer){
-				this.scene.physics.add.overlap(laser, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+				this.scene.physics.add.overlap(missile, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 			}
 		});
-		  // Agregar colisión entre el láser y el jugador
+
+		(this.scene as PhaserScene).addGameObject(missile);
+	}
+
+	shootBullet(enemy: Phaser.GameObjects.Sprite) {
+
+		const bullet: Graphic = new ColoredBulletBuilder(this.scene as PhaserScene)
+			.setOrigin({ x:this.x, y:this.y })
+			.setColor(Phaser.Display.Color.HexStringToColor("F100FF").color)
+			.setSize({ width: 200, height: 50 })
+			.setAcceleration({ magnitude: 9000, initialSpeed: 1000 })
+			.setTarget({ x:enemy.x, y:enemy.y })
+			.hasGravity(true)
+			.build();
 
 
+		// Duración
+		this.scene.time.addEvent({
+			delay: 10000,
+			callback: () => {
+				bullet.destroy();
+			}
+		});
+
+		// Colisión
+		const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
+		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
+
+			if((enemy as any).IsNearPlayer){
+				this.scene.physics.add.overlap(bullet, enemy, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+			}
+		});
+
+		(this.scene as PhaserScene).addGameObject(bullet);
 	}
 
 	handleLaserCollision(laser: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {
@@ -287,6 +378,27 @@ export default class PlayerPrefab extends SpineGameObject {
     updatePlayer(delta: number) {
 
 		this.scanAndDestroy();
+
+
+		   
+		if (this.scene.time.now > this.SawMissileInterval + this.LastSawMissileTime) {
+
+			this.createLaserParticles();
+
+			// Shoot misile
+			const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
+			enemies.forEach((enemy: Phaser.GameObjects.Sprite) => {
+				this.scene.time.delayedCall(100, () => {
+				
+					this.shootSawBullet(enemy);
+				});
+
+				this.SawMissileInterval = this.scene.time.now;
+			});
+			
+		}
+
+
 		const cursors = this.cursors;
 		let newAnimation = this.currentAnimation;
 

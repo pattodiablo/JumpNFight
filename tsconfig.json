@@ -11,7 +11,13 @@
 		"sourceMap": true,
 		"baseUrl": "./src",
 		"paths": {
-		  "~/*": ["./*"]
+		  "~/*": ["./*"],
+		  "@core/*": ["core/*"],
+		  "@domain/*": ["core/domain/*"],
+		  "@application/*": ["core/application/*"],
+		  "@presentation/*": ["presentation/*"],
+		  "@infraestructure/*": ["infraestructure/*"],
+		  "@ecs/*": ["infraestructure/ecs/*"],
 		},
         "outDir": "./dist",
 		"types": [

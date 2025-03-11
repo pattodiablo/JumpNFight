@@ -1,0 +1,63 @@
+{
+    "id": "1c411440-0cf7-458e-bc09-becc67ef3be4",
+    "sceneType": "PREFAB",
+    "settings": {
+        "exportClass": true,
+        "autoImport": true,
+        "preloadMethodName": "",
+        "preloadPackFiles": [],
+        "createMethodName": "",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
+        "borderWidth": 1280,
+        "borderHeight": 720
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "00b18ce5-5fa6-4b50-9602-0d28d8d1f8ed",
+            "label": "sawBullet",
+            "texture": {
+                "key": "sawBullet"
+            }
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor - Scene Editor",
+        "url": "https://phaser.io/editor",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    },
+    "prefabProperties": [
+        {
+            "name": "BulletGravity",
+            "label": "BulletGravity",
+            "tooltip": "BulletGravity",
+            "defValue": 100,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "BulletVelocity",
+            "label": "BulletVelocity",
+            "tooltip": "BulletVelocity",
+            "defValue": 2000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "LifeTime",
+            "label": "LifeTime",
+            "tooltip": "LifeTime",
+            "defValue": 3000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        }
+    ]
+}

@@ -1,0 +1,131 @@
+src
+├─ components
+│  ├─ Behaviors.components
+│  └─ StartAnimationComp.ts
+├─ core
+│  ├─ application
+│  └─ domain
+│     ├─ controllers
+│     │  ├─ index.ts
+│     │  ├─ PhysicControllerBase.ts
+│     │  ├─ RenderControllerBase.ts
+│     │  └─ TransformControllerBase.ts
+│     ├─ enums
+│     │  ├─ index.ts
+│     │  └─ ShapeTypes.ts
+│     ├─ index.ts
+│     ├─ models
+│     │  ├─ IController.ts
+│     │  ├─ IGameObject.ts
+│     │  ├─ index.ts
+│     │  └─ IScene.ts
+│     ├─ services
+│     │  ├─ index.ts
+│     │  ├─ MovementUtil.ts
+│     │  ├─ Vector2Utils.ts
+│     │  └─ Vector3Utils.ts
+│     └─ types
+│        ├─ Acceleration.ts
+│        ├─ Color.ts
+│        ├─ index.ts
+│        ├─ Shape.ts
+│        ├─ Size.ts
+│        ├─ Transform.ts
+│        ├─ Vector2.ts
+│        └─ Vector3.ts
+├─ index.html
+├─ index.ts
+├─ infraestructure
+│  ├─ ecs
+│  │  ├─ components
+│  │  │  ├─ decorators
+│  │  │  │  ├─ base
+│  │  │  │  │  ├─ AccelerationDecorator.ts
+│  │  │  │  │  ├─ BooleanDecorator.ts
+│  │  │  │  │  ├─ EntityDecorator.ts
+│  │  │  │  │  ├─ FloatDecorator.ts
+│  │  │  │  │  ├─ index.ts
+│  │  │  │  │  ├─ SizeDecorator.ts
+│  │  │  │  │  ├─ Vector2Decorator.ts
+│  │  │  │  │  └─ Vector3Decorator.ts
+│  │  │  │  └─ index.ts
+│  │  │  ├─ index.ts
+│  │  │  └─ proxies
+│  │  │     ├─ AccelerationProxy.ts
+│  │  │     ├─ BooleanProxy.ts
+│  │  │     ├─ ComponentProxy.ts
+│  │  │     ├─ FloatProxy.ts
+│  │  │     ├─ IComponentProxy.ts
+│  │  │     ├─ index.ts
+│  │  │     ├─ SizeProxy.ts
+│  │  │     ├─ Vector2Proxy.ts
+│  │  │     └─ Vector3Proxy.ts
+│  │  ├─ entities
+│  │  │  ├─ Entity.ts
+│  │  │  ├─ IEntity.ts
+│  │  │  └─ index.ts
+│  │  ├─ index.ts
+│  │  ├─ systems
+│  │  │  ├─ AccerationSystem.ts
+│  │  │  ├─ DirectionSystem.ts
+│  │  │  ├─ GravitySystem.ts
+│  │  │  ├─ index.ts
+│  │  │  ├─ ISystem.ts
+│  │  │  ├─ NavigationSystem.ts
+│  │  │  ├─ ShapeRenderSystem.ts
+│  │  │  ├─ System.ts
+│  │  │  ├─ TransformSystem.ts
+│  │  │  └─ VelocitySystem.ts
+│  │  └─ value-objects
+│  │     ├─ component-data
+│  │     │  ├─ AccelerationComponentData.ts
+│  │     │  ├─ FloatComponentData.ts
+│  │     │  ├─ index.ts
+│  │     │  ├─ IntegerComponentData.ts
+│  │     │  ├─ SizeComponentData.ts
+│  │     │  ├─ Vector2ComponentData.ts
+│  │     │  └─ Vector3ComponentData.ts
+│  │     ├─ index.ts
+│  │     └─ schemas
+│  │        ├─ AccelerationSchema.ts
+│  │        ├─ FloatSchema.ts
+│  │        ├─ index.ts
+│  │        ├─ IntegerSchema.ts
+│  │        ├─ SizeSchema.ts
+│  │        ├─ Vector2Schema.ts
+│  │        └─ Vector3Schema.ts
+│  └─ index.ts
+├─ presentation
+│  ├─ index.ts
+│  └─ phaser
+│     ├─ builders
+│     │  ├─ BulletBuilder.ts
+│     │  ├─ index.ts
+│     │  └─ ObjectBuilder.ts
+│     ├─ controllers
+│     │  ├─ index.ts
+│     │  ├─ PhysicController.ts
+│     │  ├─ ShapeRenderController.ts
+│     │  └─ TransformController.ts
+│     ├─ index.ts
+│     └─ models
+│        ├─ index.ts
+│        ├─ PhaserGameObject.ts
+│        └─ PhaserScene.ts
+└─ scenes
+   ├─ CollectableParticle.scene
+   ├─ CollectableParticle.ts
+   ├─ Enemy1.scene
+   ├─ Enemy1.ts
+   ├─ GameUI.scene
+   ├─ GameUI.ts
+   ├─ Level.scene
+   ├─ Level.ts
+   ├─ LevelV1.scene
+   ├─ LevelV1.ts
+   ├─ PlayerPrefab.scene
+   ├─ PlayerPrefab.ts
+   ├─ Preload.scene
+   ├─ Preload.ts
+   ├─ WeveanaJoystick.scene
+   └─ WeveanaJoystick.ts

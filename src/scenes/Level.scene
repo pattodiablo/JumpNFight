@@ -6,6 +6,7 @@
         "snapHeight": 604.1008274744254,
         "exportClass": true,
         "autoImport": true,
+        "superClassName": "PhaserScene",
         "preloadPackFiles": [],
         "createMethodName": "editorCreate",
         "sceneKey": "Level",
