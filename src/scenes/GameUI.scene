@@ -61,6 +61,17 @@
             "scope": "PUBLIC",
             "x": 0,
             "y": 0
+        },
+        {
+            "type": "Sprite",
+            "id": "3576e800-292d-4dd6-8c49-e21ec91ca3c3",
+            "label": "restartBtn",
+            "scope": "PUBLIC",
+            "texture": {
+                "key": "restartBtn"
+            },
+            "x": 769,
+            "y": 1398
         }
     ],
     "plainObjects": [],

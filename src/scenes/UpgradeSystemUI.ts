@@ -58,22 +58,14 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	private upgrade2: Upgrade;
 	private upgrade3: Upgrade;
 	public PlayerSpeed: Array<any> = [200,"RunningIcon","Player", 0,"PlayerSpeed","add","Player speed"];
-	public fallMultiplier: Array<any> = [0.5,"ShieldIcon","Player", 0,"fallMultiplier","add","Gravity when fall"];
-	public JumpVelocity: Array<any> = [100,"ShieldIcon","Player", 0,"JumpVelocity","add","Jump speed"];
-	public lastShotTime: Array<any> = [100,"ShieldIcon","Player", 0,"lastShotTime","add", "Last shot time"];
-	public shotInterval: Array<any> = [8,"LaserIcon","Laser", 0,"shotInterval","substract", "Shot interval"];
-	public laserColor: Array<any> = [1,"LaserIcon","Laser", 0,"laserColor","add", "laser color"];
-	public laserSpeed: Array<any> = [100,"LaserIcon","Laser", 0,"laserSpeed","add", "laser speed"];
-	public laserDuration: Array<any> = [100,"LaserIcon","Laser", 0,"laserDuration","add", "Laser duration"];
-	public collectedParticles: Array<any> = [500,"ShieldIcon","Player", 0,"collectedParticles","add", "Collected Particles"];
-	public CannonVelo: Array<any> = [1000,"MissileIcon","Cannon", 0,"CannonVelo","add", "Initial fire speed"];
-	
+	public CannonVelo: Array<any> = [1000,"RunningIcon","Cannon", 0,"CannonVelo","add", "Initial fire speed"];
 	public background!: Phaser.GameObjects.Rectangle;
-	
 
 	/* START-USER-CODE */
-	public MissileSize: Array<any> = [2,"MissileIcon","Player", 0,"MissileSize","multiply", "Missile size"];
- public upgrades: Array<any> = [this.PlayerSpeed, this.fallMultiplier, this.JumpVelocity, this.lastShotTime, this.shotInterval, this.laserColor, this.laserSpeed, this.laserDuration, this.collectedParticles, this.CannonVelo,this.MissileSize];	
+	public MissileSize: Array<any> = [2,"ShieldIcon","Player", 0,"MissileSize","multiply", "Missile size"];
+	public SawMissile: Array<any> = [2,"ShieldIcon","Player", 0,"SawMissile","add", "Saw Missile Damage"];
+	public AddSawMissile: Array<any> = [1,"ShieldIcon","Player", 0,"AddSawMissile","add", "Add SawMissile"];
+ public upgrades: Array<any> = [this.SawMissile,this.PlayerSpeed, this.CannonVelo,this.MissileSize];	
 //	public upgrades: Array<any> = [this.MissileSize];	
 	public AvailableUpgrades: Array<any> = [...this.upgrades];
 
@@ -126,7 +118,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.btn3.setDepth(2);
 
 
-
+		const factor = this.scene.scale.height/this.scene.scale.width;
 		this.upgrade1.x = this.btn1.x;
 		this.upgrade1.y = this.btn1.y;	
 		this.upgrade2.x = this.btn2.x;
@@ -140,14 +132,22 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.btn2.y = this.scene.scale.height;
 		this.btn3.y = this.scene.scale.height;
 
+		this.btn1.setScale(factor);
+		this.btn2.setScale(factor);
+		this.btn3.setScale(factor);
+		this.upgrade1.setScale(factor);
+		this.upgrade2.setScale(factor);
+		this.upgrade3.setScale(factor);
+
 		// Agregar el texto "Upgrade" en el centro arriba de los botones
-        const upgradeText = this.scene.add.text(width / 2, this.scene.scale.height / 3.5, 'Upgrade', {
+        const upgradeText = this.scene.add.text(width / 2, height-40, 'Upgrade', {
             fontFamily: 'Bahiana',
 			fontSize: '64px',
             color: '#ffffff',
             fontStyle: 'bold'
         });
         upgradeText.setOrigin(0.5, 0.5);
+		upgradeText.setScale(factor);
         this.add(upgradeText);
 
 

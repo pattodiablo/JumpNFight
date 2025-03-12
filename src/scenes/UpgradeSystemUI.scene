@@ -110,109 +110,10 @@
             }
         },
         {
-            "name": "fallMultiplier",
-            "label": "fallMultiplier",
-            "tooltip": "fallMultiplier",
-            "defValue": "[0.5,\"ShieldIcon\",\"Player\", 0,\"fallMultiplier\",\"add\",\"Gravity when fall\"]",
-            "customDefinition": false,
-            "type": {
-                "id": "expression",
-                "expressionType": "Array<any>"
-            }
-        },
-        {
-            "name": "JumpVelocity",
-            "label": "JumpVelocity",
-            "tooltip": "JumpVelocity",
-            "defValue": "[100,\"ShieldIcon\",\"Player\", 0,\"JumpVelocity\",\"add\",\"Jump speed\"]",
-            "customDefinition": false,
-            "type": {
-                "id": "expression",
-                "expressionType": "Array<any>"
-            }
-        },
-        {
-            "name": "lastShotTime",
-            "label": "lastShotTime",
-            "tooltip": "lastShotTime",
-            "defValue": "[100,\"ShieldIcon\",\"Player\", 0,\"lastShotTime\",\"add\", \"Last shot time\"]",
-            "customDefinition": false,
-            "type": {
-                "id": "expression",
-                "expressionType": "Array<any>"
-            }
-        },
-        {
-            "name": "shotInterval",
-            "label": "shotInterval",
-            "tooltip": "shotInterval",
-            "defValue": "[8,\"LaserIcon\",\"Laser\", 0,\"shotInterval\",\"substract\", \"Shot interval\"]",
-            "customDefinition": false,
-            "type": {
-                "id": "expression",
-                "expressionType": "Array<any>"
-            }
-        },
-        {
-            "name": "laserColor",
-            "label": "laserColor",
-            "tooltip": "laserColor",
-            "defValue": "[1,\"LaserIcon\",\"Laser\", 0,\"laserColor\",\"add\", \"laser color\"]",
-            "customDefinition": false,
-            "type": {
-                "id": "expression",
-                "expressionType": "Array<any>"
-            }
-        },
-        {
-            "name": "laserSpeed",
-            "label": "laserSpeed",
-            "tooltip": "laserSpeed",
-            "defValue": "[100,\"LaserIcon\",\"Laser\", 0,\"laserSpeed\",\"add\", \"laser speed\"]",
-            "customDefinition": false,
-            "type": {
-                "id": "expression",
-                "expressionType": "Array<any>"
-            }
-        },
-        {
-            "name": "laserDuration",
-            "label": "laserDuration",
-            "tooltip": "laserDuration",
-            "defValue": "[100,\"LaserIcon\",\"Laser\", 0,\"laserDuration\",\"add\", \"Laser duration\"]",
-            "customDefinition": false,
-            "type": {
-                "id": "expression",
-                "expressionType": "Array<any>"
-            }
-        },
-        {
-            "name": "collectedParticles",
-            "label": "collectedParticles",
-            "tooltip": "collectedParticles",
-            "defValue": "[500,\"ShieldIcon\",\"Player\", 0,\"collectedParticles\",\"add\", \"Collected Particles\"]",
-            "customDefinition": false,
-            "type": {
-                "id": "expression",
-                "expressionType": "Array<any>"
-            }
-        },
-        {
             "name": "CannonVelo",
             "label": "CannonVelo",
             "tooltip": "CannonVelo",
-            "defValue": "[1000,\"MissileIcon\",\"Cannon\", 0,\"CannonVelo\",\"add\", \"Initial fire speed\"]",
-            "customDefinition": false,
-            "type": {
-                "id": "expression",
-                "expressionType": "Array<any>"
-            }
-        },
-        {
-            "name": "upgrades",
-            "label": "upgrades",
-            "tooltip": "upgrades",
-            "defValue": "[this.PlayerSpeed, this.fallMultiplier, this.JumpVelocity, this.lastShotTime, this.shotInterval, this.laserColor, this.laserSpeed, this.laserDuration, this.collectedParticles, this.CannonVelo]",
+            "defValue": "[1000,\"RunningIcon\",\"Cannon\", 0,\"CannonVelo\",\"add\", \"Initial fire speed\"]",
             "customDefinition": false,
             "type": {
                 "id": "expression",
@@ -228,17 +129,6 @@
             "type": {
                 "id": "expression",
                 "expressionType": "Phaser.GameObjects.Rectangle"
-            }
-        },
-        {
-            "name": "AvailableUpgrades",
-            "label": "AvailableUpgrades",
-            "tooltip": "",
-            "defValue": "[...this.upgrades]",
-            "customDefinition": false,
-            "type": {
-                "id": "expression",
-                "expressionType": "Array<any>"
             }
         }
     ]

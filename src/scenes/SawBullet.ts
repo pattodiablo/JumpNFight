@@ -21,6 +21,7 @@ export default class SawBullet extends Phaser.GameObjects.Image {
 	public BulletGravity: number = 100;
 	public BulletVelocity: number = 2000;
 	public LifeTime: number = 3000;
+	public Damage: number = 0;
 
 	/* START-USER-CODE */
 

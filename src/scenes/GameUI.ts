@@ -11,13 +11,11 @@ import UpgradeSystemUI from "./UpgradeSystemUI";
 /* END-USER-IMPORTS */
 
 export default class GameUI extends Phaser.Scene {
-	private scoreCounter!: ScoreCounter;
-	private playerX!: number;
+
 	constructor() {
 		super("GameUI");
 
 		/* START-USER-CTR-CODE */
-
 
 
 		/* END-USER-CTR-CODE */
@@ -26,6 +24,7 @@ export default class GameUI extends Phaser.Scene {
 	editorCreate(): void {
 
 		// weveanaJoystick
+		
 		const weveanaJoystick = new WeveanaJoystick(this, 0, 0);
 		this.add.existing(weveanaJoystick);
 		weveanaJoystick.name = "weveanaJoystick";
@@ -44,10 +43,14 @@ export default class GameUI extends Phaser.Scene {
 		const upgradeSystem = new UpgradeSystemUI(this, 0, 0);
 		this.add.existing(upgradeSystem);
 
+		// restartBtn
+		const restartBtn = this.add.sprite(769, 1398, "restartBtn");
+
 		this.weveanaJoystick = weveanaJoystick;
 		this.jumpBtn = jumpBtn;
 		this.fullScreenBtn = fullScreenBtn;
 		this.upgradeSystem = upgradeSystem;
+		this.restartBtn = restartBtn;
 
 		this.events.emit("scene-awake");
 	}
@@ -56,6 +59,7 @@ export default class GameUI extends Phaser.Scene {
 	public jumpBtn!: Phaser.GameObjects.Image;
 	public fullScreenBtn!: Phaser.GameObjects.Image;
 	public upgradeSystem!: UpgradeSystemUI;
+	public restartBtn!: Phaser.GameObjects.Sprite;
 
 	/* START-USER-CODE */
 	public levelText!: Phaser.GameObjects.Text;
@@ -65,11 +69,29 @@ export default class GameUI extends Phaser.Scene {
 	public level: number = 1;
 	private LevelReach: number = 40;
 	private collectedParticles: number = 0;
+	public scoreCounter!: ScoreCounter;
 	// Write your code here
 
 	create() {
 
 		this.editorCreate();
+
+		this.restartBtn.visible = false;
+		this.restartBtn.setInteractive();
+		this.restartBtn.on("pointerdown", () => {
+			
+			this.levelBar.setVisible(true);
+			this.updateBar.setVisible(true);
+			this.strokeBar.setVisible(true);
+			this.levelText.setVisible(true);
+
+			this.scene.stop('Level');
+    this.scene.stop('GameUI');
+    this.scene.stop('UpgradeSystemUI');
+
+    // Reiniciar la escena principal
+    this.scene.start('Level');
+		});
 
 		const levelBar = this.add.rectangle(this.scale.width / 2, 30, this.scale.width / 2, 35, 0xffffff);
         levelBar.setOrigin(0.5, 0.5);
@@ -150,7 +172,7 @@ export default class GameUI extends Phaser.Scene {
 		// Escuchar el evento 'particleCollected'
 		const levelScene = this.scene.get('Level') as Phaser.Scene;
 		levelScene.events.on('particleCollected', this.updateLevelBar, this);
-		
+
 		//posicion pantalla ScoreCounter
 		this.scoreCounter = new ScoreCounter(this, this.levelBar.x+this.levelBar.width/2+20, this.levelBar.y-this.levelBar.height/2);
 		// cambia el tamaño del valor
@@ -164,6 +186,70 @@ export default class GameUI extends Phaser.Scene {
 		levelScene.events.on("playerMove", (playerX: number) => {
 			this.scoreCounter.update(playerX);
 		});
+	}
+
+	public ShowResults(): void {
+		console.log("show results: ");
+		const factor = this.scale.height / this.scale.width;
+		this.levelBar.setVisible(false);
+		this.updateBar.setVisible(false);
+		this.strokeBar.setVisible(false);
+		this.levelText.setVisible(false);
+
+		this.jumpBtn.setVisible(false);	
+		this.weveanaJoystick.setVisible(false);
+		this.fullScreenBtn.setVisible(false);
+
+		const levelText = this.add.text(this.scale.width / 2, this.scale.height/5, 'GAME OVER', {
+			fontFamily: 'Bahiana',
+            fontSize: '264px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
+        levelText.setOrigin(0.5, 0.5);
+		levelText.setScale(factor);
+
+		const disntancetraveled = this.add.text(this.scale.width / 3, levelText.y+levelText.height/3, 'Distance traveled', {
+			fontFamily: 'Bahiana',
+            fontSize: '50px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
+        disntancetraveled.setOrigin(0.5, 0.5);
+		disntancetraveled.setScale(factor);
+
+		const distancereached = (this.scoreCounter as any).GetDistance();
+		const distanceReachedText = this.add.text(this.scale.width / 3, disntancetraveled.y+disntancetraveled.height/2 , distancereached + " " + "M", {
+			fontFamily: 'Bahiana',
+            fontSize: '60px',
+            color: '#ff0000',
+            fontStyle: 'bold'
+        });
+        distanceReachedText.setOrigin(0.5, 0.5);
+		distanceReachedText.setScale(factor);
+
+		const LevelReachedText = this.add.text(this.scale.width / 1.5, levelText.y+levelText.height/3, 'Level reached', {
+			fontFamily: 'Bahiana',
+            fontSize: '50px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
+        LevelReachedText.setOrigin(0.5, 0.5);
+		LevelReachedText.setScale(factor);
+
+		const LevelGet = this.level.toString();
+		const LevelReached = this.add.text(this.scale.width / 1.5, disntancetraveled.y+disntancetraveled.height/2 , LevelGet, {
+			fontFamily: 'Bahiana',
+            fontSize: '60px',
+            color: '#ff0000',
+            fontStyle: 'bold'
+        });
+        LevelReached.setOrigin(0.5, 0.5);
+		LevelReached.setScale(factor);
+
+		this.restartBtn.setVisible(true);
+		this.restartBtn.setPosition(this.scale.width / 2, this.scale.height / 1.5);
+		this.restartBtn.setScale(factor);
 	}
 
 	updateLevelBar(collectedParticles: number) {

@@ -127,7 +127,7 @@ export default class Level extends PhaserScene {
         // Reproduce la animación 'Idle' por defecto
         this.player.animationState.setAnimation(0, "Idle", true);
 		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,0);
-		this.cameras.main.setZoom(factor/2); // Ajustar el zoom de la cámara para que parezca más alejada
+		this.cameras.main.setZoom(factor/3); // Ajustar el zoom de la cámara para que parezca más alejada
 		this.platforms = this.add.group();
         this.enemies = this.add.group();
         this.bg1.setDepth(-1);
@@ -286,8 +286,8 @@ createParticles() {
         if (this.player.y > 2000) {
             const gameUI = this.scene.get('GameUI') as any;
             const EnergyLevel = gameUI.level;
-            gameUI.updateLevelBar(-25*EnergyLevel);
-
+          //  gameUI.updateLevelBar(-25*EnergyLevel);
+            this.player.handleDamage(900);
             if (this.currentPlatform) {
                 this.player.x = this.currentPlatform.x;
                 this.player.y = this.currentPlatform.y - 1800;
@@ -299,8 +299,8 @@ createParticles() {
         }
 
          // Actualizar la posición de bg1 para crear el efecto parallax
-         this.bg1.tilePositionX = this.cameras.main.scrollX * 0.01;
-         this.bg1.tilePositionY = this.cameras.main.scrollY * 0.05;
+         this.bg1.tilePositionX = this.cameras.main.scrollX * 0.05;
+    
          this.bg1.x = this.cameras.main.scrollX-this.bg1.width/2;
          this.bg1.y = this.cameras.main.scrollY-this.bg1.height/2;
     }

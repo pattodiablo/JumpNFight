@@ -355,10 +355,51 @@
             "name": "ShieldLife",
             "label": "ShieldLife",
             "tooltip": "",
-            "defValue": 3,
+            "defValue": 30,
             "customDefinition": false,
             "type": {
                 "id": "number"
+            }
+        },
+        {
+            "name": "IsDead",
+            "label": "IsDead",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "OrioginalShieldLife",
+            "label": "OrioginalShieldLife",
+            "tooltip": "",
+            "defValue": "this.ShieldLife",
+            "customDefinition": false,
+            "type": {
+                "id": "expression",
+                "expressionType": "any"
+            }
+        },
+        {
+            "name": "ShieldRestoreTime",
+            "label": "ShieldRestoreTime",
+            "tooltip": "",
+            "defValue": 10000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "IsRestoringShield",
+            "label": "IsRestoringShield",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
             }
         }
     ]

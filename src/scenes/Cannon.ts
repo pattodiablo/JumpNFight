@@ -57,8 +57,9 @@ handlePlayerCollision(cannon: Phaser.GameObjects.GameObject, player: Phaser.Game
 		const playerSprite = player as Phaser.GameObjects.Sprite & { hideAndRoll: (x:number,y:number) => void };
 		playerSprite.hideAndRoll(this.x, this.y);
 		this.IsActiveCannon = false;
+		this.setTint(0xff0000);
 		this.scene.time.delayedCall(6000, () => {
-			this.IsActiveCannon = true;
+			this.IsActiveCannon = false;
 		}
 		, [], this);
 	}

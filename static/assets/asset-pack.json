@@ -97,6 +97,11 @@
                 "key": "PlayerShield"
             },
             {
+                "url": "assets/restartBtn.png",
+                "type": "image",
+                "key": "restartBtn"
+            },
+            {
                 "url": "assets/RunningIcon.png",
                 "type": "image",
                 "key": "RunningIcon"

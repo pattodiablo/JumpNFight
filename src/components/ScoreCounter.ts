@@ -41,6 +41,10 @@ export default class ScoreCounter {
 
         this.text.setText(`Distance: ${this.maxMeters}`);
     }
+
+    public GetDistance(){
+        return this.maxMeters;
+    }
 }
 /* END OF COMPILED CODE */
 /*

@@ -64,10 +64,16 @@ export default class PlayerPrefab extends SpineGameObject {
 	public lastShotTimeMissile: number = 2000;
 	public Shield!: any;
 	public IsShieldActive: boolean = true;
-	public ShieldLife: number = 3;
+	public ShieldLife: number = 30;
+	public IsDead: boolean = false;
+	public OrioginalShieldLife: any = this.ShieldLife;
+	public ShieldRestoreTime: number = 10000;
+	public IsRestoringShield: boolean = false;
 
 	/* START-USER-CODE */
 	public MissileSize: number = 100;
+	public SawMissile: number = 0;
+	public AddSawMissile: number = 1;
 	private _graphics: Phaser.GameObjects.Graphics = this.scene.add.graphics();
 
 	create(){
@@ -205,7 +211,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			if((enemy as any).IsNearPlayer){
 
 				// Cast ray
-				this.castRay(enemy);
+				//this.castRay(enemy);
 
 				if (this.scene.time.now > this.lastShotTimeMissile + 1000) {
 
@@ -213,7 +219,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 					// Shoot misile
 					this.scene.time.delayedCall(100, () => {
-						this.shootMisile(enemy);
+						//this.shootMisile(enemy);
 					});
 
 					this.lastShotTimeMissile = this.scene.time.now;
@@ -227,7 +233,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 					// Shoot bullet
 					this.scene.time.delayedCall(100, () => {
-					//	this.shootBullet(enemy);
+						//this.shootBullet(enemy);
 					});
 
 					this.lastShotTime = this.scene.time.now;
@@ -248,9 +254,16 @@ export default class PlayerPrefab extends SpineGameObject {
 	}
 
 	shootSawBullet(enemy: Phaser.GameObjects.Sprite) {
-
-		const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
-
+		for (let i = 0; i < this.AddSawMissile; i++) {
+			if(this.SawMissile>1){
+				console.log("shooting saw missile");
+				const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
+				sawBullet.Damage = this.SawMissile;
+			}
+		
+		}
+	
+				
 
 	}
 
@@ -302,8 +315,8 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		const bullet: Graphic = new ColoredBulletBuilder(this.scene as PhaserScene)
 			.setOrigin({ x:this.x, y:this.y })
-			.setColor(Phaser.Display.Color.HexStringToColor("F100FF").color)
-			.setSize({ width: 200, height: 50 })
+			.setColor(Phaser.Display.Color.HexStringToColor("FF0000").color)
+			.setSize({ width: 100, height: 30 })
 			.setAcceleration({ magnitude: 9000, initialSpeed: 1000 })
 			.setTarget({ x:enemy.x, y:enemy.y })
 			.hasGravity(true)
@@ -411,113 +424,118 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		const cursors = this.cursors;
 		let newAnimation = this.currentAnimation;
+if(this.IsDead){
+	newAnimation = "Dead";
+}else{
+	if (this.scene.input.keyboard) {
+		const playerBody = this.body as Phaser.Physics.Arcade.Body;
 
-		if (this.scene.input.keyboard) {
-            const playerBody = this.body as Phaser.Physics.Arcade.Body;
+		 // Verificar si se presiona la tecla S o la tecla hacia abajo para activar HyperFall
+		 if (this.isInAir && (cursors.down.isDown || this.scene.input.keyboard.keys[83].isDown || this.TouchY==1)&&playerBody.velocity.y > 0) {
+			playerBody.setVelocityY(this.JumpVelocity * 3); // Aumentar la velocidad de caída
+			newAnimation = "HyperFall"; // Cambiar a la animación de HyperFall
+		}
 
-			 // Verificar si se presiona la tecla S o la tecla hacia abajo para activar HyperFall
-			 if (this.isInAir && (cursors.down.isDown || this.scene.input.keyboard.keys[83].isDown || this.TouchY==1)&&playerBody.velocity.y > 0) {
-				playerBody.setVelocityY(this.JumpVelocity * 3); // Aumentar la velocidad de caída
-				newAnimation = "HyperFall"; // Cambiar a la animación de HyperFall
+		if (cursors.left.isDown || this.scene.input.keyboard.keys[65].isDown || this.TouchX==-1) {
+			// Mover a la izquierda
+			playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, -this.PlayerSpeed, 0.3));
+			if (!this.facingLeft) {
+				this.skeleton.scaleX=-1;
+				this.facingLeft = true;
+			}
+			if (!this.isJumping) {
+				if (this.mouseInactiveTimer <= this.mouseInactiveThreshold) {
+				newAnimation = "RundAndGun";
+				}else{
+					newAnimation = "Run";
+				}
+			}
+		} else if (cursors.right.isDown || this.scene.input.keyboard.keys[68].isDown || this.TouchX==1) {
+			// Mover a la derecha
+			playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, this.PlayerSpeed, 0.3));
+			if (this.facingLeft) {
+				this.skeleton.scaleX=1;
+				this.facingLeft = false;
+			}
+			if (!this.isJumping) {
+
+				if (this.mouseInactiveTimer <= this.mouseInactiveThreshold) {
+				newAnimation = "RundAndGun";
+				}else{
+					newAnimation = "Run";
+				}
+			}
+		} else {
+			// Detener animación
+			if(!this.isJumping){
+				playerBody.setVelocityX(0);
+				newAnimation = "IdleGun";
+
+			}
+		}
+
+		  // Verificar si se presiona la tecla W o la barra espaciadora para saltar
+		  if ((cursors.up.isDown || this.scene.input.keyboard.keys[87].isDown || this.scene.input.keyboard.keys[32].isDown) || this.TouchJump) {
+			if (!this.isJumping) {
+				playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
+				this.isJumping = true;
+				this.isInAir = true;
+				newAnimation = "Jump"; // Cambiar a la animación de salto
+			} else if (this.isJumping && !this.hasDoubleJumped && playerBody.velocity.y > 0) {
+				playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para el doble salto
+				this.hasDoubleJumped = true;
+				newAnimation = "Roll"; // Cambiar a la animación de Roll
+
+				const camera = this.scene.cameras.main;
+			camera.zoomTo(this.factor/3, 500); // Alejar la cámara en 500ms
+			this.scene.time.delayedCall(1000, () => {
+				camera.zoomTo(this.factor/2.5, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
+			});
+
+
+			}
+		}
+
+
+
+		 // Aplicar velocidad de caída aumentada
+			 if (playerBody.velocity.y > 0) {
+				this.IsFalling = true;
+				newAnimation = "Falling";
+				playerBody.setGravityY(this.playerGravity * this.fallMultiplier);
+				if(this.IsFallingAfterCannon){
+					this.IsFallingAfterCannon = false;
+					this.createalandingPlatform();
+				}
+			} else {
+				playerBody.setGravityY(this.playerGravity);
 			}
 
-            if (cursors.left.isDown || this.scene.input.keyboard.keys[65].isDown || this.TouchX==-1) {
-                // Mover a la izquierda
-                playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, -this.PlayerSpeed, 0.3));
-				if (!this.facingLeft) {
-					this.skeleton.scaleX=-1;
-                    this.facingLeft = true;
-                }
-				if (!this.isJumping) {
-					if (this.mouseInactiveTimer <= this.mouseInactiveThreshold) {
-                    newAnimation = "RundAndGun";
-					}else{
-						newAnimation = "Run";
-                	}
-				}
-            } else if (cursors.right.isDown || this.scene.input.keyboard.keys[68].isDown || this.TouchX==1) {
-                // Mover a la derecha
-				playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, this.PlayerSpeed, 0.3));
-				if (this.facingLeft) {
-					this.skeleton.scaleX=1;
-                    this.facingLeft = false;
-                }
-				if (!this.isJumping) {
+		// Verificar si el jugador ha aterrizado
+		if (playerBody.blocked.down) {
+			this.isJumping = false;
+			this.hasDoubleJumped = false; // Resetear el doble salto al aterrizar
+			this.isInAir = false; // Resetear el estado de estar en el aire al aterrizar
+			this.IsFalling = false;
+		}
 
-					if (this.mouseInactiveTimer <= this.mouseInactiveThreshold) {
-					newAnimation = "RundAndGun";
-					}else{
-						newAnimation = "Run";
-					}
-                }
-            } else {
-                // Detener animación
-				if(!this.isJumping){
-					playerBody.setVelocityX(0);
-					newAnimation = "IdleGun";
+		   // Incrementar el temporizador de inactividad del mouse
+		   this.mouseInactiveTimer += delta;
 
-				}
-            }
+	}
 
-			  // Verificar si se presiona la tecla W o la barra espaciadora para saltar
-			  if ((cursors.up.isDown || this.scene.input.keyboard.keys[87].isDown || this.scene.input.keyboard.keys[32].isDown) || this.TouchJump) {
-                if (!this.isJumping) {
-                    playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
-                    this.isJumping = true;
-					this.isInAir = true;
-                    newAnimation = "Jump"; // Cambiar a la animación de salto
-                } else if (this.isJumping && !this.hasDoubleJumped && playerBody.velocity.y > 0) {
-                    playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para el doble salto
-                    this.hasDoubleJumped = true;
-                    newAnimation = "Roll"; // Cambiar a la animación de Roll
+	if (this.mouseInactiveTimer > this.mouseInactiveThreshold && newAnimation === "IdleGun") {
+		newAnimation = "Idle";
+	}
+}
 
-					const camera = this.scene.cameras.main;
-                camera.zoomTo(this.factor/2.5, 500); // Alejar la cámara en 500ms
-                this.scene.time.delayedCall(1000, () => {
-                    camera.zoomTo(this.factor/2, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
-                });
-
-
-                }
-            }
-
-
-
-			 // Aplicar velocidad de caída aumentada
-				 if (playerBody.velocity.y > 0) {
-					this.IsFalling = true;
-					newAnimation = "Falling";
-					playerBody.setGravityY(this.playerGravity * this.fallMultiplier);
-					if(this.IsFallingAfterCannon){
-						this.IsFallingAfterCannon = false;
-						this.createalandingPlatform();
-					}
-				} else {
-					playerBody.setGravityY(this.playerGravity);
-				}
-
-            // Verificar si el jugador ha aterrizado
-            if (playerBody.blocked.down) {
-                this.isJumping = false;
-				this.hasDoubleJumped = false; // Resetear el doble salto al aterrizar
-				this.isInAir = false; // Resetear el estado de estar en el aire al aterrizar
-				this.IsFalling = false;
-            }
-
-			   // Incrementar el temporizador de inactividad del mouse
-			   this.mouseInactiveTimer += delta;
-
-        }
-
-		if (this.mouseInactiveTimer > this.mouseInactiveThreshold && newAnimation === "IdleGun") {
-            newAnimation = "Idle";
-        }
 
 		// Cambiar la animación solo si es diferente a la actual
         if (newAnimation !== this.currentAnimation) {
-            this.animationState.setAnimation(0, newAnimation, newAnimation !== "Jump" && newAnimation !== "Falling");
+            this.animationState.setAnimation(0, newAnimation, newAnimation !== "Jump" && newAnimation !== "Falling" && newAnimation !== "Dead");
             this.currentAnimation = newAnimation;
         }
+
 
 	//	this.ArmsFollowMouse(this, this.scene.input.mousePointer);
 
@@ -527,7 +545,16 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	handleDamage(EnemyDamage: number) {
 		if(this.IsShieldActive){
+
 			this.ShieldLife -= EnemyDamage;
+			console.log("Shield Life: "+this.ShieldLife);
+			this.scene.tweens.add({
+				targets: this.Shield,
+				alpha: {from: 1, to: 0.5},
+				duration: 100,	
+				repeat: 10,
+				ease: 'Bounce.easeOut'
+			});
 			if(this.ShieldLife<=this.ShieldLife/2 && this.ShieldLife>0){
 				console.log("Shield Life: "+this.ShieldLife);
 				this.scene.tweens.add({
@@ -538,7 +565,7 @@ export default class PlayerPrefab extends SpineGameObject {
                     ease: 'Bounce.easeOut'
                 });
 			}else if(this.ShieldLife<=0){
-			
+
 				this.scene.tweens.add({
                     targets: this.Shield,
 					alpha: {from: 1, to: 0.1},
@@ -550,23 +577,34 @@ export default class PlayerPrefab extends SpineGameObject {
 						this.Shield.setVisible(false);
 					}
                 });
-			
-				
+
+
 			}
 
+		}else{
+			this.IsDead = true;
+			const playerBody = this.body as Phaser.Physics.Arcade.Body;
+			playerBody.setEnable(false);
+			playerBody.setImmovable(true); // Hacer que el enemigo sea inmovible
+			this.scene.cameras.main.fadeOut(2000, 0, 0, 0); // Desvanecer a negro en 1 segundo
+			const gameUIScene = this.scene.scene.get('GameUI') as Phaser.Scene;
+			(gameUIScene as any).ShowResults();
 		}
-
-		this.scene.time.addEvent({
-            delay: 5000, // Tiempo en milisegundos (5 segundos)
-            callback: () => {
-                this.restoreShieldLife();
-            }
-        });
+		if(!this.IsRestoringShield){
+			this.scene.time.addEvent({
+				delay: this.ShieldRestoreTime, // Tiempo en milisegundos (5 segundos)
+				callback: () => {
+					this.restoreShieldLife();
+				}
+			});
+		}
+	
 
 	}
 
 	restoreShieldLife() {
-		this.ShieldLife = 3; // Restaurar la vida del escudo a su valor original
+		this.IsRestoringShield = true;
+		this.ShieldLife = this.OrioginalShieldLife; // Restaurar la vida del escudo a su valor original
 		this.IsShieldActive = true;
 		this.Shield.setVisible(true);
 		this.Shield.setAlpha(0.1);
@@ -577,9 +615,12 @@ export default class PlayerPrefab extends SpineGameObject {
 			duration: 50,
 			repeat: 10,
 			ease: 'Bounce.easeIn',
-			
+			onComplete: () => {
+				this.IsRestoringShield = false;
+			}
+
 		});
-	
+
 	}
 
 	createalandingPlatform(){
