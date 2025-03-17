@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import GameUI from './scenes/GameUI';
 import Level from "./scenes/Level";
+import LevelPreloader from "./scenes/LevelPreloader";
 import preloadAssetPackUrl from "../static/assets/preload-asset-pack.json";
 import Preload from "./scenes/Preload";
 import { SpinePlugin } from "@esotericsoftware/spine-phaser";
@@ -163,7 +164,7 @@ window.addEventListener('load', function () {
 			  }]
 		  },
 		
-		scene: [Boot, Preload, Level, GameUI],
+		scene: [Boot, Preload, Level, GameUI, LevelPreloader],
         input: {
             keyboard: true, // Asegúrate de que el sistema de teclado esté habilitado
             mouse: true,    // Asegúrate de que el sistema de ratón esté habilitado

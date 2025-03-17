@@ -79,18 +79,19 @@ export default class GameUI extends Phaser.Scene {
 		this.restartBtn.visible = false;
 		this.restartBtn.setInteractive();
 		this.restartBtn.on("pointerdown", () => {
-			
+
 			this.levelBar.setVisible(true);
 			this.updateBar.setVisible(true);
 			this.strokeBar.setVisible(true);
 			this.levelText.setVisible(true);
 
-			this.scene.stop('Level');
-    this.scene.stop('GameUI');
-    this.scene.stop('UpgradeSystemUI');
-
-    // Reiniciar la escena principal
-    this.scene.start('Level');
+		
+			
+			this.load.sceneFile("LevelPreloader", 'src/scenes/LevelPreloader.ts');
+			this.scene.start("LevelPreloader");
+			this.scene.remove('Level');
+			this.scene.remove('GameUI');	
+			
 		});
 
 		const levelBar = this.add.rectangle(this.scale.width / 2, 30, this.scale.width / 2, 35, 0xffffff);
