@@ -43,6 +43,18 @@
             "originY": 0,
             "width": 1920,
             "height": 1080
+        },
+        {
+            "prefabId": "7ce445a6-45bd-4f74-bb66-8a4737fa4a72",
+            "id": "f51d2027-5550-4135-af34-51daf43f1db0",
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "label": "spritemap0",
+            "scope": "PUBLIC",
+            "x": 715,
+            "y": 740
         }
     ],
     "plainObjects": [],

@@ -24,7 +24,6 @@ export default class GameUI extends Phaser.Scene {
 	editorCreate(): void {
 
 		// weveanaJoystick
-		
 		const weveanaJoystick = new WeveanaJoystick(this, 0, 0);
 		this.add.existing(weveanaJoystick);
 		weveanaJoystick.name = "weveanaJoystick";
@@ -85,13 +84,13 @@ export default class GameUI extends Phaser.Scene {
 			this.strokeBar.setVisible(true);
 			this.levelText.setVisible(true);
 
-		
-			
+
+
 			this.load.sceneFile("LevelPreloader", 'src/scenes/LevelPreloader.ts');
 			this.scene.start("LevelPreloader");
 		//	this.scene.remove('Level');
 		//	this.scene.remove('GameUI');	
-			
+
 		});
 
 		const levelBar = this.add.rectangle(this.scale.width / 2, 30, this.scale.width / 2, 35, 0xffffff);
@@ -210,7 +209,7 @@ export default class GameUI extends Phaser.Scene {
         levelText.setOrigin(0.5, 0.5);
 		levelText.setScale(factor);
 
-		const disntancetraveled = this.add.text(this.scale.width / 3, levelText.y+levelText.height/3, 'Distance traveled', {
+		const disntancetraveled = this.add.text(this.scale.width / 3, this.scale.height/2.5, 'Distance traveled', {
 			fontFamily: 'Bahiana',
             fontSize: '50px',
             color: '#ffffff',
@@ -220,7 +219,7 @@ export default class GameUI extends Phaser.Scene {
 		disntancetraveled.setScale(factor);
 
 		const distancereached = (this.scoreCounter as any).GetDistance();
-		const distanceReachedText = this.add.text(this.scale.width / 3, disntancetraveled.y+disntancetraveled.height/2 , distancereached + " " + "M", {
+		const distanceReachedText = this.add.text(this.scale.width / 3, this.scale.height/2 , distancereached + " " + "M", {
 			fontFamily: 'Bahiana',
             fontSize: '60px',
             color: '#ff0000',
@@ -229,7 +228,7 @@ export default class GameUI extends Phaser.Scene {
         distanceReachedText.setOrigin(0.5, 0.5);
 		distanceReachedText.setScale(factor);
 
-		const LevelReachedText = this.add.text(this.scale.width / 1.5, levelText.y+levelText.height/3, 'Level reached', {
+		const LevelReachedText = this.add.text(this.scale.width / 1.5, this.scale.height/2.5, 'Level reached', {
 			fontFamily: 'Bahiana',
             fontSize: '50px',
             color: '#ffffff',
@@ -239,7 +238,7 @@ export default class GameUI extends Phaser.Scene {
 		LevelReachedText.setScale(factor);
 
 		const LevelGet = this.level.toString();
-		const LevelReached = this.add.text(this.scale.width / 1.5, disntancetraveled.y+disntancetraveled.height/2 , LevelGet, {
+		const LevelReached = this.add.text(this.scale.width / 1.5, this.scale.height/2 , LevelGet, {
 			fontFamily: 'Bahiana',
             fontSize: '60px',
             color: '#ff0000',
@@ -250,7 +249,7 @@ export default class GameUI extends Phaser.Scene {
 
 		this.restartBtn.setVisible(true);
 		this.restartBtn.setPosition(this.scale.width / 2, this.scale.height / 1.5);
-		this.restartBtn.setScale(factor);
+		this.restartBtn.setScale(factor/2);
 	}
 
 	updateLevelBar(collectedParticles: number) {

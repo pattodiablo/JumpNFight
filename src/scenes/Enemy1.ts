@@ -220,7 +220,7 @@ export default class Enemy1 extends SpineGameObject {
     // Agregar un efecto de "camera shake"
 	const gameUI = this.scene.scene.get('GameUI') as any;
 	const EnergyLevel = gameUI.level;
-	gameUI.updateLevelBar(-this.EnemyDamage*EnergyLevel);
+	//gameUI.updateLevelBar(-this.EnemyDamage*EnergyLevel);
 		// Reducir la vida del jugador
 
 		( player as any).handleDamage(this.EnemyDamage);

@@ -2,6 +2,11 @@
     "section1": {
         "files": [
             {
+                "url": "assets/Animations/animations.json",
+                "type": "animation",
+                "key": "animations"
+            },
+            {
                 "url": "assets/bg1.png",
                 "type": "image",
                 "key": "bg1"
@@ -29,7 +34,8 @@
             {
                 "url": "assets/SpineAnimations/Enemy1/EnemyV1.json",
                 "type": "spineJson",
-                "key": "EnemyV1"
+                "key": "EnemyV1",
+                "previewAtlasKey": "EnemyV1-atlas"
             },
             {
                 "url": "assets/SpineAnimations/Enemy1/EnemyV1.atlas",
@@ -44,7 +50,8 @@
             {
                 "url": "assets/SpineAnimations/IdlePlayer/Idle.json",
                 "type": "spineJson",
-                "key": "Idle"
+                "key": "Idle",
+                "previewAtlasKey": "Idle-atlas"
             },
             {
                 "url": "assets/SpineAnimations/IdlePlayer/Idle.atlas",
@@ -57,9 +64,27 @@
                 "key": "JumpBtn"
             },
             {
+                "url": "assets/Animations/JumpNRunAnimations/JumpNRunAnimations.png",
+                "frameConfig": {
+                    "frameWidth": 80,
+                    "frameHeight": 80,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "JumpNRunAnimations"
+            },
+            {
                 "url": "assets/LaserIcon.png",
                 "type": "image",
                 "key": "LaserIcon"
+            },
+            {
+                "url": "assets/laserTexture.png",
+                "type": "image",
+                "key": "laserTexture"
             },
             {
                 "url": "assets/missileV1.png",
@@ -84,7 +109,8 @@
             {
                 "url": "assets/SpineAnimations/Player/Player.json",
                 "type": "spineJson",
-                "key": "Player"
+                "key": "Player",
+                "previewAtlasKey": "Player-atlas"
             },
             {
                 "url": "assets/SpineAnimations/Player/Player.atlas",

@@ -5,6 +5,7 @@
 
 import PhaserScene from "../presentation/phaser/models/PhaserScene";
 import PlayerPrefab from "./PlayerPrefab";
+import LaserShot from "./LaserShot";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
 import Enemy1 from "./Enemy1";
@@ -51,14 +52,20 @@ export default class Level extends PhaserScene {
 		const bg1 = this.add.tileSprite(0, 0, 1920, 1080, "bg1");
 		bg1.setOrigin(0, 0);
 
+		// spritemap0
+		const spritemap0 = new LaserShot(this, 715, 740);
+		this.add.existing(spritemap0);
+
 		this.player = player;
 		this.bg1 = bg1;
+		this.spritemap0 = spritemap0;
 
 		this.events.emit("scene-awake");
 	}
 
 	public player!: PlayerPrefab;
 	public bg1!: Phaser.GameObjects.TileSprite;
+	public spritemap0!: LaserShot;
 
 	/* START-USER-CODE */
 
@@ -300,7 +307,7 @@ createParticles() {
 
          // Actualizar la posición de bg1 para crear el efecto parallax
          this.bg1.tilePositionX = this.cameras.main.scrollX * 0.05;
-    
+
          this.bg1.x = this.cameras.main.scrollX-this.bg1.width/2;
          this.bg1.y = this.cameras.main.scrollY-this.bg1.height/2;
     }
