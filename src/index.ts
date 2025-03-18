@@ -121,8 +121,7 @@ class CustomGameImpl extends Phaser.Game implements CustomGame {
     };
 }
 
-window.addEventListener('load', function () {
-    
+function initializeGame() {
     const game = new CustomGameImpl({
  
         width: window.innerWidth,
@@ -196,5 +195,11 @@ window.addEventListener('load', function () {
     
     }
    
-});
+}
+
+// Initialize the game for the first time
+initializeGame();
+
+// Export the function to be used in other files if needed
+export { initializeGame };
 

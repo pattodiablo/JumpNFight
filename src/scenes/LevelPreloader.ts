@@ -1,4 +1,3 @@
-
 // You can write more code here
 
 /* START OF COMPILED CODE */
@@ -7,6 +6,7 @@
 
 import LevelPack from "/static/assets/LevelPack.json";
 //import LevelPack from "@/assets/LevelPack.json";
+import { initializeGame } from "../index"; // Adjust the path as necessary
 /* END-USER-IMPORTS */
 
 export default class LevelPreloader extends Phaser.Scene {
@@ -28,30 +28,34 @@ export default class LevelPreloader extends Phaser.Scene {
 
 	// Write your code here
 	preload() {
-	console.log("Preloader cargando");
+		console.log("Preloader cargando");
 
-	this.load.pack("LevelPack", LevelPack);
+		//this.load.pack("LevelPack", LevelPack);
 
-	console.log(`Loading scene file from: ` + LevelPack);
-
-	// Cargar la escena Level
-	this.load.sceneFile("Level", LevelPack.Level.url);
-	this.scene.manager.add("Level",{});
-	// Agregar manejo de errores
-
+		// Cargar la escena Level
+		//this.load.sceneFile("Level", "/src/scenes/Level.js");
+		
+		//this.scene.manager.add("Level",{});
+		// Agregar manejo de errores
 	}
 	create() {
 
 		this.editorCreate();
 
-		//var sceneToGo = this.scene.get("Level");
-		//console.log(sceneToGo);
-		const scenes = this.scene.manager.scenes;
-        console.log("available scenes:");
-        scenes.forEach(scene => {
-            console.log(scene.scene.key);
-        });
-		this.scene.start("Level");	
+
+		// Restart the entire game
+		this.restartGame();
+	
+	}
+
+	restartGame() {
+		console.log("Restarting game...");
+
+		// Destroy the current game instance
+		this.game.destroy(true);
+
+		 // Reinitialize the game
+		initializeGame();
 	}
 
 	/* END-USER-CODE */

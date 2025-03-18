@@ -89,8 +89,8 @@ export default class GameUI extends Phaser.Scene {
 			
 			this.load.sceneFile("LevelPreloader", 'src/scenes/LevelPreloader.ts');
 			this.scene.start("LevelPreloader");
-			this.scene.remove('Level');
-			this.scene.remove('GameUI');	
+		//	this.scene.remove('Level');
+		//	this.scene.remove('GameUI');	
 			
 		});
 
