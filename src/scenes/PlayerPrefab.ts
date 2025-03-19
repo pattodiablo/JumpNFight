@@ -413,6 +413,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			enemies.forEach((enemy: Phaser.GameObjects.Sprite) => {
 				this.scene.time.delayedCall(100, () => {
 
+					
 					this.shootSawBullet(enemy);
 				});
 

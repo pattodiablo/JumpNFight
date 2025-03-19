@@ -8,6 +8,7 @@ import Enemy1 from "./Enemy1";
 /* END-USER-IMPORTS */
 
 export default class LaserShot extends Phaser.GameObjects.Sprite {
+	private detectionRadius: number = 1000; // Define the detection radius
 
 	constructor(scene: Phaser.Scene, x?: number, y?: number, texture?: string, frame?: number | string) {
 		super(scene, x ?? 0, y ?? 0, texture || "Deacon_1", frame ?? "WeaponBeacon0000");
@@ -20,7 +21,6 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
 		this.scene.events.on("update", (time: number, delta: number) => this.update(delta));
 
-		this.on('animationcomplete-LaserShot', this.fireLaser, this);
 		/* END-USER-CTR-CODE */
 	}
 
@@ -41,26 +41,58 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 				// Use lerp to smoothly move the LaserShot towards the player's position
 				this.x = Phaser.Math.Linear(this.x, player.x, 0.1);
 				this.y = Phaser.Math.Linear(this.y, player.y - player.height / 2 - 10, 0.1); // Adjust the offset as needed
+
+				// Check if any enemy is near the player
+				const enemies = (this.scene as any).enemies.getChildren(); // Get the list of enemies
+				enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
+					const distance = Phaser.Math.Distance.Between(this.x, this.y, (enemy as Phaser.GameObjects.Sprite).x, (enemy as Phaser.GameObjects.Sprite).y);
+					if (distance <= this.detectionRadius && (enemy as any).IsNearPlayer) {
+						// Calculate the angle between the LaserShot and the player
+						const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
+						// Set the rotation of the LaserShot
+						this.setRotation(angle);
+					}
+				});
 			}
 		}
 	}
 
 	fireLaser() {
 		console.log("Firing laser");
-		const laser = this.scene.add.sprite(this.x, this.y, 'laserTexture');
-		this.scene.physics.world.enable(laser);
-		(laser.body as Phaser.Physics.Arcade.Body).setVelocityX(3500); // Set the velocity of the laser
-		(laser.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
-		// Add collision logic with enemies
-		this.scene.physics.add.overlap(laser, this.scene.enemies, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+		// Find the nearest enemy within the detection radius
+		const enemies = (this.scene as any).enemies.getChildren();
+		let nearestEnemy: Phaser.GameObjects.Sprite | null = null;
+		let minDistance = this.detectionRadius;
 
-		// Set a timer to destroy the laser after 2 seconds
-		this.scene.time.delayedCall(2000, () => {
-			if (laser.active) {
-				laser.destroy();
+		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
+			const distance = Phaser.Math.Distance.Between(this.x, this.y, (enemy as Phaser.GameObjects.Sprite).x, (enemy as Phaser.GameObjects.Sprite).y);
+			if (distance < minDistance) {
+				minDistance = distance;
+				nearestEnemy = enemy as Phaser.GameObjects.Sprite;
 			}
 		});
+
+		if (nearestEnemy) {
+			const laser = this.scene.add.sprite(this.x, this.y, 'laserTexture');
+			this.scene.physics.world.enable(laser);
+
+			// Calculate the angle and velocity
+			const angle = Phaser.Math.Angle.Between(this.x, this.y, (nearestEnemy as Phaser.GameObjects.Sprite).x, (nearestEnemy as Phaser.GameObjects.Sprite).y);
+			const velocity = this.scene.physics.velocityFromRotation(angle, 3500);
+			(laser.body as Phaser.Physics.Arcade.Body).setVelocity(velocity.x, velocity.y);
+			(laser.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+			laser.angle = Phaser.Math.RadToDeg(angle);
+			// Add collision logic with enemies
+			this.scene.physics.add.overlap(laser, this.scene.enemies, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+
+			// Set a timer to destroy the laser after 2 seconds
+			this.scene.time.delayedCall(2000, () => {
+				if (laser.active) {
+					laser.destroy();
+				}
+			});
+		}
 	}
 
 	handleLaserCollision(laser: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {

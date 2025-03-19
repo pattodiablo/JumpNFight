@@ -94,7 +94,7 @@ export default class Level extends PhaserScene {
 
 	create() {
 		this.editorCreate();
-        this.createParticles();
+       // this.createParticles();
 
         const poki = this.plugins.get('pokii');
 

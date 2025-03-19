@@ -156,11 +156,12 @@ export default class Enemy1 extends SpineGameObject {
 	}
 
 	generateParticles() {
-        const numParticles = Phaser.Math.Between(1, 3); // Número aleatorio de partículas entre 1 y 3
+        const numParticles = Phaser.Math.Between(3, 20); // Número aleatorio de partículas entre 1 y 3
         for (let i = 0; i < numParticles; i++) {
-            const x = this.x + Phaser.Math.Between(-10, 10); // Posición aleatoria cerca del enemigo
-            const y = this.y + Phaser.Math.Between(-10, 10); // Posición aleatoria cerca del enemigo
+            const x = this.x + Phaser.Math.Between(-130, 130); // Posición aleatoria cerca del enemigo
+            const y = this.y + Phaser.Math.Between(-130, 130); // Posición aleatoria cerca del enemigo
             const particle = new CollectableParticle(this.scene, x, y);
+			
             this.scene.add.existing(particle);
         }
     }
