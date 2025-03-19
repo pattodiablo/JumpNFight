@@ -80,6 +80,40 @@
             "frameRate": 30,
             "repeat": -1,
             "randomFrame": false
+        },
+        {
+            "key": "Deacon",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "Deacon_1",
+                    "frame": "WeaponBeacon0000",
+                    "duration": 0,
+                    "keyframe": false
+                },
+                {
+                    "key": "Deacon_1",
+                    "frame": "WeaponBeacon0001",
+                    "duration": 0,
+                    "keyframe": false
+                },
+                {
+                    "key": "Deacon_1",
+                    "frame": "WeaponBeacon0002",
+                    "duration": 0,
+                    "keyframe": false
+                },
+                {
+                    "key": "Deacon_1",
+                    "frame": "WeaponBeacon0003",
+                    "duration": 0,
+                    "keyframe": false
+                }
+            ],
+            "frameRate": 12,
+            "skipMissedFrames": true,
+            "repeat": -1,
+            "randomFrame": false
         }
     ],
     "globalTimeScale": 1,

@@ -10,9 +10,11 @@ import Enemy1 from "./Enemy1";
 export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 	constructor(scene: Phaser.Scene, x?: number, y?: number, texture?: string, frame?: number | string) {
-		super(scene, x ?? 0, y ?? 0, texture || "JumpNRunAnimations", frame ?? 4);
+		super(scene, x ?? 0, y ?? 0, texture || "Deacon_1", frame ?? "WeaponBeacon0000");
 
-		this.play("LaserShot");
+		this.scaleX = 2;
+		this.scaleY = 2;
+		this.play("Deacon");
 
 		/* START-USER-CTR-CODE */
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
@@ -33,16 +35,14 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 	}	
 
 	update(delta: number): void {
-
 		if(this.active){
 			const player = (this.scene as any).player; // Assuming the player is stored in the scene
 			if (player) {
-				this.x = player.x;
-				this.y = player.y - player.height / 2 - 10; // Adjust the offset as needed
+				// Use lerp to smoothly move the LaserShot towards the player's position
+				this.x = Phaser.Math.Linear(this.x, player.x, 0.1);
+				this.y = Phaser.Math.Linear(this.y, player.y - player.height / 2 - 10, 0.1); // Adjust the offset as needed
 			}
 		}
-		// Update the position of the LaserShot to follow the player
-		
 	}
 
 	fireLaser() {
@@ -64,12 +64,11 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 	}
 
 	handleLaserCollision(laser: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {
-console.log("Laser collided with enemy");
+		console.log("Laser collided with enemy");
 
 		(enemy as any).EnemyLife -= 1;
 
-
-		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {
+		const bloodParticles = this.scene.add.particles(0, 0, 'particleImage', {
 			x: (laser as Phaser.GameObjects.Ellipse).x,
 			y: (laser as Phaser.GameObjects.Ellipse).y,
 			speed: { min: -1000, max: 1000 },
@@ -80,17 +79,15 @@ console.log("Laser collided with enemy");
 			maxParticles: 5,
 			frequency: 100,
 			gravityY: 3000
-
 		});
 
 		bloodParticles.setDepth(1);
-			// Detener el sistema de partículas después de un tiempo y luego destruirlo
-			this.scene.time.delayedCall(500, function() {
-				bloodParticles.stop();
-				bloodParticles.destroy();
-			}, [], this);
-			laser.destroy(); // Destruir el láser al colisionar con el jugador
-		// Aquí puedes agregar lógica adicional, como reducir la salud del jugador
+		// Stop the particle system after a while and then destroy it
+		this.scene.time.delayedCall(500, function() {
+			bloodParticles.stop();
+			bloodParticles.destroy();
+		}, [], this);
+		laser.destroy(); // Destroy the laser upon collision with the enemy
 	}
 
 	/* END-USER-CODE */

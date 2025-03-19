@@ -2,6 +2,8 @@
     "id": "7ce445a6-45bd-4f74-bb66-8a4737fa4a72",
     "sceneType": "PREFAB",
     "settings": {
+        "snapWidth": 91,
+        "snapHeight": 91,
         "exportClass": true,
         "autoImport": true,
         "preloadMethodName": "",
@@ -18,11 +20,13 @@
             "label": "spritemap0",
             "scope": "PUBLIC",
             "texture": {
-                "key": "JumpNRunAnimations",
-                "frame": 4
+                "key": "Deacon_1",
+                "frame": "WeaponBeacon0000"
             },
+            "scaleX": 2,
+            "scaleY": 2,
             "animationPlayMethod": 1,
-            "animationKey": "LaserShot",
+            "animationKey": "Deacon",
             "animationPreview": true
         }
     ],

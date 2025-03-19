@@ -406,7 +406,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		if (this.scene.time.now > this.SawMissileInterval + this.LastSawMissileTime) {
 
-			this.createLaserParticles();
+			//this.createLaserParticles();
 
 			// Shoot misile
 			const enemies = (this.scene as any).enemies.getChildren(); // Obtener la lista de enemigos
