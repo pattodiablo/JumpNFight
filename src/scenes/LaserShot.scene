@@ -36,5 +36,47 @@
         "url": "https://phaser.io/editor",
         "contentType": "phasereditor2d.core.scene.SceneContentType",
         "version": 5
-    }
+    },
+    "prefabProperties": [
+        {
+            "name": "MissileVelocity",
+            "label": "MissileVelocity",
+            "tooltip": "",
+            "defValue": 2000,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "detectionRadius",
+            "label": "detectionRadius",
+            "tooltip": "detectionRadius",
+            "defValue": 1200,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "MissileDamage",
+            "label": "MissileDamage",
+            "tooltip": "",
+            "defValue": 10,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "LaserDamage",
+            "label": "LaserDamage",
+            "tooltip": "",
+            "defValue": 1,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        }
+    ]
 }

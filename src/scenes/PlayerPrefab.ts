@@ -121,7 +121,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	}
 
-	hideAndRoll(x:number,Y:number){
+	hideAndRoll(x:number,Y:number){ //Para cuando sale disparado del cañón
 		if(!this.IsRolling){
 
 			this.IsRolling = true;
