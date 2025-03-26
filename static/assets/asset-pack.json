@@ -162,6 +162,11 @@
                 "key": "ShieldIcon"
             },
             {
+                "url": "assets/swordWeapon.png",
+                "type": "image",
+                "key": "swordWeapon"
+            },
+            {
                 "url": "assets/UpgradeBtn.png",
                 "type": "image",
                 "key": "UpgradeBtn"

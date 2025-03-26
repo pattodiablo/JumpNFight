@@ -77,6 +77,16 @@
             "type": {
                 "id": "number"
             }
+        },
+        {
+            "name": "swordWeaponDamage",
+            "label": "swordWeaponDamage",
+            "tooltip": "swordWeaponDamage",
+            "defValue": 20,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
         }
     ]
 }

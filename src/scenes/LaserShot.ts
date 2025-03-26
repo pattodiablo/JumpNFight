@@ -27,6 +27,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 	public detectionRadius: number = 1200;
 	public MissileDamage: number = 10;
 	public LaserDamage: number = 1;
+	public swordWeaponDamage: number = 20;
 
 	/* START-USER-CODE */
 
@@ -37,6 +38,14 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 		this.on('animationrepeat', this.fireLaser, this);
 		this.on('animationrepeat', this.fireMissile, this);
+		
+		this.scene.time.addEvent({
+			delay: 2000, // Tiempo en milisegundos (2 segundos)
+			callback: this.fireSwords,
+			callbackScope: this,
+			loop: true // Repetir indefinidamente
+		});
+		
 	}	
 
 	update(delta: number): void {
@@ -60,6 +69,34 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 				});
 			}
 		}
+	}
+
+	fireSwords(){
+		const missile = this.scene.add.sprite(this.x, this.y, 'swordWeapon');
+		missile.setData('damage', this.swordWeaponDamage);
+		this.scene.physics.world.enable(missile);
+		const velocityX = Phaser.Math.Between(-2000, 2000);
+		const velocityY = Phaser.Math.Between( -1500 , -500);
+		(missile.body as Phaser.Physics.Arcade.Body).setVelocity(velocityX, velocityY);
+		(missile.body as Phaser.Physics.Arcade.Body).setAllowGravity(true);
+		(missile.body as Phaser.Physics.Arcade.Body).gravity.y = 1000;
+		(missile.body as Phaser.Physics.Arcade.Body).setCircle(200);
+
+		this.scene.physics.add.overlap(missile, this.scene.enemies, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+
+
+		this.scene.events.on('update', () => {
+			missile.angle += 10;	
+		});
+
+
+
+		this.scene.time.delayedCall(10000, () => {
+			if (missile.active) {
+				missile.destroy();
+			}
+		});
+
 	}
 
 	fireMissile() {
@@ -91,7 +128,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 			missile.angle = Phaser.Math.RadToDeg(angle);
 
 			// Add collision logic with the player
-			this.scene.physics.add.overlap(missile, (this.scene as any).player, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+			this.scene.physics.add.overlap(missile, this.scene.enemies, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
 			// Continuously adjust the missile's velocity towards the nearest enemy
 			this.scene.events.on('update', () => {
