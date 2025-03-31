@@ -45,6 +45,13 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 			callbackScope: this,
 			loop: true // Repetir indefinidamente
 		});
+
+		this.scene.time.addEvent({
+			delay: 2000, // Tiempo en milisegundos (2 segundos)
+			callback: this.lineTracer,
+			callbackScope: this,
+			loop: true // Repetir indefinidamente
+		});
 		
 	}	
 
@@ -69,6 +76,77 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 				});
 			}
 		}
+	}
+
+	lineTracer() {
+		console.log("Line Tracer");
+
+		// Crear un gráfico para dibujar la trayectoria del láser
+		const laserGraphics = this.scene.add.graphics();
+		laserGraphics.lineStyle(20, 0xff0000, 1); // Color rojo para el láser
+
+		// Crear el láser como un objeto físico
+		const laser = this.scene.add.rectangle(this.x, this.y, 10, 20, 0xff0000);
+		this.scene.physics.world.enable(laser);
+		const laserBody = laser.body as Phaser.Physics.Arcade.Body;
+
+		// Configurar la velocidad inicial del láser
+		const angle = Phaser.Math.DegToRad(this.angle); // Usar el ángulo actual del objeto
+		const velocity = this.scene.physics.velocityFromRotation(angle, 3000); // Velocidad del láser
+		laserBody.setVelocity(velocity.x, velocity.y);
+		laserBody.setBounce(1); // Hacer que el láser rebote
+		laserBody.setCollideWorldBounds(true); // Hacer que el láser colisione con los bordes del mundo
+		laserBody.setAllowGravity(false); // Desactivar la gravedad
+
+		// Almacenar las posiciones del láser
+		const trajectory: Phaser.Math.Vector2[] = [];
+		trajectory.push(new Phaser.Math.Vector2(this.x, this.y)); // Posición inicial
+
+		// Dibujar la trayectoria del láser en cada actualización
+		this.scene.events.on('update', () => {
+			if (laser.active) {
+				trajectory.push(new Phaser.Math.Vector2(laser.x, laser.y)); // Registrar la posición actual
+
+				// Dibujar la trayectoria completa
+				laserGraphics.clear();
+				laserGraphics.lineStyle(20, 0xff0000, 1);
+				for (let i = 0; i < trajectory.length - 1; i++) {
+					const start = trajectory[i];
+					const end = trajectory[i + 1];
+					laserGraphics.strokeLineShape(new Phaser.Geom.Line(start.x, start.y, end.x, end.y));
+				}
+			}
+		});
+
+		// Apagar el láser después de un tiempo si no impacta con un enemigo
+		this.scene.time.delayedCall(5000, () => {
+			if (laser.active) {
+				this.fadeOutLaser(laser, laserGraphics);
+			}
+		});
+	}
+
+	// Método para apagar el láser gradualmente
+	fadeOutLaser(laser: Phaser.GameObjects.Rectangle, laserGraphics: Phaser.GameObjects.Graphics) {
+		console.log("Fading out laser");
+
+		// Reducir opacidad y escala gradualmente
+		this.scene.tweens.add({
+			targets: laser,
+			alpha: 0, // Reducir opacidad a 0
+			scaleX: 0, // Reducir escala en X a 0
+			scaleY: 0, // Reducir escala en Y a 0
+			duration: 1000, // Duración de la animación (1 segundo)
+			onUpdate: () => {
+				laserGraphics.clear();
+				laserGraphics.lineStyle(20, 0xff0000, laser.alpha); // Ajustar la opacidad del gráfico
+				laserGraphics.strokeLineShape(new Phaser.Geom.Line(this.x, this.y, laser.x, laser.y));
+			},
+			onComplete: () => {
+				laser.destroy(); // Destruir el láser después de la animación
+				laserGraphics.destroy(); // Destruir el gráfico asociado
+			}
+		});
 	}
 
 	fireSwords(){
