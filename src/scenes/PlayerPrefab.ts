@@ -132,19 +132,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			this.y = Y;	// Mover el cañón a la posición del jugador
 			this.scene.time.delayedCall(500, () => {
 				this.scene.cameras.main.shake(900, 0.1); // Duración de 500ms y intensidad de 0.1
-				const LaunchPartciles =  this.scene.add.particles(0, 0, 'particleImage', {
-					x: this.x,
-					y: this.y,
-					speed: { min: 3000, max: 12000 },
-					angle: { min: -20, max: -50 },
-					lifespan: { min: 30, max: 4000 },
-					scale: { start:0, end:  Phaser.Math.Between(1, 8) }, // Tamaño inicial aleatorio
-					quantity: 30,
-					maxParticles: 30,
-					frequency: 100,
-					gravityY: 3000
-
-				});
+	 
 
 			});
 			this.scene.time.delayedCall(1000, () => {

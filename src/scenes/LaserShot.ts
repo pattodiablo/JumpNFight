@@ -47,8 +47,8 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		});
 
 		this.scene.time.addEvent({
-			delay: 2000, // Tiempo en milisegundos (2 segundos)
-			callback: this.lineTracer,
+			delay: 30, // Tiempo en milisegundos (2 segundos)
+			callback: this.rayCreator,
 			callbackScope: this,
 			loop: true // Repetir indefinidamente
 		});
@@ -76,6 +76,102 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 				});
 			}
 		}
+	}
+
+	rayCreator() {
+	
+
+			// Get the camera bounds or player's position
+			const camera = this.scene.cameras.main;
+			const player = (this.scene as any).player;
+
+			// Create the ray at a random x position relative to the camera or player
+			const rayX = Phaser.Math.Between(camera.worldView.x, camera.worldView.x + camera.worldView.width);
+			// Alternatively, use the player's x position with some random offset
+			// const rayX = Phaser.Math.Between(player.x - 200, player.x + 200);
+
+			const ray = this.scene.add.rectangle(rayX, camera.worldView.y - 50, 20, this.scene.scale.height*4, 0xff0000);
+			this.scene.physics.world.enable(ray);
+			const rayBody = ray.body as Phaser.Physics.Arcade.Body;
+			ray.setOrigin(0.5, 1);
+			// Set the ray's velocity to fall down
+			rayBody.setVelocityY(8000); // Adjust the speed as needed
+			rayBody.setAllowGravity(false);
+
+
+				// Add a tween to scale the ray from 1 to 0
+			this.scene.tweens.add({
+				targets: ray,
+				scaleX: 0, // Scale X to 0
+				scaleY: 0, // Scale Y to 0
+				duration: 500, // Duration of the tween (1 second)
+				
+			});
+
+
+			// Add collision with platforms
+			const platforms = (this.scene as any).platforms; // Assuming platforms are stored in the scene
+			this.scene.physics.add.collider(ray, platforms, () => {
+				this.destroyRay(ray);
+			});
+
+			// Add collision with enemies
+			this.scene.physics.add.overlap(ray, this.scene.enemies, (ray, enemy) => {
+				this.handleRayCollision(ray as Phaser.GameObjects.Rectangle, enemy as Phaser.GameObjects.Sprite);
+			});
+
+			// Destroy the ray after a short duration if it doesn't collide
+			this.scene.time.delayedCall(3000, () => {
+				if (ray.active) {
+					this.destroyRay(ray);
+				}
+			});
+	}
+
+	handleRayCollision(ray: Phaser.GameObjects.Rectangle, enemy: Phaser.GameObjects.Sprite) {
+		console.log("Ray collided with enemy");
+
+		// Reduce the enemy's life or destroy it
+		(enemy as any).EnemyLife -= 5; // Adjust damage as needed
+		if ((enemy as any).EnemyLife <= 0) {
+			(enemy as any).handleDestroy();
+		}
+
+		// Create a particle effect at the collision point
+		const impactParticles = this.scene.add.particles(0, 0, 'particleImage', {
+			x: ray.x,
+			y: ray.y,
+			speed: { min: -500, max: 500 },
+			angle: { min: 0, max: 360 },
+			lifespan: { min: 100, max: 300 },
+			scale: { start: 2, end: 0 },
+			quantity: 10,
+			maxParticles: 20,
+		});
+		impactParticles.setDepth(1);
+
+		// Stop and destroy the particle effect after a short duration
+		this.scene.time.delayedCall(500, () => {
+			impactParticles.stop();
+			impactParticles.destroy();
+		});
+
+		// Destroy the ray
+		this.destroyRay(ray);
+	}
+
+	destroyRay(ray: Phaser.GameObjects.Rectangle) {
+	
+
+		// Create a fade-out effect for the ray
+		this.scene.tweens.add({
+			targets: ray,
+			alpha: 0,
+			duration: 300,
+			onComplete: () => {
+				ray.destroy();
+			}
+		});
 	}
 
 	lineTracer() {
