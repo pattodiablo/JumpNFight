@@ -105,7 +105,7 @@ export default class Level extends PhaserScene {
 
   // 🎵 Música de fondo
   this.bgMusic = this.musicManager.add('bgMusic', { loop: true, volume: 1 });
-  //this.bgMusic.play();
+  this.bgMusic.play();
 
 
         const poki = this.plugins.get('pokii');
