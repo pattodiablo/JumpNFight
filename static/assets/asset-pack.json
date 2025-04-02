@@ -17,6 +17,13 @@
                 "key": "bg2"
             },
             {
+                "url": [
+                    "assets/sounds/bgMusic.mp3"
+                ],
+                "type": "audio",
+                "key": "bgMusic"
+            },
+            {
                 "url": "assets/BulletIcon.png",
                 "type": "image",
                 "key": "BulletIcon"

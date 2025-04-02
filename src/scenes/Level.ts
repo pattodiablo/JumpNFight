@@ -81,6 +81,10 @@ export default class Level extends PhaserScene {
     private platformCount: number = 0; // Contador de plataformas creadas
     private CannonCountDistance:number = 30;
     private firtCannonPlaced = false;
+    public musicManager!: Phaser.Sound.BaseSoundManager;
+    public fxManager!: Phaser.Sound.BaseSoundManager;
+    public bgMusic!: Phaser.Sound.BaseSound;
+
 
     // Systems
 
@@ -95,6 +99,14 @@ export default class Level extends PhaserScene {
 	create() {
 		this.editorCreate();
        // this.createParticles();
+
+       this.musicManager = this.sound;
+       this.fxManager = this.sound;
+
+  // 🎵 Música de fondo
+  this.bgMusic = this.musicManager.add('bgMusic', { loop: true, volume: 1 });
+  this.bgMusic.play();
+
 
         const poki = this.plugins.get('pokii');
 
