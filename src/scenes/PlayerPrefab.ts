@@ -471,7 +471,7 @@ if(this.IsDead){
 				playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
 				this.isJumping = true;
 				this.isInAir = true;
-				
+
 				newAnimation = "Jump"; // Cambiar a la animación de salto
 				const jumpSounds = ['jump1', 'jump2', 'jump3', 'jump4'];
 				// Select a random sound
@@ -483,7 +483,11 @@ if(this.IsDead){
 				playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para el doble salto
 				this.hasDoubleJumped = true;
 				newAnimation = "Roll"; // Cambiar a la animación de Roll
-
+const jumpSounds = ['jump1', 'jump2', 'jump3', 'jump4'];
+				// Select a random sound
+				const randomSound = Phaser.Math.RND.pick(jumpSounds);
+				// Play the selected sound
+				this.scene.sound.play(randomSound);
 				const camera = this.scene.cameras.main;
 			camera.zoomTo(this.factor/3, 500); // Alejar la cámara en 500ms
 			this.scene.time.delayedCall(1000, () => {
