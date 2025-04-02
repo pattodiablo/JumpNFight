@@ -47,7 +47,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		});
 
 		this.scene.time.addEvent({
-			delay: 30, // Tiempo en milisegundos (2 segundos)
+			delay: 1000, // Tiempo en milisegundos (2 segundos)
 			callback: this.rayCreator,
 			callbackScope: this,
 			loop: true // Repetir indefinidamente

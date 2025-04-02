@@ -1,4 +1,3 @@
-
 // You can write more code here
 import ScoreCounter from "../components/ScoreCounter";
 import PlayerPrefab from "./PlayerPrefab";
@@ -69,6 +68,9 @@ export default class GameUI extends Phaser.Scene {
 	private LevelReach: number = 40;
 	private collectedParticles: number = 0;
 	public scoreCounter!: ScoreCounter;
+	public optionPosition: Phaser.Math.Vector2[] = []; // Array to store positions
+	private currentOptionIndex: number = 0; // Index to track the current position
+	private selector!: Phaser.GameObjects.Rectangle; // Selector object
 	// Write your code here
 
 	create() {
@@ -186,7 +188,13 @@ export default class GameUI extends Phaser.Scene {
 		levelScene.events.on("playerMove", (playerX: number) => {
 			this.scoreCounter.update(playerX);
 		});
+
+	
+	
+		
 	}
+
+
 
 	public ShowResults(): void {
 		console.log("show results: ");
@@ -285,6 +293,8 @@ export default class GameUI extends Phaser.Scene {
         this.weveanaJoystick.setScale(factor / 2);
         this.jumpBtn.setPosition(this.scale.width * 0.15, this.scale.height - this.scale.height * 0.25);
     }
+
+	
 	/* END-USER-CODE */
 }
 

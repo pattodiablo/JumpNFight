@@ -12,8 +12,6 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	constructor(scene: Phaser.Scene, x?: number, y?: number) {
 		super(scene, x ?? 0, y ?? 0);
 
-		this.blendMode = Phaser.BlendModes.SKIP_CHECK;
-
 		// Btn1
 		const btn1 = scene.add.image(517, 582, "UpgradeBtn");
 		this.add(btn1);
@@ -38,12 +36,17 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		const upgrade3 = new Upgrade(scene, 1504, 569);
 		this.add(upgrade3);
 
+		// selector
+		const selector = scene.add.image(520, 575, "selector");
+		this.add(selector);
+
 		this.btn1 = btn1;
 		this.btn2 = btn2;
 		this.btn3 = btn3;
 		this.upgrade1 = upgrade1;
 		this.upgrade2 = upgrade2;
 		this.upgrade3 = upgrade3;
+		this.selector = selector;
 
 		/* START-USER-CTR-CODE */
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
@@ -57,15 +60,18 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	private upgrade1: Upgrade;
 	private upgrade2: Upgrade;
 	private upgrade3: Upgrade;
+	public selector: Phaser.GameObjects.Image;
 	public PlayerSpeed: Array<any> = [200,"RunningIcon","Player", 0,"PlayerSpeed","add","Player speed"];
 	public CannonVelo: Array<any> = [1000,"RunningIcon","Cannon", 0,"CannonVelo","add", "Initial fire speed"];
 	public background!: Phaser.GameObjects.Rectangle;
+	public currentOption: number = 0;
 
 	/* START-USER-CODE */
 	public MissileSize: Array<any> = [2,"ShieldIcon","Player", 0,"MissileSize","multiply", "Missile size"];
 	public SawMissile: Array<any> = [2,"ShieldIcon","Player", 0,"SawMissile","add", "Saw Missile Damage"];
 	public AddSawMissile: Array<any> = [1,"ShieldIcon","Player", 0,"AddSawMissile","add", "Add SawMissile"];
- public upgrades: Array<any> = [this.SawMissile,this.PlayerSpeed, this.CannonVelo,this.MissileSize];	
+ 	public upgrades: Array<any> = [this.SawMissile,this.PlayerSpeed, this.CannonVelo,this.MissileSize];	
+	public optionPositions: Array<any> = [];
 //	public upgrades: Array<any> = [this.MissileSize];	
 	public AvailableUpgrades: Array<any> = [...this.upgrades];
 
@@ -117,7 +123,61 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.btn2.setDepth(2);
 		this.btn3.setDepth(2);
 
+		this.optionPositions.push({posx: this.btn1.x, posy:this.btn1.y});
+		this.optionPositions.push({posx: this.btn2.x, posy:this.btn2.y});
+		this.optionPositions.push({posx: this.btn3.x, posy:this.btn3.y});
 
+		this.selector.setOrigin(0.5, 0.5);
+		this.selector.setScale(this.btn1.scaleX*1.5);
+		this.selector.setPosition(this.btn1.x, this.btn1.y);
+		
+
+		if (this.scene.input.keyboard) {
+			this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => {
+				if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
+					this.moveSelector(1); // Move to the next position
+				} else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
+					this.moveSelector(-1); // Move to the previous position
+				}
+				if (event.key === 'Enter'  || event.key === 's' || event.key === 'ArrowDown') {
+					switch (this.currentOption) {
+						case 0:
+							this.handleUpgradeClick(this.upgrade1);
+							break;
+						case 1:
+							this.handleUpgradeClick(this.upgrade2);
+							break;
+						case 2:
+							this.handleUpgradeClick(this.upgrade3);
+							break;
+						default:
+							break;
+					}
+					this.closeUpgradeSystem();
+				}
+			});
+		}
+
+		
+		this.scene.tweens.add({
+            targets: this.background,
+            x: width / 2,
+            duration: 250,
+            ease: 'Power2',
+            onComplete: () => {
+                // Animaciones tween para que los botones aparezcan desde fuera de la pantalla de la parte inferior, uno por uno
+                this.scene.tweens.add({
+                    targets: this.selector,
+                    scaleX: { from: this.btn1.scaleX*1, to: this.btn1.scaleX*1.1 },
+					scaleY: { from: this.btn1.scaleY*1, to: this.btn1.scaleY*1.1 },
+                    duration: 500,
+                    ease: 'Linear',
+					repeat: -1,
+					yoyo: true,
+                });
+            
+            }
+        })
 		const factor = this.scene.scale.height/this.scene.scale.width;
 		this.upgrade1.x = this.btn1.x;
 		this.upgrade1.y = this.btn1.y;	
@@ -218,6 +278,15 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
    this.addClickEvent(this.btn2, this.upgrade2);
    this.addClickEvent(this.btn3, this.upgrade3);
 
+	}
+
+	private moveSelector(direction: number) {
+
+		// Update the current option index
+		this.currentOption = (this.currentOption + direction + this.optionPositions.length) % this.optionPositions.length;
+		// Move the selector to the new position
+		const newPosition = this.optionPositions[this.currentOption];
+		this.selector.setPosition(newPosition.posx, newPosition.posy);
 	}
 
 	addHoverEffect(button: Phaser.GameObjects.Image) {

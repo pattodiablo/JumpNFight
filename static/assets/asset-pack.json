@@ -78,6 +78,34 @@
                 "key": "Idle-atlas"
             },
             {
+                "url": [
+                    "assets/sounds/jump1.mp3"
+                ],
+                "type": "audio",
+                "key": "jump1"
+            },
+            {
+                "url": [
+                    "assets/sounds/jump2.mp3"
+                ],
+                "type": "audio",
+                "key": "jump2"
+            },
+            {
+                "url": [
+                    "assets/sounds/jump3.mp3"
+                ],
+                "type": "audio",
+                "key": "jump3"
+            },
+            {
+                "url": [
+                    "assets/sounds/jump4.mp3"
+                ],
+                "type": "audio",
+                "key": "jump4"
+            },
+            {
                 "url": "assets/JumpBtn.png",
                 "type": "image",
                 "key": "JumpBtn"
@@ -155,6 +183,11 @@
                 "url": "assets/sawBullet.png",
                 "type": "image",
                 "key": "sawBullet"
+            },
+            {
+                "url": "assets/selector.png",
+                "type": "image",
+                "key": "selector"
             },
             {
                 "url": "assets/ShieldIcon.png",

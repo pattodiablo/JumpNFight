@@ -155,8 +155,10 @@ export default class PlayerPrefab extends SpineGameObject {
 	}
 
 	handleJump(isJumping: boolean) {
-
+console.log("Jump: "+isJumping);
 		this.TouchJump = isJumping;
+		
+
 	}
 
 	handleJoystickMove(direction: { x: number, y: number }) {
@@ -469,7 +471,14 @@ if(this.IsDead){
 				playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
 				this.isJumping = true;
 				this.isInAir = true;
+				
 				newAnimation = "Jump"; // Cambiar a la animación de salto
+				const jumpSounds = ['jump1', 'jump2', 'jump3', 'jump4'];
+				// Select a random sound
+				const randomSound = Phaser.Math.RND.pick(jumpSounds);
+				// Play the selected sound
+				this.scene.sound.play(randomSound);
+
 			} else if (this.isJumping && !this.hasDoubleJumped && playerBody.velocity.y > 0) {
 				playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para el doble salto
 				this.hasDoubleJumped = true;

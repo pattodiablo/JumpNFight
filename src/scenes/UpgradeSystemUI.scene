@@ -16,7 +16,6 @@
             "type": "Container",
             "id": "7001bd8d-0087-4ff4-8097-965d92863bfa",
             "label": "container_1",
-            "blendMode": -1,
             "list": [
                 {
                     "type": "Image",
@@ -86,6 +85,17 @@
                     "scope": "CLASS",
                     "x": 1504,
                     "y": 569
+                },
+                {
+                    "type": "Image",
+                    "id": "b81f72d6-1202-464f-a00e-b4f656454946",
+                    "label": "selector",
+                    "scope": "PUBLIC",
+                    "texture": {
+                        "key": "selector"
+                    },
+                    "x": 520,
+                    "y": 575
                 }
             ]
         }
@@ -129,6 +139,16 @@
             "type": {
                 "id": "expression",
                 "expressionType": "Phaser.GameObjects.Rectangle"
+            }
+        },
+        {
+            "name": "currentOption",
+            "label": "currentOption",
+            "tooltip": "",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
             }
         }
     ]
