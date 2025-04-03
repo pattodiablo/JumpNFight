@@ -72,6 +72,26 @@
             },
             "x": 769,
             "y": 1398
+        },
+        {
+            "type": "Image",
+            "id": "1b15e919-c66a-4bb9-9ec6-c92685cfdcaf",
+            "label": "fxOnBtn",
+            "scope": "PUBLIC",
+            "texture": {
+                "key": "FxOnBtn"
+            },
+            "scaleX": 0
+        },
+        {
+            "type": "Sprite",
+            "id": "89190ca0-f7e8-4905-943f-e6110c64b53f",
+            "label": "musicOnBtn",
+            "scope": "PUBLIC",
+            "texture": {
+                "key": "MusicOnBtn"
+            },
+            "scaleX": 0
         }
     ],
     "plainObjects": [],

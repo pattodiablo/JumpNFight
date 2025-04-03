@@ -74,6 +74,16 @@
                 "key": "FullScreenBtn"
             },
             {
+                "url": "assets/FxOffBtn.png",
+                "type": "image",
+                "key": "FxOffBtn"
+            },
+            {
+                "url": "assets/FxOnBtn.png",
+                "type": "image",
+                "key": "FxOnBtn"
+            },
+            {
                 "url": "assets/SpineAnimations/IdlePlayer/Idle.json",
                 "type": "spineJson",
                 "key": "Idle",
@@ -149,6 +159,16 @@
                 "url": "assets/MissileIcon.png",
                 "type": "image",
                 "key": "missile"
+            },
+            {
+                "url": "assets/MusicOffBtn.png",
+                "type": "image",
+                "key": "MusicOffBtn"
+            },
+            {
+                "url": "assets/MusicOnBtn.png",
+                "type": "image",
+                "key": "MusicOnBtn"
             },
             {
                 "url": "assets/particleImage.png",

@@ -84,6 +84,7 @@ export default class Level extends PhaserScene {
     public musicManager!: Phaser.Sound.BaseSoundManager;
     public fxManager!: Phaser.Sound.BaseSoundManager;
     public bgMusic!: Phaser.Sound.BaseSound;
+    public isFxMuted: boolean = false;
 
 
     // Systems
@@ -103,9 +104,11 @@ export default class Level extends PhaserScene {
        this.musicManager = this.sound;
        this.fxManager = this.sound;
 
-  // 🎵 Música de fondo
-  this.bgMusic = this.musicManager.add('bgMusic', { loop: true, volume: 1 });
-  this.bgMusic.play();
+        // 🎵 Música de fondo
+        this.bgMusic = this.musicManager.add('bgMusic', { loop: true, volume: 1 });
+        this.bgMusic.play();
+
+  
 
 
         const poki = this.plugins.get('pokii');
@@ -160,7 +163,24 @@ export default class Level extends PhaserScene {
 
 	}
 
+    public setMusic(order:boolean){
+        if(order){
+            this.bgMusic.play();
+        }else{
+            this.bgMusic.stop();
+        }
 
+    }
+    public setFX(order:boolean){
+        if(order){
+            this.fxManager.volume = 1;
+            this.isFxMuted = false;
+        }else{
+            this.fxManager.volume = 0;
+            this.isFxMuted = true;
+        }
+
+    }
     createEnemies() {
         // Crear un grupo para los enemigos
         this.enemies = this.add.group();

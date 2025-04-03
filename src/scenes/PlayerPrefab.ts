@@ -471,23 +471,18 @@ if(this.IsDead){
 				playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
 				this.isJumping = true;
 				this.isInAir = true;
-
 				newAnimation = "Jump"; // Cambiar a la animación de salto
-				const jumpSounds = ['jump1', 'jump2', 'jump3', 'jump4'];
-				// Select a random sound
-				const randomSound = Phaser.Math.RND.pick(jumpSounds);
-				// Play the selected sound
-				this.scene.sound.play(randomSound);
+
+				this.playJumpSound();
 
 			} else if (this.isJumping && !this.hasDoubleJumped && playerBody.velocity.y > 0) {
 				playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para el doble salto
 				this.hasDoubleJumped = true;
 				newAnimation = "Roll"; // Cambiar a la animación de Roll
-const jumpSounds = ['jump1', 'jump2', 'jump3', 'jump4'];
-				// Select a random sound
-				const randomSound = Phaser.Math.RND.pick(jumpSounds);
-				// Play the selected sound
-				this.scene.sound.play(randomSound);
+		
+				this.playJumpSound();
+					
+
 				const camera = this.scene.cameras.main;
 			camera.zoomTo(this.factor/3, 500); // Alejar la cámara en 500ms
 			this.scene.time.delayedCall(1000, () => {
@@ -544,7 +539,16 @@ const jumpSounds = ['jump1', 'jump2', 'jump3', 'jump4'];
 		this.update(delta);
 	}
 
-
+	playJumpSound() {
+		const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+		if(!(levelScene as any).isFxMuted){
+			const jumpSounds = ['jump1', 'jump2', 'jump3', 'jump4'];
+		// Select a random sound
+		const randomSound = Phaser.Math.RND.pick(jumpSounds);
+		// Play the selected sound
+		this.scene.sound.play(randomSound);
+		}
+	}
 	handleDamage(EnemyDamage: number) {
 		if(this.IsShieldActive){
 

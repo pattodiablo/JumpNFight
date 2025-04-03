@@ -44,11 +44,21 @@ export default class GameUI extends Phaser.Scene {
 		// restartBtn
 		const restartBtn = this.add.sprite(769, 1398, "restartBtn");
 
+		// fxOnBtn
+		const fxOnBtn = this.add.image(0, 0, "FxOnBtn");
+		fxOnBtn.scaleX = 0;
+
+		// musicOnBtn
+		const musicOnBtn = this.add.sprite(0, 0, "MusicOnBtn");
+		musicOnBtn.scaleX = 0;
+
 		this.weveanaJoystick = weveanaJoystick;
 		this.jumpBtn = jumpBtn;
 		this.fullScreenBtn = fullScreenBtn;
 		this.upgradeSystem = upgradeSystem;
 		this.restartBtn = restartBtn;
+		this.fxOnBtn = fxOnBtn;
+		this.musicOnBtn = musicOnBtn;
 
 		this.events.emit("scene-awake");
 	}
@@ -58,6 +68,8 @@ export default class GameUI extends Phaser.Scene {
 	public fullScreenBtn!: Phaser.GameObjects.Image;
 	public upgradeSystem!: UpgradeSystemUI;
 	public restartBtn!: Phaser.GameObjects.Sprite;
+	public fxOnBtn!: Phaser.GameObjects.Image;
+	public musicOnBtn!: Phaser.GameObjects.Sprite;
 
 	/* START-USER-CODE */
 	public levelText!: Phaser.GameObjects.Text;
@@ -71,12 +83,17 @@ export default class GameUI extends Phaser.Scene {
 	public optionPosition: Phaser.Math.Vector2[] = []; // Array to store positions
 	private currentOptionIndex: number = 0; // Index to track the current position
 	private selector!: Phaser.GameObjects.Rectangle; // Selector object
+	public isMusicOn: boolean = true;
+	public isFxOn: boolean = true;
 	// Write your code here
 
 	create() {
 
 		this.editorCreate();
 
+		
+	
+		
 		this.restartBtn.visible = false;
 		this.restartBtn.setInteractive();
 		this.restartBtn.on("pointerdown", () => {
@@ -95,18 +112,18 @@ export default class GameUI extends Phaser.Scene {
 
 		});
 
-		const levelBar = this.add.rectangle(this.scale.width / 2, 30, this.scale.width / 2, 35, 0xffffff);
+		const levelBar = this.add.rectangle(this.scale.width / 2, 40, this.scale.width / 2, 35, 0xffffff);
         levelBar.setOrigin(0.5, 0.5);
 
-		const UpdateBar = this.add.rectangle(this.scale.width / 2-this.scale.width/4, 30, this.scale.width / 2, 35, 0xff0000);
+		const UpdateBar = this.add.rectangle(this.scale.width / 2-this.scale.width/4, 40, this.scale.width / 2, 35, 0xff0000);
         UpdateBar.setOrigin(0, 0.5);
 		UpdateBar.scaleX=0;
 
 		const strokeBar = this.add.graphics();
         strokeBar.lineStyle(6, 0x000000); // Grosor de 2 píxeles y color blanco
-		strokeBar.strokeRoundedRect(this.scale.width / 4-2, 13, this.scale.width / 2+4, 35, 10); // Dibuja el rectángulo con bordes redondeados
+		strokeBar.strokeRoundedRect(this.scale.width / 4-2, 23, this.scale.width / 2+4, 35, 10); // Dibuja el rectángulo con bordes redondeados
 
-		const levelText = this.add.text(this.scale.width / 4+10, 30, 'Level 1', {
+		const levelText = this.add.text(this.scale.width / 4+10, 40, 'Level 1', {
 			fontFamily: 'Bahiana',
             fontSize: '24px',
             color: '#e1e1e1',
@@ -119,7 +136,62 @@ export default class GameUI extends Phaser.Scene {
         this.strokeBar = strokeBar;
         this.levelText = levelText;
 
+		this.musicOnBtn.setPosition(this.scale.width-50, this.levelBar.y);
+		this.musicOnBtn.setScale(0.5);
+		this.fxOnBtn.setPosition(this.scale.width-120, this.levelBar.y);
+		this.fxOnBtn.setScale(0.5);
 
+		this.musicOnBtn.setInteractive();
+		this.fxOnBtn.setInteractive();
+		this.musicOnBtn.on("pointerover", () => {
+			this.musicOnBtn.setTint(0xff0000); // Agregar tinte rojizo
+		
+		});
+		this.musicOnBtn.on("pointerup", () => {
+			this.musicOnBtn.clearTint(); // Eliminar tinte
+		});
+		this.fxOnBtn.on("pointerover", () => {
+			this.fxOnBtn.setTint(0xff0000); // Agregar tinte rojizo
+		
+		});
+		this.fxOnBtn.on("pointerup", () => {
+			this.fxOnBtn.clearTint(); // Eliminar tinte
+		});
+		this.fxOnBtn.on("pointerout", () => {
+			this.fxOnBtn.clearTint(); // Eliminar tinte si el puntero sale del botón
+		});
+		this.musicOnBtn.on("pointerout", () => {
+			this.musicOnBtn.clearTint(); // Eliminar tinte si el puntero sale del botón
+		});
+		this.musicOnBtn.on("pointerdown", () => {
+			if(this.isMusicOn){
+				this.musicOnBtn.setTexture("MusicOffBtn");
+				this.isMusicOn = false;
+				const levelScene = this.scene.get('Level') as Phaser.Scene;
+				(levelScene as any).setMusic(false);
+			}else{
+				this.isMusicOn = true;
+				this.musicOnBtn.setTexture("MusicOnBtn");
+				(levelScene as any).setMusic(true);
+			}
+			
+		});
+
+		this.fxOnBtn.on("pointerdown", () => {
+			if(this.isFxOn){
+				this.fxOnBtn.setTexture("FxOffBtn");
+				this.isFxOn = false;
+				const levelScene = this.scene.get('Level') as Phaser.Scene;
+				(levelScene as any).setFX(false);
+			}else{
+				this.isFxOn = true;
+				this.fxOnBtn.setTexture("FxOnBtn");
+				(levelScene as any).setFX(true);
+			}
+			
+		});
+
+		
 		const factor = this.scale.height / this.scale.width;
 
 		this.input.addPointer(2); // Agregar dos punteros adicionales
@@ -189,9 +261,9 @@ export default class GameUI extends Phaser.Scene {
 			this.scoreCounter.update(playerX);
 		});
 
-	
-	
-		
+
+
+
 	}
 
 
@@ -294,7 +366,7 @@ export default class GameUI extends Phaser.Scene {
         this.jumpBtn.setPosition(this.scale.width * 0.15, this.scale.height - this.scale.height * 0.25);
     }
 
-	
+
 	/* END-USER-CODE */
 }
 
