@@ -173,10 +173,10 @@ export default class Level extends PhaserScene {
     }
     public setFX(order:boolean){
         if(order){
-            this.fxManager.volume = 1;
+          
             this.isFxMuted = false;
         }else{
-            this.fxManager.volume = 0;
+          
             this.isFxMuted = true;
         }
 

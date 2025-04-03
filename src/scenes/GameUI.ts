@@ -91,9 +91,6 @@ export default class GameUI extends Phaser.Scene {
 
 		this.editorCreate();
 
-		
-	
-		
 		this.restartBtn.visible = false;
 		this.restartBtn.setInteractive();
 		this.restartBtn.on("pointerdown", () => {
@@ -102,8 +99,6 @@ export default class GameUI extends Phaser.Scene {
 			this.updateBar.setVisible(true);
 			this.strokeBar.setVisible(true);
 			this.levelText.setVisible(true);
-
-
 
 			this.load.sceneFile("LevelPreloader", 'src/scenes/LevelPreloader.ts');
 			this.scene.start("LevelPreloader");

@@ -114,8 +114,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			       // Escuchar eventos del joystick
 				   const gameUIScene = this.scene.scene.get('GameUI') as Phaser.Scene;
 				   gameUIScene.events.on('joystickMove', this.handleJoystickMove, this);
-
-				   gameUIScene.events.on('jump', this.handleJump, this);
+				 //  gameUIScene.events.on('jump', this.handleJump, this);
 
 
 
@@ -155,10 +154,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	}
 
 	handleJump(isJumping: boolean) {
-console.log("Jump: "+isJumping);
 		this.TouchJump = isJumping;
-		
-
 	}
 
 	handleJoystickMove(direction: { x: number, y: number }) {
@@ -415,116 +411,116 @@ console.log("Jump: "+isJumping);
 
 		const cursors = this.cursors;
 		let newAnimation = this.currentAnimation;
-if(this.IsDead){
-	newAnimation = "Dead";
-}else{
-	if (this.scene.input.keyboard) {
-		const playerBody = this.body as Phaser.Physics.Arcade.Body;
+	if(this.IsDead){
+		newAnimation = "Dead";
+	}else{
+		if (this.scene.input.keyboard) {
+			const playerBody = this.body as Phaser.Physics.Arcade.Body;
 
-		 // Verificar si se presiona la tecla S o la tecla hacia abajo para activar HyperFall
-		 if (this.isInAir && (cursors.down.isDown || this.scene.input.keyboard.keys[83].isDown || this.TouchY==1)&&playerBody.velocity.y > 0) {
-			playerBody.setVelocityY(this.JumpVelocity * 3); // Aumentar la velocidad de caída
-			newAnimation = "HyperFall"; // Cambiar a la animación de HyperFall
-		}
-
-		if (cursors.left.isDown || this.scene.input.keyboard.keys[65].isDown || this.TouchX==-1) {
-			// Mover a la izquierda
-			playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, -this.PlayerSpeed, 0.3));
-			if (!this.facingLeft) {
-				this.skeleton.scaleX=-1;
-				this.facingLeft = true;
+			// Verificar si se presiona la tecla S o la tecla hacia abajo para activar HyperFall
+			if (this.isInAir && (cursors.down.isDown || this.scene.input.keyboard.keys[83].isDown || this.TouchY==1)&&playerBody.velocity.y > 0) {
+				playerBody.setVelocityY(this.JumpVelocity * 3); // Aumentar la velocidad de caída
+				newAnimation = "HyperFall"; // Cambiar a la animación de HyperFall
 			}
-			if (!this.isJumping) {
-				if (this.mouseInactiveTimer <= this.mouseInactiveThreshold) {
-				newAnimation = "RundAndGun";
-				}else{
-					newAnimation = "Run";
+
+			if (cursors.left.isDown || this.scene.input.keyboard.keys[65].isDown || this.TouchX==-1) {
+				// Mover a la izquierda
+				playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, -this.PlayerSpeed, 0.3));
+				if (!this.facingLeft) {
+					this.skeleton.scaleX=-1;
+					this.facingLeft = true;
 				}
-			}
-		} else if (cursors.right.isDown || this.scene.input.keyboard.keys[68].isDown || this.TouchX==1) {
-			// Mover a la derecha
-			playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, this.PlayerSpeed, 0.3));
-			if (this.facingLeft) {
-				this.skeleton.scaleX=1;
-				this.facingLeft = false;
-			}
-			if (!this.isJumping) {
-
-				if (this.mouseInactiveTimer <= this.mouseInactiveThreshold) {
-				newAnimation = "RundAndGun";
-				}else{
-					newAnimation = "Run";
+				if (!this.isJumping) {
+					if (this.mouseInactiveTimer <= this.mouseInactiveThreshold) {
+					newAnimation = "RundAndGun";
+					}else{
+						newAnimation = "Run";
+					}
 				}
-			}
-		} else {
-			// Detener animación
-			if(!this.isJumping){
-				playerBody.setVelocityX(0);
-				newAnimation = "IdleGun";
+			} else if (cursors.right.isDown || this.scene.input.keyboard.keys[68].isDown || this.TouchX==1) {
+				// Mover a la derecha
+				playerBody.setVelocityX(Phaser.Math.Linear(playerBody.velocity.x, this.PlayerSpeed, 0.3));
+				if (this.facingLeft) {
+					this.skeleton.scaleX=1;
+					this.facingLeft = false;
+				}
+				if (!this.isJumping) {
 
-			}
-		}
-
-		  // Verificar si se presiona la tecla W o la barra espaciadora para saltar
-		  if ((cursors.up.isDown || this.scene.input.keyboard.keys[87].isDown || this.scene.input.keyboard.keys[32].isDown) || this.TouchJump) {
-			if (!this.isJumping) {
-				playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
-				this.isJumping = true;
-				this.isInAir = true;
-				newAnimation = "Jump"; // Cambiar a la animación de salto
-
-				this.playJumpSound();
-
-			} else if (this.isJumping && !this.hasDoubleJumped && playerBody.velocity.y > 0) {
-				playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para el doble salto
-				this.hasDoubleJumped = true;
-				newAnimation = "Roll"; // Cambiar a la animación de Roll
-		
-				this.playJumpSound();
-					
-
-				const camera = this.scene.cameras.main;
-			camera.zoomTo(this.factor/3, 500); // Alejar la cámara en 500ms
-			this.scene.time.delayedCall(1000, () => {
-				camera.zoomTo(this.factor/2.5, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
-			});
-
-
-			}
-		}
-
-
-
-		 // Aplicar velocidad de caída aumentada
-			 if (playerBody.velocity.y > 0) {
-				this.IsFalling = true;
-				newAnimation = "Falling";
-				playerBody.setGravityY(this.playerGravity * this.fallMultiplier);
-				if(this.IsFallingAfterCannon){
-					this.IsFallingAfterCannon = false;
-					this.createalandingPlatform();
+					if (this.mouseInactiveTimer <= this.mouseInactiveThreshold) {
+					newAnimation = "RundAndGun";
+					}else{
+						newAnimation = "Run";
+					}
 				}
 			} else {
-				playerBody.setGravityY(this.playerGravity);
+				// Detener animación
+				if(!this.isJumping){
+					playerBody.setVelocityX(0);
+					newAnimation = "IdleGun";
+
+				}
 			}
 
-		// Verificar si el jugador ha aterrizado
-		if (playerBody.blocked.down) {
-			this.isJumping = false;
-			this.hasDoubleJumped = false; // Resetear el doble salto al aterrizar
-			this.isInAir = false; // Resetear el estado de estar en el aire al aterrizar
-			this.IsFalling = false;
+			// Verificar si se presiona la tecla W o la barra espaciadora para saltar
+			if ((cursors.up.isDown || this.scene.input.keyboard.keys[87].isDown || this.scene.input.keyboard.keys[32].isDown) || this.TouchJump) {
+				if (!this.isJumping) {
+					console.log("hago esto");
+					this.isJumping = true;
+					playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
+					
+					this.isInAir = true;
+					newAnimation = "Jump"; // Cambiar a la animación de salto
+				
+					this.playJumpSound();
+
+				} else if (this.isJumping && !this.hasDoubleJumped && playerBody.velocity.y > 0) {
+					playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para el doble salto
+					this.hasDoubleJumped = true;
+					newAnimation = "Roll"; // Cambiar a la animación de Roll
+			
+					this.playJumpSound();
+
+					const camera = this.scene.cameras.main;
+					camera.zoomTo(this.factor/3, 500); // Alejar la cámara en 500ms
+					this.scene.time.delayedCall(1000, () => {
+						camera.zoomTo(this.factor/2.5, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
+					});
+
+
+				}
+			}else if (playerBody.blocked.down) {
+				this.isJumping = false;
+				this.hasDoubleJumped = false; // Resetear el doble salto al aterrizar
+				this.isInAir = false; // Resetear el estado de estar en el aire al aterrizar
+				this.IsFalling = false;
+			}
+
+
+
+			// Aplicar velocidad de caída aumentada
+				if (playerBody.velocity.y > 0) {
+					this.IsFalling = true;
+					newAnimation = "Falling";
+					playerBody.setGravityY(this.playerGravity * this.fallMultiplier);
+					if(this.IsFallingAfterCannon){
+						this.IsFallingAfterCannon = false;
+						this.createalandingPlatform();
+					}
+				} else {
+					playerBody.setGravityY(this.playerGravity);
+				}
+
+			
+
+			// Incrementar el temporizador de inactividad del mouse
+			this.mouseInactiveTimer += delta;
+
 		}
 
-		   // Incrementar el temporizador de inactividad del mouse
-		   this.mouseInactiveTimer += delta;
-
+		if (this.mouseInactiveTimer > this.mouseInactiveThreshold && newAnimation === "IdleGun") {
+			newAnimation = "Idle";
+		}
 	}
-
-	if (this.mouseInactiveTimer > this.mouseInactiveThreshold && newAnimation === "IdleGun") {
-		newAnimation = "Idle";
-	}
-}
 
 
 		// Cambiar la animación solo si es diferente a la actual
