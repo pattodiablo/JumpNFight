@@ -87,6 +87,46 @@
             "type": {
                 "id": "number"
             }
+        },
+        {
+            "name": "LaserShotsNumber",
+            "label": "LaserShotsNumber",
+            "tooltip": "",
+            "defValue": 1,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "MissileNumber",
+            "label": "MissileNumber",
+            "tooltip": "",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "SwordNumber",
+            "label": "SwordNumber",
+            "tooltip": "",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        },
+        {
+            "name": "rainNumber",
+            "label": "rainNumber",
+            "tooltip": "",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
         }
     ]
 }

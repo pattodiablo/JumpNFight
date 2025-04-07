@@ -45,14 +45,16 @@ create() {
 
 }
 handleFloorColision(cannon: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
-
+return;
 }
 
 handlePlayerCollision(cannon: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 
 	if (this.IsActiveCannon){
 		const gameUI = this.scene.scene.get('GameUI') as any;
+		gameUI.upgradeSystem.isUpgradeSelected = false;
 		gameUI.upgradeSystem.createUpgradeWindow();
+	
 
 		const playerSprite = player as Phaser.GameObjects.Sprite & { hideAndRoll: (x:number,y:number) => void };
 		playerSprite.hideAndRoll(this.x, this.y);

@@ -70,17 +70,22 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	public MissileSize: Array<any> = [2,"ShieldIcon","Player", 0,"MissileSize","multiply", "Missile size"];
 	public SawMissile: Array<any> = [2,"ShieldIcon","Player", 0,"SawMissile","add", "Saw Missile Damage"];
 	public AddSawMissile: Array<any> = [1,"ShieldIcon","Player", 0,"AddSawMissile","add", "Add SawMissile"];
- 	public upgrades: Array<any> = [this.SawMissile,this.PlayerSpeed, this.CannonVelo,this.MissileSize];	
+	public LaserShotsNumber: Array<any> = [1,"LaserShotsNumber","LaserShot", 0,"LaserShotsNumber","add", "Add a LaserShot"];
+	public MissileNumber: Array<any> = [1,"MissileNumber","LaserShot", 0,"MissileNumber","add", "Add a Missile"];
+	public SwordNumber: Array<any> = [1,"SwordNumber","LaserShot", 0,"SwordNumber","add", "Add a Mine"];
+ 	public upgrades: Array<any> = [this.SawMissile,this.PlayerSpeed, this.AddSawMissile, this.LaserShotsNumber, this.MissileNumber, this.SwordNumber];	
 	public optionPositions: Array<any> = [];
 //	public upgrades: Array<any> = [this.MissileSize];	
 	public AvailableUpgrades: Array<any> = [...this.upgrades];
-
+	public isUpgradeSelected = false;
+	
+	
 	create(){
 	this.alpha = 0;
+	}
 
-
-}
 	createUpgradeWindow() {
+		console.log("is upgrade selected " + this.isUpgradeSelected);
 		this.AvailableUpgrades = [...this.upgrades];
 
 		this.upgrade1.getRandomUpgrade(this.AvailableUpgrades);
@@ -130,7 +135,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.selector.setOrigin(0.5, 0.5);
 		this.selector.setScale(this.btn1.scaleX*1.5);
 		this.selector.setPosition(this.btn1.x, this.btn1.y);
-		
+		this.selector.setVisible(false);
 
 		if (this.scene.input.keyboard) {
 			this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => {
@@ -142,13 +147,20 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 				if (event.key === 'Enter'  || event.key === 's' || event.key === 'ArrowDown') {
 					switch (this.currentOption) {
 						case 0:
-							this.handleUpgradeClick(this.upgrade1);
+							if(this.selector.visible){
+								this.handleUpgradeClick(this.upgrade1);
+							}
+							
 							break;
 						case 1:
+							if(this.selector.visible){
 							this.handleUpgradeClick(this.upgrade2);
+							}
 							break;
 						case 2:
+							if(this.selector.visible){
 							this.handleUpgradeClick(this.upgrade3);
+							}
 							break;
 						default:
 							break;
@@ -264,7 +276,10 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 					alpha: 1,
 					opacity: 0,
                     delay: 900,
-                    ease: 'Bounce.easeOut'
+                    ease: 'Bounce.easeOut',
+					onComplete: () => {
+						this.selector.setVisible(true);
+					}
                 });
             }
         })
@@ -312,80 +327,87 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
     }
 
 	handleUpgradeClick(upgrade: Upgrade) {
-		const upgradeType = upgrade;
-		const currentLevel = this.scene.scene.get('Level') as any;
-		const propertyName = upgradeType.randomUpgrade[4];
-
-		this.upgrades.forEach(upgrade => {
-
-			if(upgrade[4]==upgradeType.randomUpgrade[4]){
-
-
-				if (upgrade[4] == upgradeType.randomUpgrade[4]) {
-					if (upgradeType.randomUpgrade[2] == "Player") {
-						switch (upgradeType.randomUpgrade[5]) {
-							case "add":
-								currentLevel.player[propertyName] += upgradeType.randomUpgrade[0];
-								break;
-							case "substract":
-								currentLevel.player[propertyName] -= upgradeType.randomUpgrade[0];
-								break;
-							case "multiply":
-								currentLevel.player[propertyName] *= upgradeType.randomUpgrade[0];
-								break;
-							case "divide":
-								currentLevel.player[propertyName] /= upgradeType.randomUpgrade[0];
-								break;
+		if(!this.isUpgradeSelected){
+	
+			const upgradeType = upgrade;
+			const currentLevel = this.scene.scene.get('Level') as any;
+			const propertyName = upgradeType.randomUpgrade[4];
+	
+			this.upgrades.forEach(upgrade => {
+	
+				if(upgrade[4]==upgradeType.randomUpgrade[4]){
+	
+	
+					if (upgrade[4] == upgradeType.randomUpgrade[4]) {
+						if (upgradeType.randomUpgrade[2] == "Player") {
+							switch (upgradeType.randomUpgrade[5]) {
+								case "add":
+									currentLevel.player[propertyName] += upgradeType.randomUpgrade[0];
+									break;
+								case "substract":
+									currentLevel.player[propertyName] -= upgradeType.randomUpgrade[0];
+									break;
+								case "multiply":
+									currentLevel.player[propertyName] *= upgradeType.randomUpgrade[0];
+									break;
+								case "divide":
+									currentLevel.player[propertyName] /= upgradeType.randomUpgrade[0];
+									break;
+							}
+							console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
+						} else if (upgradeType.randomUpgrade[2] == "LaserShot") {
+							console.log("entro en upgrade de laserShot " );
+							switch (upgradeType.randomUpgrade[5]) {
+								case "add":
+									currentLevel.laserShot[propertyName] += upgradeType.randomUpgrade[0];
+									break;
+								case "substract":
+									currentLevel.laserShot[propertyName] -= upgradeType.randomUpgrade[0];
+									break;
+								case "multiply":
+									currentLevel.laserShot[propertyName] *= upgradeType.randomUpgrade[0];
+									break;
+								case "divide":
+									currentLevel.laserShot[propertyName] /= upgradeType.randomUpgrade[0];
+									break;
+							}
+							console.log("Property " + propertyName + " " + currentLevel.laserShot[propertyName]);
+						} else if (upgradeType.randomUpgrade[2] == "Cannon") {
+							switch (upgradeType.randomUpgrade[5]) {
+								case "add":
+									currentLevel.player[propertyName] += upgradeType.randomUpgrade[0];
+									break;
+								case "substract":
+									currentLevel.player[propertyName] -= upgradeType.randomUpgrade[0];
+									break;
+								case "multiply":
+									currentLevel.player[propertyName] *= upgradeType.randomUpgrade[0];
+									break;
+								case "divide":
+									currentLevel.player[propertyName] /= upgradeType.randomUpgrade[0];
+									break;
+							}
+							console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
 						}
-						console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
-					} else if (upgradeType.randomUpgrade[2] == "Laser") {
-						switch (upgradeType.randomUpgrade[5]) {
-							case "add":
-								currentLevel.player[propertyName] += upgradeType.randomUpgrade[0];
-								break;
-							case "substract":
-								currentLevel.player[propertyName] -= upgradeType.randomUpgrade[0];
-								break;
-							case "multiply":
-								currentLevel.player[propertyName] *= upgradeType.randomUpgrade[0];
-								break;
-							case "divide":
-								currentLevel.player[propertyName] /= upgradeType.randomUpgrade[0];
-								break;
-						}
-						console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
-					} else if (upgradeType.randomUpgrade[2] == "Cannon") {
-						switch (upgradeType.randomUpgrade[5]) {
-							case "add":
-								currentLevel.player[propertyName] += upgradeType.randomUpgrade[0];
-								break;
-							case "substract":
-								currentLevel.player[propertyName] -= upgradeType.randomUpgrade[0];
-								break;
-							case "multiply":
-								currentLevel.player[propertyName] *= upgradeType.randomUpgrade[0];
-								break;
-							case "divide":
-								currentLevel.player[propertyName] /= upgradeType.randomUpgrade[0];
-								break;
-						}
-						console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
 					}
+	
+	
 				}
-
-
-			}
-		});
+			});
+		
+		}
+		
 
 	}
 
 
 
 	closeUpgradeSystem() {
+		this.isUpgradeSelected = true;
         this.scene.scene.resume('Level');
 		this.background.destroy(); // Destruir el rectángulo
 		this.alpha = 0; // Ocultar el contenedor UpgradeSystemUI
-	//	this.destroy(); // Destruir el contenedor UpgradeSystemUI
+		//this.destroy(); // Destruir el contenedor UpgradeSystemUI
     }
 
 	/* END-USER-CODE */

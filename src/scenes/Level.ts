@@ -52,20 +52,20 @@ export default class Level extends PhaserScene {
 		const bg1 = this.add.tileSprite(0, 0, 1920, 1080, "bg1");
 		bg1.setOrigin(0, 0);
 
-		// spritemap0
-		const spritemap0 = new LaserShot(this, 715, 740);
-		this.add.existing(spritemap0);
+		// LaserShot
+		const laserShot = new LaserShot(this, 715, 740);
+		this.add.existing(laserShot);
 
 		this.player = player;
 		this.bg1 = bg1;
-		this.spritemap0 = spritemap0;
+		this.laserShot = laserShot;
 
 		this.events.emit("scene-awake");
 	}
 
 	public player!: PlayerPrefab;
 	public bg1!: Phaser.GameObjects.TileSprite;
-	public spritemap0!: LaserShot;
+	public laserShot!: LaserShot;
 
 	/* START-USER-CODE */
 
@@ -108,7 +108,7 @@ export default class Level extends PhaserScene {
         this.bgMusic = this.musicManager.add('bgMusic', { loop: true, volume: 1 });
         this.bgMusic.play();
 
-  
+
 
 
         const poki = this.plugins.get('pokii');
@@ -173,10 +173,10 @@ export default class Level extends PhaserScene {
     }
     public setFX(order:boolean){
         if(order){
-          
+
             this.isFxMuted = false;
         }else{
-          
+
             this.isFxMuted = true;
         }
 

@@ -264,7 +264,7 @@ export default class GameUI extends Phaser.Scene {
 
 
 	public ShowResults(): void {
-		console.log("show results: ");
+
 		const factor = this.scale.height / this.scale.width;
 		this.levelBar.setVisible(false);
 		this.updateBar.setVisible(false);

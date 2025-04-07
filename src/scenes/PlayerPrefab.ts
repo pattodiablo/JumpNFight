@@ -464,7 +464,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			// Verificar si se presiona la tecla W o la barra espaciadora para saltar
 			if ((cursors.up.isDown || this.scene.input.keyboard.keys[87].isDown || this.scene.input.keyboard.keys[32].isDown) || this.TouchJump) {
 				if (!this.isJumping) {
-					console.log("hago esto");
+				
 					this.isJumping = true;
 					playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
 					
@@ -487,16 +487,14 @@ export default class PlayerPrefab extends SpineGameObject {
 					});
 
 
+				}else if (playerBody.blocked.down) {
+					this.disableJumpVars();
 				}
 			}else if (playerBody.blocked.down) {
-				this.isJumping = false;
-				this.hasDoubleJumped = false; // Resetear el doble salto al aterrizar
-				this.isInAir = false; // Resetear el estado de estar en el aire al aterrizar
-				this.IsFalling = false;
+				this.disableJumpVars();
 			}
-
-
-
+			
+			
 			// Aplicar velocidad de caída aumentada
 				if (playerBody.velocity.y > 0) {
 					this.IsFalling = true;
@@ -507,6 +505,7 @@ export default class PlayerPrefab extends SpineGameObject {
 						this.createalandingPlatform();
 					}
 				} else {
+					this.IsFalling = false;
 					playerBody.setGravityY(this.playerGravity);
 				}
 
@@ -535,6 +534,12 @@ export default class PlayerPrefab extends SpineGameObject {
 		this.update(delta);
 	}
 
+	disableJumpVars(){
+		this.isJumping = false;
+		this.hasDoubleJumped = false; // Resetear el doble salto al aterrizar
+		this.isInAir = false; // Resetear el estado de estar en el aire al aterrizar
+		this.IsFalling = false;
+	}
 	playJumpSound() {
 		const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
 		if(!(levelScene as any).isFxMuted){
@@ -549,7 +554,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		if(this.IsShieldActive){
 
 			this.ShieldLife -= EnemyDamage;
-			console.log("Shield Life: "+this.ShieldLife);
+			//console.log("Shield Life: "+this.ShieldLife);
 			this.scene.tweens.add({
 				targets: this.Shield,
 				alpha: {from: 1, to: 0.5},
@@ -558,7 +563,7 @@ export default class PlayerPrefab extends SpineGameObject {
 				ease: 'Bounce.easeOut'
 			});
 			if(this.ShieldLife<=this.ShieldLife/2 && this.ShieldLife>0){
-				console.log("Shield Life: "+this.ShieldLife);
+				//console.log("Shield Life: "+this.ShieldLife);
 				this.scene.tweens.add({
                     targets: this.Shield,
 					alpha: {from: 1, to: 0.5},
@@ -610,7 +615,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		this.IsShieldActive = true;
 		this.Shield.setVisible(true);
 		this.Shield.setAlpha(0.1);
-		console.log("Shield Life restored to: " + this.ShieldLife);
+		//console.log("Shield Life restored to: " + this.ShieldLife);
 		this.scene.tweens.add({
 			targets: this.Shield,
 			alpha: {from: 0.1, to:1},
@@ -627,7 +632,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	createalandingPlatform(){
 		if (this.scene.add) {
-			console.log("Create Landing Platform");
+			//console.log("Create Landing Platform");
 			const floor = this.scene.add.rectangle(this.x, this.scene.scale.height-1200, this.scene.scale.width+15000, 500, 0x000000);
 			floor.setOrigin(0,0.5);
 			this.scene.physics.add.existing(floor, true);
