@@ -102,7 +102,7 @@
             "name": "MissileNumber",
             "label": "MissileNumber",
             "tooltip": "",
-            "defValue": 0,
+            "defValue": 2,
             "customDefinition": false,
             "type": {
                 "id": "number"
@@ -112,7 +112,7 @@
             "name": "SwordNumber",
             "label": "SwordNumber",
             "tooltip": "",
-            "defValue": 0,
+            "defValue": 13,
             "customDefinition": false,
             "type": {
                 "id": "number"

@@ -8,6 +8,72 @@ import { SpinePlugin } from "@esotericsoftware/spine-phaser";
 // @ts-ignore
 import { PokiPlugin } from '@poki/phaser-3';
 import WebFont from 'webfontloader';
+
+
+
+// Extend the Window interface to include the 'init' property
+declare global {
+    interface Window {
+        init?: () => void;
+    }
+}
+
+window.onload = () => {
+    console.log("Loading game...");
+  
+    // ✅ Crear el div #animation_container dinámicamente
+    let animationDiv = document.getElementById("animation_container");
+    if (!animationDiv) {
+      animationDiv = document.createElement("div");
+      animationDiv.id = "animation_container";
+      document.body.appendChild(animationDiv); // o colócalo donde lo necesites exactamente
+    }
+  
+    // 👉 Cargar la intro animada
+    /*
+    fetch('MovieLoader.html')
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("animation_container");
+        if (!container) return;
+  
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = html;
+  
+        const visualContent = Array.from(tempDiv.children).filter(el => el.tagName !== "SCRIPT");
+        container.innerHTML = "";
+        visualContent.forEach(el => container.appendChild(el));
+  
+        const scripts = tempDiv.querySelectorAll("script");
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+  
+        setTimeout(() => {
+          if (typeof window.init === "function") {
+            window.init(); // 👈 Llama a la función del MovieLoader
+          
+            const gameContainer = document.getElementById("game_canvas");
+            console.log("Game container:", gameContainer);
+            if (gameContainer) {
+            gameContainer.style.display = "none";
+            }
+          } else {
+            console.warn("init() no está definido todavía.");
+          }
+        }, 500);
+      });*/
+      initializeGame(); // 👈 Esto puede lanzarse luego si quieres mostrar el juego tras la intro
+ 
+  };
+  
+
 WebFont.load({
     google: {
       families: ["Bahiana"],
@@ -34,7 +100,12 @@ class Boot extends Phaser.Scene {
     }
 
     create() {
-
+        const canvas = this.sys.game.canvas;
+        canvas.setAttribute("id", "game_canvas");
+        
+        console.log("Canvas renombrado dentro de Boot scene.");
+       // canvas.style.display = "none";
+        
        this.scene.start("Preload");
     }
 }
@@ -122,6 +193,8 @@ class CustomGameImpl extends Phaser.Game implements CustomGame {
 }
 
 function initializeGame() {
+
+    
     const game = new CustomGameImpl({
       /*
         width: window.innerWidth,
@@ -130,12 +203,15 @@ function initializeGame() {
        
         width: 1920,
 		height: 1080,
-      
+        title: "Eggy Carton",
+        type: Phaser.AUTO, 
 		backgroundColor: "#e2e2e2",
 		scale: {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
 			autoCenter: Phaser.Scale.Center.CENTER_BOTH
 		}, 
+     
+
 		plugins: { 
             global: [
                 {
@@ -194,11 +270,13 @@ function initializeGame() {
         isMobile: isMobile,
     
     }
+
+    
    
 }
 
 // Initialize the game for the first time
-initializeGame();
+
 
 // Export the function to be used in other files if needed
 export { initializeGame };

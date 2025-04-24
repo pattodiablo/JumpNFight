@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"target": "ESNext",
 		"module": "ESNext",
+		 "lib": ["dom", "es6"],
 		"strict": true,
 		"noEmit": false,
 		"importHelpers": true,
@@ -21,11 +22,19 @@
 		},
         "outDir": "./dist",
 		"types": [
-			"phaser"
+			"phaser",
+			"createjs",
+			"easeljs"
 		]
 	},
 	"include": [
 		"src/**/*",
-		"types/**/*"
-	]
+		"types/**/*",
+		"./node_modules/@types",
+      	"./src/types"
+	],
+	"typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ]
 }
