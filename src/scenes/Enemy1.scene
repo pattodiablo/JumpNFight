@@ -1,9 +1,10 @@
 {
-    "id": "b16c38b4-729a-4e19-8544-01c1877ff030",
+    "id": "19e352e8-e81a-41bb-8ac4-e0aba1fc4eb0",
     "sceneType": "PREFAB",
     "settings": {
         "exportClass": true,
         "autoImport": true,
+        "superClassName": "Enemy1V1",
         "preloadMethodName": "",
         "preloadPackFiles": [],
         "createMethodName": "",
@@ -14,13 +15,13 @@
     "displayList": [
         {
             "type": "SpineGameObject",
-            "id": "8f40f3ae-0784-4c86-a7c3-5c4867446c2d",
-            "label": "enemyV1",
-            "blendMode": -1,
-            "dataKey": "EnemyV1",
-            "atlasKey": "EnemyV1-atlas",
+            "id": "682166da-0915-404c-97f5-e9e9fdb94e51",
+            "label": "enemy1",
+            "dataKey": "Enemy1",
+            "atlasKey": "Enemy1-atlas",
             "skinName": "default",
-            "bpType": 1
+            "bpType": 1,
+            "previewAnimation": ""
         }
     ],
     "plainObjects": [],
@@ -29,127 +30,5 @@
         "url": "https://phaser.io/editor",
         "contentType": "phasereditor2d.core.scene.SceneContentType",
         "version": 5
-    },
-    "prefabProperties": [
-        {
-            "name": "enemyGravity",
-            "label": "enemyGravity",
-            "tooltip": "enemyGravity",
-            "defValue": 0,
-            "customDefinition": false,
-            "type": {
-                "id": "number"
-            }
-        },
-        {
-            "name": "EnemyVelo",
-            "label": "EnemyVelo",
-            "tooltip": "EnemyVelo",
-            "defValue": 300,
-            "customDefinition": false,
-            "type": {
-                "id": "number"
-            }
-        },
-        {
-            "name": "laserDuration",
-            "label": "laserDuration",
-            "tooltip": "laserDuration",
-            "defValue": 6000,
-            "customDefinition": false,
-            "type": {
-                "id": "number"
-            }
-        },
-        {
-            "name": "laserSpeed",
-            "label": "laserSpeed",
-            "tooltip": "laserSpeed",
-            "defValue": 3000,
-            "customDefinition": false,
-            "type": {
-                "id": "number"
-            }
-        },
-        {
-            "name": "laserColor",
-            "label": "laserColor",
-            "tooltip": "laserColor",
-            "defValue": "#ff0000",
-            "customDefinition": false,
-            "type": {
-                "id": "color"
-            }
-        },
-        {
-            "name": "lastShotTime",
-            "label": "lastShotTime",
-            "tooltip": "lastShotTime",
-            "defValue": 400,
-            "customDefinition": false,
-            "type": {
-                "id": "number"
-            }
-        },
-        {
-            "name": "shotInterval",
-            "label": "shotInterval",
-            "tooltip": "shotInterval",
-            "defValue": 2500,
-            "customDefinition": false,
-            "type": {
-                "id": "number"
-            }
-        },
-        {
-            "name": "shootingRadius",
-            "label": "shootingRadius",
-            "tooltip": "shootingRadius",
-            "defValue": 2000,
-            "customDefinition": false,
-            "type": {
-                "id": "number"
-            }
-        },
-        {
-            "name": "IsNearPlayer",
-            "label": "IsNearPlayer",
-            "tooltip": "IsNearPlayer",
-            "defValue": false,
-            "customDefinition": false,
-            "type": {
-                "id": "boolean"
-            }
-        },
-        {
-            "name": "EnemyLife",
-            "label": "EnemyLife",
-            "tooltip": "EnemyLife",
-            "defValue": 3,
-            "customDefinition": false,
-            "type": {
-                "id": "number"
-            }
-        },
-        {
-            "name": "IsDestroyed",
-            "label": "IsDestroyed",
-            "tooltip": "IsDestroyed",
-            "defValue": false,
-            "customDefinition": false,
-            "type": {
-                "id": "boolean"
-            }
-        },
-        {
-            "name": "EnemyDamage",
-            "label": "EnemyDamage",
-            "tooltip": "",
-            "defValue": 10,
-            "customDefinition": false,
-            "type": {
-                "id": "number"
-            }
-        }
-    ]
+    }
 }

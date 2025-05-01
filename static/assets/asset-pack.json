@@ -58,13 +58,145 @@
                 "key": "Deacon_1"
             },
             {
-                "url": "assets/SpineAnimations/Enemy1/EnemyV1.json",
+                "url": "assets/SpineAnimations/Enemy1/Enemy1.json",
+                "type": "spineJson",
+                "key": "Enemy1",
+                "previewAtlasKey": "Enemy1-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy1/Enemy1.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy1-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy10/Enemy10.json",
+                "type": "spineJson",
+                "key": "Enemy10",
+                "previewAtlasKey": "Enemy10-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy10/Enemy10.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy10-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy11/Enemy11.json",
+                "type": "spineJson",
+                "key": "Enemy11",
+                "previewAtlasKey": "Enemy11-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy11/Enemy11.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy11-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy12/Enemy12.json",
+                "type": "spineJson",
+                "key": "Enemy12",
+                "previewAtlasKey": "Enemy12-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy12/Enemy12.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy12-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy2/Enemy2.json",
+                "type": "spineJson",
+                "key": "Enemy2",
+                "previewAtlasKey": "Enemy2-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy2/Enemy2.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy2-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy3/Enemy3.json",
+                "type": "spineJson",
+                "key": "Enemy3",
+                "previewAtlasKey": "Enemy3-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy3/Enemy3.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy3-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy4/Enemy4.json",
+                "type": "spineJson",
+                "key": "Enemy4",
+                "previewAtlasKey": "Enemy4-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy4/Enemy4.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy4-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy5/Enemy5.json",
+                "type": "spineJson",
+                "key": "Enemy5",
+                "previewAtlasKey": "Enemy5-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy5/Enemy5.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy5-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy6/Enemy6.json",
+                "type": "spineJson",
+                "key": "Enemy6",
+                "previewAtlasKey": "Enemy6-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy6/Enemy6.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy6-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy7/Enemy7.json",
+                "type": "spineJson",
+                "key": "Enemy7",
+                "previewAtlasKey": "Enemy7-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy7/Enemy7.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy7-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy8/Enemy8.json",
+                "type": "spineJson",
+                "key": "Enemy8",
+                "previewAtlasKey": "Enemy8-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy8/Enemy8.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy8-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy9/Enemy9.json",
+                "type": "spineJson",
+                "key": "Enemy9",
+                "previewAtlasKey": "Enemy9-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy9/Enemy9.atlas",
+                "type": "spineAtlas",
+                "key": "Enemy9-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy1Old/EnemyV1.json",
                 "type": "spineJson",
                 "key": "EnemyV1",
                 "previewAtlasKey": "EnemyV1-atlas"
             },
             {
-                "url": "assets/SpineAnimations/Enemy1/EnemyV1.atlas",
+                "url": "assets/SpineAnimations/Enemy1Old/EnemyV1.atlas",
                 "type": "spineAtlas",
                 "key": "EnemyV1-atlas"
             },

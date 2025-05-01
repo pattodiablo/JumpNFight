@@ -112,7 +112,7 @@
             "name": "SwordNumber",
             "label": "SwordNumber",
             "tooltip": "",
-            "defValue": 13,
+            "defValue": 0,
             "customDefinition": false,
             "type": {
                 "id": "number"

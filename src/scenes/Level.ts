@@ -6,9 +6,10 @@
 import PhaserScene from "../presentation/phaser/models/PhaserScene";
 import PlayerPrefab from "./PlayerPrefab";
 import LaserShot from "./LaserShot";
+import Enemy1 from "./Enemy1";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
-import Enemy1 from "./Enemy1";
+import Enemy1V1 from "./Enemy1V1";
 import CollectableParticle from "./CollectableParticle";
 import Cannon from "./Cannon";
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
@@ -55,6 +56,12 @@ export default class Level extends PhaserScene {
 		// LaserShot
 		const laserShot = new LaserShot(this, 715, 740);
 		this.add.existing(laserShot);
+
+		// enemy1
+		const enemy1 = new Enemy1(this, this.spine, 1744, -201);
+		this.add.existing(enemy1);
+		enemy1.scaleX = 1.4689932567503798;
+		enemy1.scaleY = 1.4689932567503798;
 
 		this.player = player;
 		this.bg1 = bg1;
@@ -197,7 +204,7 @@ export default class Level extends PhaserScene {
                 const enemyX = Phaser.Math.Between(minEnemyX, maxEnemyX);
                 const enemyY = Phaser.Math.Between(minEnemyY, maxEnemyY);
 
-                const enemy = new Enemy1(this, this.spine, enemyX, enemyY);
+                const enemy = new Enemy1V1(this, this.spine, enemyX, enemyY,"EnemyV1", "EnemyV1-atlas");
                 this.add.existing(enemy);
 
             }

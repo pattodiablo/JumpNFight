@@ -1,6 +1,6 @@
 // You can write more code here
 
-import Enemy1 from "./Enemy1";
+import Enemy1 from "./Enemy1V1";
 
 /* START OF COMPILED CODE */
 
@@ -30,7 +30,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 	public swordWeaponDamage: number = 20;
 	public LaserShotsNumber: number = 1;
 	public MissileNumber: number = 2;
-	public SwordNumber: number = 13;
+	public SwordNumber: number = 0;
 	public rainNumber: number = 0;
 
 	/* START-USER-CODE */
