@@ -55,21 +55,6 @@
             "scope": "PUBLIC",
             "x": 715,
             "y": 740
-        },
-        {
-            "prefabId": "19e352e8-e81a-41bb-8ac4-e0aba1fc4eb0",
-            "id": "f89b6b01-5f15-40ee-b836-51b0d51e209d",
-            "unlock": [
-                "x",
-                "y",
-                "scaleX",
-                "scaleY"
-            ],
-            "label": "enemy1",
-            "x": 1744,
-            "y": -201,
-            "scaleX": 1.4689932567503798,
-            "scaleY": 1.4689932567503798
         }
     ],
     "plainObjects": [],

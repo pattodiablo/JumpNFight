@@ -57,6 +57,7 @@ export default class Enemy1V1 extends SpineGameObject {
 	public EnemyLife: number = 3;
 	public IsDestroyed: boolean = false;
 	public EnemyDamage: number = 10;
+	public canShoot: boolean = false;
 
 	/* START-USER-CODE */
 	create(){
@@ -166,8 +167,14 @@ export default class Enemy1V1 extends SpineGameObject {
 	}
 
 	generateParticles() {
-        const numParticles = Phaser.Math.Between(3, 20); // Número aleatorio de partículas entre 1 y 3
-        for (let i = 0; i < numParticles; i++) {
+		const gameUI = this.scene.scene.get('GameUI') as any;
+		const EnergyLevel = gameUI.level;
+		const Level =this.scene.scene.get('Level') as any;;
+
+		const NumberOfParticles = Math.ceil(EnergyLevel*Level.FactorDeDificultad); 
+
+		console.log("numberOfParticles", NumberOfParticles);
+        for (let i = 0; i < NumberOfParticles; i++) {
             const x = this.x + Phaser.Math.Between(-130, 130); // Posición aleatoria cerca del enemigo
             const y = this.y + Phaser.Math.Between(-130, 130); // Posición aleatoria cerca del enemigo
             const particle = new CollectableParticle(this.scene, x, y);

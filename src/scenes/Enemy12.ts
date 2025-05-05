@@ -11,14 +11,14 @@ import { SkinsAndAnimationBoundsProvider } from "@esotericsoftware/spine-phaser"
 /* START-USER-IMPORTS */
 /* END-USER-IMPORTS */
 
-export default class Enemy1 extends Enemy1V1 {
+export default class Enemy12 extends Enemy1V1 {
 
 	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, dataKey?: string, atlasKey?: string, skin?: string, boundsProvider?: SpineGameObjectBoundsProvider, xargs?: any) {
-		super(scene, plugin, x ?? 0, y ?? 0, dataKey ?? "Enemy1", atlasKey ?? "Enemy1-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider(null, ["default"]));
+		super(scene, plugin, x ?? 0, y ?? 0, dataKey ?? "Enemy12", atlasKey ?? "Enemy12-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider(null, ["default"]));
 
 		this.skeleton.setSkinByName(skin ?? "default");
-		this.scaleX = 1.6659081713348685;
-		this.scaleY = 1.6659081713348685;
+		this.scaleX = 1.6;
+		this.scaleY = 1.6;
 
 		/* START-USER-CTR-CODE */
 		// Write your code here.

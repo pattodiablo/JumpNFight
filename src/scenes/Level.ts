@@ -6,7 +6,6 @@
 import PhaserScene from "../presentation/phaser/models/PhaserScene";
 import PlayerPrefab from "./PlayerPrefab";
 import LaserShot from "./LaserShot";
-import Enemy1 from "./Enemy1";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
 import Enemy1V1 from "./Enemy1V1";
@@ -28,6 +27,19 @@ import
 
 } from "@ecs/systems";
 import { AccelerationService } from "~/core/application/services";
+import Enemy1 from "./Enemy1";
+import Enemy2 from "./Enemy2";
+import Enemy3 from "./Enemy3";  
+import Enemy4 from "./Enemy4";
+import Enemy5 from "./Enemy5";
+import Enemy6 from "./Enemy6";
+import Enemy7 from "./Enemy7";
+import Enemy8 from "./Enemy8";
+import Enemy9 from "./Enemy9";
+import Enemy10 from "./Enemy10";
+import Enemy11 from "./Enemy11";
+import Enemy12 from "./Enemy12";
+
 
 /* END-USER-IMPORTS */
 
@@ -56,12 +68,6 @@ export default class Level extends PhaserScene {
 		// LaserShot
 		const laserShot = new LaserShot(this, 715, 740);
 		this.add.existing(laserShot);
-
-		// enemy1
-		const enemy1 = new Enemy1(this, this.spine, 1744, -201);
-		this.add.existing(enemy1);
-		enemy1.scaleX = 1.4689932567503798;
-		enemy1.scaleY = 1.4689932567503798;
 
 		this.player = player;
 		this.bg1 = bg1;
@@ -92,7 +98,8 @@ export default class Level extends PhaserScene {
     public fxManager!: Phaser.Sound.BaseSoundManager;
     public bgMusic!: Phaser.Sound.BaseSound;
     public isFxMuted: boolean = false;
-
+    public FactorDeDificultad: number = 1.03;
+    private WaveNumber: number =  0;
 
     // Systems
 
@@ -188,44 +195,53 @@ export default class Level extends PhaserScene {
         }
 
     }
+
     createEnemies() {
-        // Crear un grupo para los enemigos
         this.enemies = this.add.group();
-
-        // Parámetros iniciales para la generación de enemigos
-        let numEnemies = 1; // Número inicial de enemigos a generar
-        let minEnemyX = this.cameras.main.x-5000; // Posición X mínima para los enemigos
-        let maxEnemyX = this.cameras.main.x+5000; // Posición X máxima para los enemigos
-        let minEnemyY = this.player.y-900; // Posición Y mínima para los enemigos
-        let maxEnemyY = this.scale.height - 2000; // Posición Y máxima para los enemigos
-
+    
+        let numEnemies = this.FactorDeDificultad * this.WaveNumber;
+    
+        let minEnemyX = this.cameras.main.x - 10000;
+        let maxEnemyX = this.cameras.main.x + 10000;
+        let minEnemyY = this.player.y - 900;
+        let maxEnemyY = this.scale.height - 2000;
+    
+        // Array de clases de enemigos
+        const EnemyClasses = [
+            Enemy1, Enemy2, Enemy3, Enemy4, Enemy5, Enemy6,
+            Enemy7, Enemy8, Enemy9, Enemy10, Enemy11, Enemy12
+        ];
+    
         const generateEnemies = () => {
+            let maxTypeIndex = Math.min(this.WaveNumber, EnemyClasses.length);
+    
             for (let i = 0; i < numEnemies; i++) {
                 const enemyX = Phaser.Math.Between(minEnemyX, maxEnemyX);
                 const enemyY = Phaser.Math.Between(minEnemyY, maxEnemyY);
-
-                const enemy = new Enemy1V1(this, this.spine, enemyX, enemyY,"EnemyV1", "EnemyV1-atlas");
+    
+                const randomTypeIndex = Phaser.Math.Between(0, maxTypeIndex - 1);
+                const EnemyClass = EnemyClasses[randomTypeIndex];
+    
+                const enemy = new EnemyClass(this, this.spine, enemyX, enemyY);
                 this.add.existing(enemy);
-
+                this.enemies.add(enemy);
             }
-
-            // Incrementar la dificultad
-            numEnemies += 2; // Incrementar el número de enemigos
-
+    
+            numEnemies += 2;
         };
-
+    
         const checkAndGenerateEnemies = () => {
             if (this.enemies.getLength() === 0) {
                 generateEnemies();
             }
-
-            // Llamar a esta función nuevamente después de un cierto tiempo
-            this.time.delayedCall(5000, checkAndGenerateEnemies, [], this); // Verificar cada 5 segundos
+    
+            this.time.delayedCall(5000, checkAndGenerateEnemies, [], this);
         };
-
-        // Iniciar la verificación y generación de enemigos
+    
         checkAndGenerateEnemies();
     }
+    
+
 
 createParticles() {
     const generateParticle = () => {
@@ -329,9 +345,13 @@ createParticles() {
         this.updateWorldBounds();
         //track de player metros
         this.events.emit("playerMove", this.player.x);
+        const gameUI = this.scene.get('GameUI') as any;
+        const EnergyLevel = gameUI.level;
+       this.WaveNumber = EnergyLevel
+
+
         if (this.player.y > 2000) {
-            const gameUI = this.scene.get('GameUI') as any;
-            const EnergyLevel = gameUI.level;
+
           //  gameUI.updateLevelBar(-25*EnergyLevel);
             this.player.handleDamage(900);
             if (this.currentPlatform) {

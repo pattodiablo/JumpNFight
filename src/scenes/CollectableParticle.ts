@@ -11,6 +11,8 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 	constructor(scene: Phaser.Scene, x?: number, y?: number, width?: number, height?: number) {
 		super(scene, x ?? 0, y ?? 0, width ?? 26, height ?? 26);
 
+		this.scaleX = 2.0449978628728975;
+		this.scaleY = 2.0449978628728975;
 		this.isFilled = true;
 		this.fillColor = 16711680;
 
@@ -20,7 +22,7 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 		/* END-USER-CTR-CODE */
 	}
 
-	public attractionRange: number = 1200;
+	public attractionRange: number = 600;
 	public attractionSpeed: number = 2000;
 	public player!: Phaser.GameObjects.Sprite ;
 	public isDestroyed: boolean = false;
@@ -32,7 +34,7 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 	create() {
 		this.scene.physics.add.existing(this);
 		const body = this.body as Phaser.Physics.Arcade.Body;
-		body.setCircle(this.width * 2); 
+		body.setCircle(this.width * 3); 
 		body.setOffset(-this.width*1.5, -this.height*1.5);
 
 		body.setAllowGravity(false);

@@ -19,7 +19,8 @@
             "dataKey": "EnemyV1",
             "atlasKey": "EnemyV1-atlas",
             "skinName": "default",
-            "bpType": 1
+            "bpType": 1,
+            "scaleX": 1.6
         }
     ],
     "plainObjects": [],

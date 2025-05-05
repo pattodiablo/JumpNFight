@@ -17,6 +17,8 @@
             "id": "12416d2b-d4ba-4404-ab7e-228b4eb2c65f",
             "label": "collectableParticle",
             "scope": "PUBLIC",
+            "scaleX": 2.0449978628728975,
+            "scaleY": 2.0449978628728975,
             "isFilled": true,
             "fillColor": "#ff0000",
             "width": 26,

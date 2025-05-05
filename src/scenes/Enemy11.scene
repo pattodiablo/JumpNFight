@@ -1,5 +1,5 @@
 {
-    "id": "19e352e8-e81a-41bb-8ac4-e0aba1fc4eb0",
+    "id": "0adc991e-c621-4e36-9c09-c17c53ecbcb5",
     "sceneType": "PREFAB",
     "settings": {
         "exportClass": true,
@@ -16,14 +16,14 @@
         {
             "type": "SpineGameObject",
             "id": "682166da-0915-404c-97f5-e9e9fdb94e51",
-            "label": "enemy1",
-            "dataKey": "Enemy1",
-            "atlasKey": "Enemy1-atlas",
+            "label": "enemy11",
+            "dataKey": "Enemy11",
+            "atlasKey": "Enemy11-atlas",
             "skinName": "default",
             "bpType": 1,
             "previewAnimation": "",
-            "scaleX": 1.6659081713348685,
-            "scaleY": 1.6659081713348685
+            "scaleX": 1.6,
+            "scaleY": 1.6
         }
     ],
     "plainObjects": [],
