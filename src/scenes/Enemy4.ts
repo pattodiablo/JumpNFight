@@ -17,9 +17,12 @@ export default class Enemy4 extends Enemy1V1 {
 		super(scene, plugin, x ?? 0, y ?? 0, dataKey ?? "Enemy4", atlasKey ?? "Enemy4-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider(null, ["default"]));
 
 		this.skeleton.setSkinByName(skin ?? "default");
+		this.scaleX = 2;
+		this.scaleY = 2;
 
 		/* START-USER-CTR-CODE */
-		// Write your code here.
+		this.EnemyLife = 12;
+		this.canFlip = false;
 		/* END-USER-CTR-CODE */
 	}
 

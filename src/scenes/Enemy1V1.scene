@@ -2,6 +2,7 @@
     "id": "b16c38b4-729a-4e19-8544-01c1877ff030",
     "sceneType": "PREFAB",
     "settings": {
+        "compilerEnabled": false,
         "exportClass": true,
         "autoImport": true,
         "preloadMethodName": "",
@@ -20,7 +21,8 @@
             "atlasKey": "EnemyV1-atlas",
             "skinName": "default",
             "bpType": 1,
-            "scaleX": 1.6
+            "scaleX": 1.6,
+            "scaleY": 1.6
         }
     ],
     "plainObjects": [],

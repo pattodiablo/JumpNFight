@@ -17,6 +17,8 @@ export default class Enemy5 extends Enemy1V1 {
 		super(scene, plugin, x ?? 0, y ?? 0, dataKey ?? "Enemy5", atlasKey ?? "Enemy5-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider(null, ["default"]));
 
 		this.skeleton.setSkinByName(skin ?? "default");
+		this.scaleX = 1.6;
+		this.scaleY = 1.6;
 
 		/* START-USER-CTR-CODE */
 		// Write your code here.

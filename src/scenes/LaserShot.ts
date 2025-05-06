@@ -329,7 +329,11 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 				const laser = this.scene.add.sprite(this.x, this.y, 'laserTexture');
 				this.scene.physics.world.enable(laser);
-				laser.setData('damage', this.LaserDamage);
+				const Level =this.scene.scene.get('Level') as any;;
+
+				const gameUI = this.scene.scene.get('GameUI') as any;
+				const EnergyLevel = gameUI.level;
+				laser.setData('damage', this.LaserDamage*EnergyLevel);
 				// Calculate the angle and velocity
 				const angle = Phaser.Math.Angle.Between(this.x, this.y, (nearestEnemy as Phaser.GameObjects.Sprite).x, (nearestEnemy as Phaser.GameObjects.Sprite).y);
 				const velocity = this.scene.physics.velocityFromRotation(angle, 3500);

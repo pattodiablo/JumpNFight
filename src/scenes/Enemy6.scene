@@ -21,7 +21,9 @@
             "atlasKey": "Enemy6-atlas",
             "skinName": "default",
             "bpType": 1,
-            "previewAnimation": ""
+            "previewAnimation": "",
+            "scaleX": 1.5,
+            "scaleY": 1.5
         }
     ],
     "plainObjects": [],
