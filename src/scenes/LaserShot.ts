@@ -28,8 +28,8 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 	public MissileDamage: number = 10;
 	public LaserDamage: number = 1;
 	public swordWeaponDamage: number = 20;
-	public LaserShotsNumber: number = 1;
-	public MissileNumber: number = 2;
+	public LaserShotsNumber: number = 2;
+	public MissileNumber: number = 0;
 	public SwordNumber: number = 0;
 	public rainNumber: number = 0;
 

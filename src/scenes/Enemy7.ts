@@ -21,13 +21,13 @@ export default class Enemy7 extends Enemy1V1 {
 		this.scaleY = 1.6;
 
 		/* START-USER-CTR-CODE */
-		// Write your code here.
+		this.canHitPlayer = true;
 		/* END-USER-CTR-CODE */
 	}
 
 	/* START-USER-CODE */
 
-	// Write your code here.
+
 
 	/* END-USER-CODE */
 }

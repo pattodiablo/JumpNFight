@@ -59,9 +59,17 @@ export default class Enemy1V1 extends SpineGameObject {
 	public EnemyDamage: number = 10;
 	public canShoot: boolean = false;
 	public canFlip: boolean = true;
+	public shootMissile: boolean = false;
+	public shootingrate: number = 200;
+	public canHitPlayer: boolean = false;
 
 	/* START-USER-CODE */
 	create(){
+
+		const gameUI = this.scene.scene.get('GameUI') as any;
+		const EnergyLevel = gameUI.level;
+		
+		this.EnemyLife = EnergyLevel*this.EnemyLife;
 
 		this.scene.enemies.add(this);
 		this.scene.physics.add.existing(this);
@@ -81,12 +89,46 @@ export default class Enemy1V1 extends SpineGameObject {
 		this.setDepth(1); 
 
 		const player = (this.scene as Phaser.Scene & { player: Phaser.GameObjects.Sprite }).player;
-		this.scene.physics.add.collider(this, player, this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+		if(this.canHitPlayer){
+			this.scene.physics.add.collider(this, player, this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
+		}
+	
 	}
 
 	handlePlayerCollision(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 
+
+    // Agregar un efecto de "camera shake"
+	const gameUI = this.scene.scene.get('GameUI') as any;
+	const EnergyLevel = gameUI.level;
+	//gameUI.updateLevelBar(-this.EnemyDamage*EnergyLevel);
+		// Reducir la vida del jugador
+		( player as any).body.setVelocityY(-2000);
+		
+		( player as any).handleDamage(this.EnemyDamage);
+
+		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {
+			x: ( player as any).x,
+			y: ( player as any).y,
+			speed: { min: -1000, max: 1000 },
+			angle: { min: 0, max: 360 },
+			lifespan: { min: 30, max: 500 },
+			scale: { start: 2, end: 0 },
+			quantity: 5,
+			maxParticles: 5,
+			frequency: 100,
+			gravityY: 3000
+
+		});
+
+		bloodParticles.setDepth(1);
+			// Detener el sistema de partículas después de un tiempo y luego destruirlo
+			this.scene.time.delayedCall(500, function() {
+				bloodParticles.stop();
+				bloodParticles.destroy();
+			}, [], this);
+		
 
 	}
 
@@ -114,8 +156,13 @@ export default class Enemy1V1 extends SpineGameObject {
 					if (this.scene.time.now > this.lastShotTime + this.shotInterval) {
 						if(this.canShoot){
 							this.createLaserParticles();
-							this.scene.time.delayedCall(500, () => {
-								this.shootLaser(player);
+							this.scene.time.delayedCall(this.shootingrate, () => {
+								if(this.shootMissile){
+									this.shootAMissile(player)
+								}else{
+									this.shootLaser(player);
+								}
+							
 							});
 							this.lastShotTime = this.scene.time.now;
 						}
@@ -212,6 +259,30 @@ export default class Enemy1V1 extends SpineGameObject {
 			}, [], this);
 	}
 
+	shootAMissile(player: Phaser.GameObjects.Sprite) {
+		if(this.canShoot){
+			const missile = this.scene.add.ellipse(this.x, this.y+80, 60, 80, 0xff0000) as Phaser.GameObjects.Ellipse & { lifespan?: number };
+			this.scene.physics.add.existing(missile);
+			const missileBody = missile.body as Phaser.Physics.Arcade.Body;
+			missileBody.setAllowGravity(true);
+			missileBody.setGravityY(3000); // Configura la gravedad para el misil
+		//	missileBody.setVelocityX(-this.EnemyVelo);
+	
+			// Calcular la dirección del misil hacia el jugador
+			
+			// Establecer la duración del misil
+			missile.lifespan = this.laserDuration;
+			this.scene.time.addEvent({
+				delay: this.laserDuration,
+				callback: () => {
+					missile.destroy();
+				}
+			});
+	
+			  // Agregar colisión entre el misil y el jugador
+			  this.scene.physics.add.overlap(missile, player, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+		}
+	}
 	shootLaser(player: Phaser.GameObjects.Sprite) {
 		if(this.canShoot){
 			const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;

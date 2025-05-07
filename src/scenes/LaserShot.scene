@@ -92,7 +92,7 @@
             "name": "LaserShotsNumber",
             "label": "LaserShotsNumber",
             "tooltip": "",
-            "defValue": 1,
+            "defValue": 2,
             "customDefinition": false,
             "type": {
                 "id": "number"
@@ -102,7 +102,7 @@
             "name": "MissileNumber",
             "label": "MissileNumber",
             "tooltip": "",
-            "defValue": 2,
+            "defValue": 0,
             "customDefinition": false,
             "type": {
                 "id": "number"

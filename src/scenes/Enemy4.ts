@@ -21,8 +21,10 @@ export default class Enemy4 extends Enemy1V1 {
 		this.scaleY = 2;
 
 		/* START-USER-CTR-CODE */
+		
 		this.EnemyLife = 12;
 		this.canFlip = false;
+
 		/* END-USER-CTR-CODE */
 	}
 

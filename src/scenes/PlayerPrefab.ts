@@ -16,12 +16,13 @@ import PlayerShield from "./PlayerShield";
 /* END-USER-IMPORTS */
 
 export default class PlayerPrefab extends SpineGameObject {
+	justTinted: any;
 
-	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, boundsProvider?: SpineGameObjectBoundsProvider) {
-		super(scene, plugin, x ?? 210, y ?? 7, "Player", "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
+	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, dataKey?: string, atlasKey?: string, skin?: string, boundsProvider?: SpineGameObjectBoundsProvider, xargs?: any) {
+		super(scene, plugin, x ?? 210, y ?? 7, dataKey ?? "Player", atlasKey ?? "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
 
 		this.setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 600), Phaser.Geom.Rectangle.Contains);
-		this.skeleton.setSkinByName("default");
+		this.skeleton.setSkinByName(skin ?? "default");
 		this.scaleX = 0.5;
 		this.scaleY = 0.5;
 
@@ -40,7 +41,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public isJumping: boolean = false;
 	public fallMultiplier: number = 3.5;
 	public playerGravity: number = 2500;
-	public JumpVelocity: number = 1800;
+	public JumpVelocity: number = 2000;
 	public IsFalling: boolean = false;
 	public mouseInactiveTimer: number = 0;
 	public mouseInactiveThreshold: number = 500;
@@ -131,7 +132,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			this.y = Y;	// Mover el cañón a la posición del jugador
 			this.scene.time.delayedCall(500, () => {
 				this.scene.cameras.main.shake(900, 0.1); // Duración de 500ms y intensidad de 0.1
-	 
+
 
 			});
 			this.scene.time.delayedCall(1000, () => {
@@ -246,10 +247,10 @@ export default class PlayerPrefab extends SpineGameObject {
 				const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
 				sawBullet.Damage = this.SawMissile;
 			}
-		
+
 		}
-	
-				
+
+
 
 	}
 
@@ -399,7 +400,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			enemies.forEach((enemy: Phaser.GameObjects.Sprite) => {
 				this.scene.time.delayedCall(100, () => {
 
-					
+
 					this.shootSawBullet(enemy);
 				});
 
@@ -464,20 +465,20 @@ export default class PlayerPrefab extends SpineGameObject {
 			// Verificar si se presiona la tecla W o la barra espaciadora para saltar
 			if ((cursors.up.isDown || this.scene.input.keyboard.keys[87].isDown || this.scene.input.keyboard.keys[32].isDown) || this.TouchJump) {
 				if (!this.isJumping) {
-				
+
 					this.isJumping = true;
 					playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para saltar
-					
+
 					this.isInAir = true;
 					newAnimation = "Jump"; // Cambiar a la animación de salto
-				
+
 					this.playJumpSound();
 
 				} else if (this.isJumping && !this.hasDoubleJumped && playerBody.velocity.y > 0) {
 					playerBody.setVelocityY(-this.JumpVelocity); // Aplicar fuerza de impulso para el doble salto
 					this.hasDoubleJumped = true;
 					newAnimation = "Roll"; // Cambiar a la animación de Roll
-			
+
 					this.playJumpSound();
 
 					const camera = this.scene.cameras.main;
@@ -493,8 +494,8 @@ export default class PlayerPrefab extends SpineGameObject {
 			}else if (playerBody.blocked.down) {
 				this.disableJumpVars();
 			}
-			
-			
+
+
 			// Aplicar velocidad de caída aumentada
 				if (playerBody.velocity.y > 0) {
 					this.IsFalling = true;
@@ -509,7 +510,7 @@ export default class PlayerPrefab extends SpineGameObject {
 					playerBody.setGravityY(this.playerGravity);
 				}
 
-			
+
 
 			// Incrementar el temporizador de inactividad del mouse
 			this.mouseInactiveTimer += delta;
@@ -551,8 +552,21 @@ export default class PlayerPrefab extends SpineGameObject {
 		}
 	}
 	handleDamage(EnemyDamage: number) {
+		if (!this.justTinted) {
+			this.justTinted = true;
+		
+			// Cambiar el color del esqueleto completo (puede afectar todos los slots)
+			this.skeleton.color.set(1, 0, 0, 1); // Rojo (RGB, Alpha)
+		
+			this.scene.time.delayedCall(150, () => {
+				this.skeleton.color.set(1, 1, 1, 1); // Restaurar a blanco (sin tint)
+				this.justTinted = false;
+			});
+		}
+
 		if(this.IsShieldActive){
 
+			
 			this.ShieldLife -= EnemyDamage;
 			//console.log("Shield Life: "+this.ShieldLife);
 			this.scene.tweens.add({
@@ -605,7 +619,7 @@ export default class PlayerPrefab extends SpineGameObject {
 				}
 			});
 		}
-	
+
 
 	}
 

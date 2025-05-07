@@ -114,7 +114,7 @@
             "name": "JumpVelocity",
             "label": "JumpVelocity",
             "tooltip": "",
-            "defValue": 1800,
+            "defValue": 2000,
             "customDefinition": false,
             "type": {
                 "id": "number"

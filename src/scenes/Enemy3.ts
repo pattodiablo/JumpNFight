@@ -21,7 +21,9 @@ export default class Enemy3 extends Enemy1V1 {
 		this.scaleY = 1.6;
 
 		/* START-USER-CTR-CODE */
-		// Write your code here.
+	this.canShoot = true;
+	this.shootMissile = true;
+	this.shootingrate = 150;
 		/* END-USER-CTR-CODE */
 	}
 
