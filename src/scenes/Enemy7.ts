@@ -22,6 +22,7 @@ export default class Enemy7 extends Enemy1V1 {
 
 		/* START-USER-CTR-CODE */
 		this.canHitPlayer = true;
+		this.canFlip = false;
 		/* END-USER-CTR-CODE */
 	}
 
