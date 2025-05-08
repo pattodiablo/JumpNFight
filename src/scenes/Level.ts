@@ -157,7 +157,7 @@ export default class Level extends PhaserScene {
 
         };
 
-        this.scene.launch("GameUI");
+        // this.scene.launch("GameUI");
         const factor = this.scale.height/this.scale.width;
         this.bg1.width = this.scale.width;
         // Reproduce la animación 'Idle' por defecto
@@ -175,6 +175,11 @@ export default class Level extends PhaserScene {
 		this.createPlatforms();
         this.createEnemies();
 
+        this.game.events.once("RestartLevel", () => {
+            console.log("Restarting level...");
+            this.events.removeAllListeners("update");
+            this.scene.restart(); // Reiniciar la escena actual
+        },this);
 	}
 
     public setMusic(order:boolean){
@@ -511,6 +516,10 @@ updateWorldBounds() {
     // Asegurarse de que el cuerpo del sawBullet colisione con los nuevos límites del mundo
 
 }
+
+    fadeOut(duration: number) {
+        this.cameras.main.fadeOut(duration, 0, 0, 0);
+    }
 	/* END-USER-CODE */
 }
 
