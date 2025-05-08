@@ -21,7 +21,10 @@ export default class Enemy9 extends Enemy1V1 {
 		this.scaleY = 1.6;
 
 		/* START-USER-CTR-CODE */
-		// Write your code here.
+		this.canShoot = true;
+		this.shotInterval = 1000;
+		this.shootingRadius*= 2;
+		this.laserSpeed*=1.5;
 		/* END-USER-CTR-CODE */
 	}
 

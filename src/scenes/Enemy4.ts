@@ -24,6 +24,7 @@ export default class Enemy4 extends Enemy1V1 {
 		
 		this.EnemyLife = 12;
 		this.canFlip = false;
+		this.canPlayerStand = true;
 
 		/* END-USER-CTR-CODE */
 	}

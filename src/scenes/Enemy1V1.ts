@@ -62,6 +62,7 @@ export default class Enemy1V1 extends SpineGameObject {
 	public shootMissile: boolean = false;
 	public shootingrate: number = 200;
 	public canHitPlayer: boolean = false;
+	public canPlayerStand: boolean = false;
 
 	/* START-USER-CODE */
 	create(){
@@ -92,10 +93,14 @@ export default class Enemy1V1 extends SpineGameObject {
 		if(this.canHitPlayer){
 			this.scene.physics.add.collider(this, player, this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
+		}else if(this.canPlayerStand){
+			this.scene.physics.add.collider(this, player, this.handlePlayerCollisionStand as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 		}
 	
 	}
+	handlePlayerCollisionStand(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 
+	}
 	handlePlayerCollision(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 
 
@@ -286,7 +291,7 @@ export default class Enemy1V1 extends SpineGameObject {
 	shootLaser(player: Phaser.GameObjects.Sprite) {
 		if(this.canShoot){
 			const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
-			const laser = this.scene.add.ellipse(this.x, this.y, 100, 20, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
+			const laser = this.scene.add.ellipse(this.x, this.y, 200, 40, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
 			this.scene.physics.add.existing(laser);
 			const laserBody = laser.body as Phaser.Physics.Arcade.Body;
 			laserBody.setAllowGravity(false);
