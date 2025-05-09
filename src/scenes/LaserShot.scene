@@ -92,7 +92,7 @@
             "name": "LaserShotsNumber",
             "label": "LaserShotsNumber",
             "tooltip": "",
-            "defValue": 2,
+            "defValue": 1,
             "customDefinition": false,
             "type": {
                 "id": "number"
