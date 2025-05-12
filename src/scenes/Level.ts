@@ -175,10 +175,15 @@ export default class Level extends PhaserScene {
 		this.createPlatforms();
         this.createEnemies();
 
+        this.game.events.once("PlayerIsDead", () => {
+            console.log("Player is dead...");
+            this.fadeOut(1000); // Desvanecer la pantalla
+        },this);
+
         this.game.events.once("RestartLevel", () => {
             console.log("Restarting level...");
             this.events.removeAllListeners("update");
-            this.scene.restart(); // Reiniciar la escena actual
+            this.scene.restart(); // Reiniciar el nivel
         },this);
 	}
 
