@@ -210,7 +210,10 @@ function initializeGame() {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
 			autoCenter: Phaser.Scale.Center.CENTER_BOTH
 		}, 
-     
+    fps: {
+      target: 60,       // Objetivo de 60fps
+      forceSetTimeOut: false // Asegura que use requestAnimationFrame, no setTimeout
+  },
 
 		plugins: { 
             global: [
