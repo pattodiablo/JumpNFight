@@ -94,17 +94,7 @@ export default class GameUI extends Phaser.Scene {
 		this.restartBtn.visible = false;
 		this.restartBtn.setInteractive();
 		this.restartBtn.on("pointerdown", () => {
-
-			this.levelBar.setVisible(true);
-			this.updateBar.setVisible(true);
-			this.strokeBar.setVisible(true);
-			this.levelText.setVisible(true);
-
-			this.load.sceneFile("LevelPreloader", 'src/scenes/LevelPreloader.ts');
-			this.scene.start("LevelPreloader");
-		//	this.scene.remove('Level');
-		//	this.scene.remove('GameUI');	
-
+			this.game.events.emit("RestartLevel");
 		});
 
 		const levelBar = this.add.rectangle(this.scale.width / 2, 40, this.scale.width / 2, 35, 0xffffff);
@@ -256,7 +246,7 @@ export default class GameUI extends Phaser.Scene {
 			this.scoreCounter.update(playerX);
 		});
 
-
+		this.game.events.on("PlayerIsDead", this.ShowResults, this);
 
 
 	}
