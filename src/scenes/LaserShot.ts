@@ -313,6 +313,8 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 		for (let i = 0; i < this.LaserShotsNumber; i++) {
 
+		
+
 			const enemies = (this.scene as any).enemies.getChildren();
 			let nearestEnemy: Phaser.GameObjects.Sprite | null = null;
 			let minDistance = this.detectionRadius;
@@ -326,7 +328,15 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 			});
 
 			if (nearestEnemy) {
-
+				const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+				if(!(levelScene as any).isFxMuted){
+					const jumpSounds = ['laserShoot1_01', 'laserShoot2_01', 'laserShoot3_01', 'laserShoot4_01'];
+				// Select a random sound
+				const randomSound = Phaser.Math.RND.pick(jumpSounds);
+				// Play the selected sound
+				this.scene.sound.play(randomSound);
+				}
+	
 				const laser = this.scene.add.sprite(this.x, this.y, 'laserTexture');
 				this.scene.physics.world.enable(laser);
 				const Level =this.scene.scene.get('Level') as any;;

@@ -192,6 +192,17 @@ export default class Enemy1V1 extends SpineGameObject {
 	}
 
 	handleDestroy() {
+		const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+		if(!(levelScene as any).isFxMuted){
+			const jumpSounds = ['EnemyExplode1_01', 'EnemyExplode2_01', 'EnemyExplode3_01', 'EnemyExplode4_01', 'EnemyExplode5_01', 'EnemyExplode6_01'];
+		// Select a random sound
+		const randomSound = Phaser.Math.RND.pick(jumpSounds);
+		// Play the selected sound
+		this.scene.sound.play(randomSound);
+		}
+
+
+
 		this.IsDestroyed = true;
 		this.generateParticles();
 		const destroyParticles =  this.scene.add.particles(0, 0, 'particleImage', {
