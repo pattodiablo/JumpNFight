@@ -23,12 +23,12 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		/* END-USER-CTR-CODE */
 	}
 
-	public MissileVelocity: number = 2000;
+	public MissileVelocity: number = 3000;
 	public detectionRadius: number = 1200;
 	public MissileDamage: number = 10;
 	public LaserDamage: number = 1;
 	public swordWeaponDamage: number = 20;
-	public LaserShotsNumber: number = 2;
+	public LaserShotsNumber: number = 1;
 	public MissileNumber: number = 0;
 	public SwordNumber: number = 0;
 	public rainNumber: number = 0;
@@ -41,14 +41,14 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		(this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
 		this.scene.time.addEvent({
-			delay: 1000, // Tiempo en milisegundos (2 segundos)
+			delay: 500, // Tiempo en milisegundos (2 segundos)
 			callback: this.fireLaser,
 			callbackScope: this,
 			loop: true // Repetir indefinidamente
 		});
 
 		this.scene.time.addEvent({
-			delay: 2000, // Tiempo en milisegundos (2 segundos)
+			delay: 1000, // Tiempo en milisegundos (2 segundos)
 			callback: this.fireMissile,
 			callbackScope: this,
 			loop: true // Repetir indefinidamente
@@ -313,6 +313,8 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 		for (let i = 0; i < this.LaserShotsNumber; i++) {
 
+		
+
 			const enemies = (this.scene as any).enemies.getChildren();
 			let nearestEnemy: Phaser.GameObjects.Sprite | null = null;
 			let minDistance = this.detectionRadius;
@@ -326,7 +328,15 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 			});
 
 			if (nearestEnemy) {
-
+				const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+				if(!(levelScene as any).isFxMuted){
+					const jumpSounds = ['laserShoot1_01', 'laserShoot2_01', 'laserShoot3_01', 'laserShoot4_01'];
+				// Select a random sound
+				const randomSound = Phaser.Math.RND.pick(jumpSounds);
+				// Play the selected sound
+				this.scene.sound.play(randomSound);
+				}
+	
 				const laser = this.scene.add.sprite(this.x, this.y, 'laserTexture');
 				this.scene.physics.world.enable(laser);
 				const Level =this.scene.scene.get('Level') as any;;
@@ -336,7 +346,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 				laser.setData('damage', this.LaserDamage*EnergyLevel);
 				// Calculate the angle and velocity
 				const angle = Phaser.Math.Angle.Between(this.x, this.y, (nearestEnemy as Phaser.GameObjects.Sprite).x, (nearestEnemy as Phaser.GameObjects.Sprite).y);
-				const velocity = this.scene.physics.velocityFromRotation(angle, 3500);
+				const velocity = this.scene.physics.velocityFromRotation(angle, 4500);
 				(laser.body as Phaser.Physics.Arcade.Body).setVelocity(velocity.x, velocity.y);
 				(laser.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 				laser.angle = Phaser.Math.RadToDeg(angle);

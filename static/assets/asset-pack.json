@@ -190,6 +190,48 @@
                 "key": "Enemy9-atlas"
             },
             {
+                "url": [
+                    "assets/sounds/EnemyExplode1_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemyExplode1_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/EnemyExplode2_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemyExplode2_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/EnemyExplode3_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemyExplode3_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/EnemyExplode4_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemyExplode4_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/EnemyExplode5_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemyExplode5_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/EnemyExplode6_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemyExplode6_01"
+            },
+            {
                 "url": "assets/SpineAnimations/Enemy1Old/EnemyV1.json",
                 "type": "spineJson",
                 "key": "EnemyV1",
@@ -276,6 +318,34 @@
                 "url": "assets/LaserIcon.png",
                 "type": "image",
                 "key": "LaserIcon"
+            },
+            {
+                "url": [
+                    "assets/sounds/laserShoot1_01.mp3"
+                ],
+                "type": "audio",
+                "key": "laserShoot1_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/laserShoot2_01.mp3"
+                ],
+                "type": "audio",
+                "key": "laserShoot2_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/laserShoot3_01.mp3"
+                ],
+                "type": "audio",
+                "key": "laserShoot3_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/laserShoot4_01.mp3"
+                ],
+                "type": "audio",
+                "key": "laserShoot4_01"
             },
             {
                 "url": "assets/laserTexture.png",

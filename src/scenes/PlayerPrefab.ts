@@ -116,7 +116,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			       // Escuchar eventos del joystick
 				   const gameUIScene = this.scene.scene.get('GameUI') as Phaser.Scene;
 				   gameUIScene.events.on('joystickMove', this.handleJoystickMove, this);
-				 //  gameUIScene.events.on('jump', this.handleJump, this);
+				   gameUIScene.events.on('jump', this.handleJump, this);
 
 		this.on("PlayerIsDead", () => {
 			const playerBody = this.body as Phaser.Physics.Arcade.Body;

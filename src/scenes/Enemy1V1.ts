@@ -62,6 +62,7 @@ export default class Enemy1V1 extends SpineGameObject {
 	public shootMissile: boolean = false;
 	public shootingrate: number = 200;
 	public canHitPlayer: boolean = false;
+	public canPlayerStand: boolean = false;
 
 	/* START-USER-CODE */
 	create(){
@@ -92,10 +93,14 @@ export default class Enemy1V1 extends SpineGameObject {
 		if(this.canHitPlayer){
 			this.scene.physics.add.collider(this, player, this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
+		}else if(this.canPlayerStand){
+			this.scene.physics.add.collider(this, player, this.handlePlayerCollisionStand as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 		}
 	
 	}
+	handlePlayerCollisionStand(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 
+	}
 	handlePlayerCollision(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 
 
@@ -187,6 +192,17 @@ export default class Enemy1V1 extends SpineGameObject {
 	}
 
 	handleDestroy() {
+		const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+		if(!(levelScene as any).isFxMuted){
+			const jumpSounds = ['EnemyExplode1_01', 'EnemyExplode2_01', 'EnemyExplode3_01', 'EnemyExplode4_01', 'EnemyExplode5_01', 'EnemyExplode6_01'];
+		// Select a random sound
+		const randomSound = Phaser.Math.RND.pick(jumpSounds);
+		// Play the selected sound
+		this.scene.sound.play(randomSound);
+		}
+
+
+
 		this.IsDestroyed = true;
 		this.generateParticles();
 		const destroyParticles =  this.scene.add.particles(0, 0, 'particleImage', {
@@ -286,7 +302,7 @@ export default class Enemy1V1 extends SpineGameObject {
 	shootLaser(player: Phaser.GameObjects.Sprite) {
 		if(this.canShoot){
 			const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
-			const laser = this.scene.add.ellipse(this.x, this.y, 100, 20, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
+			const laser = this.scene.add.ellipse(this.x, this.y, 200, 40, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
 			this.scene.physics.add.existing(laser);
 			const laserBody = laser.body as Phaser.Physics.Arcade.Body;
 			laserBody.setAllowGravity(false);
