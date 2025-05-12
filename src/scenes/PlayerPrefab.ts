@@ -390,16 +390,16 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	
 
-		const offsetX = 70;
-const offsetY = 70;
+			const offsetX = 90;
+			const offsetY = 70;
 
-// Posición objetivo
-const targetX = (this.body?.position.x ?? 0) + offsetX;
-const targetY = (this.body?.position.y ?? 0) + offsetY;
+			// Posición objetivo
+			const targetX = (this.body?.position.x ?? 0) + offsetX;
+			const targetY = (this.body?.position.y ?? 0) + offsetY;
 
-// Suavizado tipo LERP (0.1 es la suavidad, puedes ajustarla)
-this.Shield.x += (targetX - this.Shield.x) * 0.50;
-this.Shield.y += (targetY - this.Shield.y) * 0.50;
+			// Suavizado tipo LERP (0.1 es la suavidad, puedes ajustarla)
+			this.Shield.x += (targetX - this.Shield.x) * 0.50;
+			this.Shield.y += (targetY - this.Shield.y) * 0.50;
 
 		if (this.scene.time.now > this.SawMissileInterval + this.LastSawMissileTime) {
 
