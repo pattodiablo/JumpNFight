@@ -331,6 +331,7 @@ createParticles() {
 	}
 
 	update(time: number, delta: number): void {
+       
         this._transform.execute();
         this._navigation.execute();
         this._setAcceleration.execute();
@@ -367,8 +368,13 @@ createParticles() {
          // Actualizar la posición de bg1 para crear el efecto parallax
          this.bg1.tilePositionX = this.cameras.main.scrollX * 0.05;
 
-         this.bg1.x = this.cameras.main.scrollX-this.bg1.width/2;
-         this.bg1.y = this.cameras.main.scrollY-this.bg1.height/2;
+    
+         const targetX = this.cameras.main.scrollX - this.bg1.width / 2;
+         this.bg1.x += (targetX - this.bg1.x) * 0.1; // Lerp hacia la posición deseada
+
+         const targetY = this.cameras.main.scrollY-this.bg1.height/2;
+         this.bg1.y += (targetY - this.bg1.y) * 0.1; // Lerp hacia la posición deseada
+   
     }
 
 	updatePlatforms() {

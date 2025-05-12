@@ -11,7 +11,7 @@ import  PhaserScene  from "~/presentation/phaser/models/PhaserScene";
 import { ColoredBulletBuilder, TexturedBulletBuilder } from "~/presentation/phaser/builders";
 import { Graphic, Sprite } from "~/presentation";
 import SawBullet from "./SawBullet";
-import PlayerShield from "./PlayerShield";
+
 
 /* END-USER-IMPORTS */
 
@@ -82,6 +82,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		this.factor = this.scene.scale.height / this.scene.scale.width;
 		this.flipX = true; // Flip horizontal
 		this.Shield = this.scene.add.sprite(0, 0, 'PlayerShield');
+		
 		this.scene.add.existing(this.Shield);
 
 
@@ -385,11 +386,20 @@ export default class PlayerPrefab extends SpineGameObject {
 
 
     updatePlayer(delta: number) {
+	
 
-		this.scanAndDestroy();
+	
 
-		this.Shield.x = this.x;
-        this.Shield.y = this.y;
+		const offsetX = 70;
+const offsetY = 70;
+
+// Posición objetivo
+const targetX = (this.body?.position.x ?? 0) + offsetX;
+const targetY = (this.body?.position.y ?? 0) + offsetY;
+
+// Suavizado tipo LERP (0.1 es la suavidad, puedes ajustarla)
+this.Shield.x += (targetX - this.Shield.x) * 0.50;
+this.Shield.y += (targetY - this.Shield.y) * 0.50;
 
 		if (this.scene.time.now > this.SawMissileInterval + this.LastSawMissileTime) {
 
