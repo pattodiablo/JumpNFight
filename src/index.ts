@@ -201,10 +201,11 @@ function initializeGame() {
 		height:  window.innerHeight,
     */
        
-        width: 1920,
-		height: 1080,
-        title: "Eggy Carton",
-        type: Phaser.AUTO, 
+    width: 1031,
+		height: 580,
+    
+    title: "Eggy Carton",
+    type: Phaser.AUTO, 
 		backgroundColor: "#e2e2e2",
 		scale: {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,

@@ -243,7 +243,7 @@ export default class GameUI extends Phaser.Scene {
 		levelScene.events.on('particleCollected', this.updateLevelBar, this);
 
 		//posicion pantalla ScoreCounter
-		this.scoreCounter = new ScoreCounter(this, this.levelBar.x+this.levelBar.width/2+20, this.levelBar.y-this.levelBar.height/2);
+		this.scoreCounter = new ScoreCounter(this, this.levelBar.x-this.levelBar.width+20, this.levelBar.y-this.levelBar.height/2);
 		// cambia el tamaño del valor
 		this.scoreCounter.setScaleFactor(0.01);
 		// Espera a que el jugador aparezca para fijar la posición inicial

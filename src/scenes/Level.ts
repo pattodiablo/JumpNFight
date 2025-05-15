@@ -163,7 +163,7 @@ export default class Level extends PhaserScene {
         // Reproduce la animación 'Idle' por defecto
         this.player.animationState.setAnimation(0, "Idle", true);
 		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,0);
-		this.cameras.main.setZoom(factor/3); // Ajustar el zoom de la cámara para que parezca más alejada
+		this.cameras.main.setZoom(factor/4); // Ajustar el zoom de la cámara para que parezca más alejada
 		this.platforms = this.add.group();
         this.enemies = this.add.group();
         this.bg1.setDepth(-1);

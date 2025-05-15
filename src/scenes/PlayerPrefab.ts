@@ -492,9 +492,9 @@ export default class PlayerPrefab extends SpineGameObject {
 					this.playJumpSound();
 
 					const camera = this.scene.cameras.main;
-					camera.zoomTo(this.factor/3, 500); // Alejar la cámara en 500ms
+					camera.zoomTo(this.factor/4, 500); // Alejar la cámara en 500ms
 					this.scene.time.delayedCall(1000, () => {
-						camera.zoomTo(this.factor/2.5, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
+						camera.zoomTo(this.factor/3, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
 					});
 
 
