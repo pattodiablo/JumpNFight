@@ -113,7 +113,8 @@ export default class Level extends PhaserScene {
 
 	create() {
 		this.editorCreate();
-       // this.createParticles();
+     this.createParticles();
+         //this.cameras.main.postFX.addPixelate(0.01); // Cambia 8 por el tamaño de pixel deseado
 
        this.musicManager = this.sound;
        this.fxManager = this.sound;
@@ -369,7 +370,7 @@ createParticles() {
          this.bg1.tilePositionX = this.cameras.main.scrollX * 0.05;
          const smoothFactor = 5; // Mayor = más rápido
          const t = smoothFactor * (delta / 1000)
-        console.log(t);
+      
          const targetX = this.cameras.main.scrollX - this.bg1.width / 2;
          this.bg1.x += (targetX - this.bg1.x) * t; // Lerp hacia la posición deseada
 

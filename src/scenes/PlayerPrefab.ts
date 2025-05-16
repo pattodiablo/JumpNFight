@@ -16,10 +16,10 @@ import SawBullet from "./SawBullet";
 /* END-USER-IMPORTS */
 
 export default class PlayerPrefab extends SpineGameObject {
-	justTinted: any;
+	
 
 	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, dataKey?: string, atlasKey?: string, skin?: string, boundsProvider?: SpineGameObjectBoundsProvider, xargs?: any) {
-		super(scene, plugin, x ?? 210, y ?? 7, dataKey ?? "Player", atlasKey ?? "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
+		super(scene, plugin, x ?? 0, y ?? 0, dataKey ?? "Player", atlasKey ?? "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
 
 		this.setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 600), Phaser.Geom.Rectangle.Contains);
 		this.skeleton.setSkinByName(skin ?? "default");
@@ -72,6 +72,8 @@ export default class PlayerPrefab extends SpineGameObject {
 	public IsRestoringShield: boolean = false;
 
 	/* START-USER-CODE */
+	private WannaSord: boolean | undefined;
+	private justTinted: any;
 	public MissileSize: number = 100;
 	public SawMissile: number = 0;
 	public AddSawMissile: number = 1;
@@ -82,7 +84,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		this.factor = this.scene.scale.height / this.scene.scale.width;
 		this.flipX = true; // Flip horizontal
 		this.Shield = this.scene.add.sprite(0, 0, 'PlayerShield');
-		
+
 		this.scene.add.existing(this.Shield);
 
 
@@ -331,6 +333,13 @@ export default class PlayerPrefab extends SpineGameObject {
 		(this.scene as PhaserScene).addGameObject(bullet);
 	}
 
+	public tryToSword(enemy: Phaser.GameObjects.Sprite) {
+		if(this.isJumping){
+			this.WannaSord = true;
+		}
+
+	}
+
 	handleLaserCollision(laser: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {
 
 
@@ -386,11 +395,11 @@ export default class PlayerPrefab extends SpineGameObject {
 
 
     updatePlayer(delta: number) {
-	
 
-	
 
-			const offsetX = 90;
+
+
+			const offsetX = 160;
 			const offsetY = 70;
 
 			// Posición objetivo
@@ -498,6 +507,8 @@ export default class PlayerPrefab extends SpineGameObject {
 					});
 
 
+				}else if(this.WannaSord){
+					newAnimation = "SwordDash1"; // Cambiar a la animación de salto
 				}else if (playerBody.blocked.down) {
 					this.disableJumpVars();
 				}
@@ -564,10 +575,10 @@ export default class PlayerPrefab extends SpineGameObject {
 	handleDamage(EnemyDamage: number) {
 		if (!this.justTinted) {
 			this.justTinted = true;
-		
+
 			// Cambiar el color del esqueleto completo (puede afectar todos los slots)
 			this.skeleton.color.set(1, 0, 0, 1); // Rojo (RGB, Alpha)
-		
+
 			this.scene.time.delayedCall(150, () => {
 				this.skeleton.color.set(1, 1, 1, 1); // Restaurar a blanco (sin tint)
 				this.justTinted = false;
@@ -576,7 +587,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		if(this.IsShieldActive){
 
-			
+
 			this.ShieldLife -= EnemyDamage;
 			//console.log("Shield Life: "+this.ShieldLife);
 			this.scene.tweens.add({

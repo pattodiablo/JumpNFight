@@ -21,6 +21,7 @@ declare global {
 /* END-USER-IMPORTS */
 
 export default class Enemy1V1 extends SpineGameObject {
+	timers: Phaser.Time.TimerEvent[] = [];
 	/**
 	 * @param scene The scene to which this GameObject belongs.
 	 * @param plugin The SpinePlugin instance.
@@ -99,7 +100,8 @@ export default class Enemy1V1 extends SpineGameObject {
 	
 	}
 	handlePlayerCollisionStand(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
-
+		(player as any).tryToSword(enemy);
+		
 	}
 	handlePlayerCollision(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 
@@ -201,7 +203,14 @@ export default class Enemy1V1 extends SpineGameObject {
 		this.scene.sound.play(randomSound);
 		}
 
-
+if (this.timers && Array.isArray(this.timers)) {
+            this.timers.forEach((timer: Phaser.Time.TimerEvent) => {
+                if (timer && !timer.hasDispatched) {
+                    timer.remove(false);
+                }
+            });
+            this.timers = [];
+        }
 
 		this.IsDestroyed = true;
 		this.generateParticles();

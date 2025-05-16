@@ -232,6 +232,21 @@
                 "key": "EnemyExplode6_01"
             },
             {
+                "url": "assets/EnemyLaserTexture.png",
+                "type": "image",
+                "key": "EnemyLaserTexture"
+            },
+            {
+                "url": "assets/EnemyLaserTexture2.png",
+                "type": "image",
+                "key": "EnemyLaserTexture2"
+            },
+            {
+                "url": "assets/EnemyLaserTexture3.png",
+                "type": "image",
+                "key": "EnemyLaserTexture3"
+            },
+            {
                 "url": "assets/SpineAnimations/Enemy1Old/EnemyV1.json",
                 "type": "spineJson",
                 "key": "EnemyV1",
