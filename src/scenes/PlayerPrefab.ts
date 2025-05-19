@@ -16,7 +16,6 @@ import SawBullet from "./SawBullet";
 /* END-USER-IMPORTS */
 
 export default class PlayerPrefab extends SpineGameObject {
-	
 
 	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, dataKey?: string, atlasKey?: string, skin?: string, boundsProvider?: SpineGameObjectBoundsProvider, xargs?: any) {
 		super(scene, plugin, x ?? 0, y ?? 0, dataKey ?? "Player", atlasKey ?? "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
@@ -335,6 +334,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	public tryToSword(enemy: Phaser.GameObjects.Sprite) {
 		if(this.isJumping){
+			console.log("wanna sword");
 			this.WannaSord = true;
 		}
 
@@ -557,6 +557,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	}
 
 	disableJumpVars(){
+		this.WannaSord = false;
 		this.isJumping = false;
 		this.hasDoubleJumped = false; // Resetear el doble salto al aterrizar
 		this.isInAir = false; // Resetear el estado de estar en el aire al aterrizar

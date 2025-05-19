@@ -64,6 +64,7 @@ export default class Enemy1V1 extends SpineGameObject {
 	public shootingrate: number = 200;
 	public canHitPlayer: boolean = false;
 	public canPlayerStand: boolean = false;
+	public canPlayerHit: boolean = true;
 
 	/* START-USER-CODE */
 	create(){
@@ -96,11 +97,16 @@ export default class Enemy1V1 extends SpineGameObject {
 
 		}else if(this.canPlayerStand){
 			this.scene.physics.add.collider(this, player, this.handlePlayerCollisionStand as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+		}else if(this.canPlayerHit){
+			this.scene.physics.add.overlap(this, player, this.handlePlayerHit as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 		}
 	
 	}
-	handlePlayerCollisionStand(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
+	handlePlayerHit(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 		(player as any).tryToSword(enemy);
+	}
+	handlePlayerCollisionStand(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
+
 		
 	}
 	handlePlayerCollision(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
