@@ -95,7 +95,7 @@ export default class PlayerPrefab extends SpineGameObject {
         playerBody.setGravityY(this.playerGravity); // Configura la gravedad para el jugador
 
 		    // Ajustar el tamaño y la forma del cuerpo de colisión del jugador
-			playerBody.setSize(400, 400); // Ajustar el tamaño del cuerpo de colisión
+			playerBody.setSize(400, 450); // Ajustar el tamaño del cuerpo de colisión
 			playerBody.setOffset(140, 210); // Ajustar la posición del cuerpo de colisión
 
 
@@ -130,6 +130,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			this.setAnimation("Roll", true);
 			const playerBody = this.body as Phaser.Physics.Arcade.Body;
 			playerBody.setEnable(false);
+			this.Shield.setVisible(false);
 			this.x = x;	// Mover el cañón a la posición del jugador
 			this.y = Y;	// Mover el cañón a la posición del jugador
 			this.scene.time.delayedCall(500, () => {
@@ -138,7 +139,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 			});
 			this.scene.time.delayedCall(1000, () => {
-
+				this.Shield.setVisible(true);
 				this.IsRolling = false;
 				playerBody.setEnable(true);
 				this.IsFallingAfterCannon = true;
@@ -336,8 +337,42 @@ export default class PlayerPrefab extends SpineGameObject {
 		if(this.isJumping){
 			console.log("wanna sword");
 			this.WannaSord = true;
+			this.handleSowrdCollision(this, enemy);
 		}
 
+	}
+
+	handleSowrdCollision(laser: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {
+		(enemy as any).EnemyLife -= 1;
+		const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+		if(!(levelScene as any).isFxMuted){
+			const jumpSounds = ['EnemylaserShoot1_01', 'EnemylaserShoot2_01', 'EnemylaserShoot3_01', 'EnemylaserShoot4_01'];
+		// Select a random sound
+		const randomSound = Phaser.Math.RND.pick(jumpSounds);
+		// Play the selected sound
+		this.scene.sound.play(randomSound);
+		}
+
+
+		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {
+			x: (enemy as Phaser.GameObjects.Ellipse).x,
+			y: (enemy as Phaser.GameObjects.Ellipse).y,
+			speed: { min: -1000, max: 1000 },
+			angle: { min: 0, max: 360 },
+			lifespan: { min: 30, max: 500 },
+			scale: { start: 2, end: 0 },
+			quantity: 5,
+			maxParticles: 5,
+			frequency: 100,
+			gravityY: 3000
+
+		});
+		bloodParticles.setDepth(1);
+			// Detener el sistema de partículas después de un tiempo y luego destruirlo
+			this.scene.time.delayedCall(500, function() {
+				bloodParticles.stop();
+				bloodParticles.destroy();
+			}, [], this);
 	}
 
 	handleLaserCollision(laser: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {
@@ -349,7 +384,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {
 			x: (laser as Phaser.GameObjects.Ellipse).x,
 			y: (laser as Phaser.GameObjects.Ellipse).y,
-			speed: { min: -1000, max: 1000 },
+			speed: { min: -2000, max: -2000 },
 			angle: { min: 0, max: 360 },
 			lifespan: { min: 30, max: 500 },
 			scale: { start: 2, end: 0 },
@@ -548,7 +583,17 @@ export default class PlayerPrefab extends SpineGameObject {
         if (newAnimation !== this.currentAnimation) {
             this.animationState.setAnimation(0, newAnimation, newAnimation !== "Jump" && newAnimation !== "Falling" && newAnimation !== "Dead");
             this.currentAnimation = newAnimation;
-        }
+        }else  if (newAnimation === "SwordDash1") {
+        this.animationState.addListener({
+            complete: (entry: any) => {
+                if (entry.animation && entry.animation.name === "SwordDash1") {
+                    const nextAnim = Phaser.Math.RND.pick(["SwordDash2", "SwordDash3"]);
+                    this.animationState.setAnimation(0, nextAnim, false);
+                    this.animationState.clearListeners();
+                }
+            }
+        });
+    }
 
 
 	//	this.ArmsFollowMouse(this, this.scene.input.mousePointer);
@@ -671,6 +716,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			//console.log("Create Landing Platform");
 			const floor = this.scene.add.rectangle(this.x, this.scene.scale.height-1200, this.scene.scale.width+15000, 500, 0x000000);
 			floor.setOrigin(0,0.5);
+			floor.setDepth(this.depth-1);
 			this.scene.physics.add.existing(floor, true);
 			 // Agregar colisión entre el jugador y el suelo
 			 this.scene.physics.add.collider(this, floor);

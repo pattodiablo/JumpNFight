@@ -232,6 +232,34 @@
                 "key": "EnemyExplode6_01"
             },
             {
+                "url": [
+                    "assets/sounds/EnemylaserShoot1_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemylaserShoot1_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/EnemylaserShoot2_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemylaserShoot2_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/EnemylaserShoot3_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemylaserShoot3_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/EnemylaserShoot4_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemylaserShoot4_01"
+            },
+            {
                 "url": "assets/EnemyLaserTexture.png",
                 "type": "image",
                 "key": "EnemyLaserTexture"

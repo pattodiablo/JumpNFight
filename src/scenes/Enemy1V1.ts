@@ -65,7 +65,7 @@ export default class Enemy1V1 extends SpineGameObject {
 	public canHitPlayer: boolean = false;
 	public canPlayerStand: boolean = false;
 	public canPlayerHit: boolean = true;
-
+private hasHitPlayer: boolean = false;
 	/* START-USER-CODE */
 	create(){
 
@@ -103,8 +103,20 @@ export default class Enemy1V1 extends SpineGameObject {
 	
 	}
 	handlePlayerHit(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
-		(player as any).tryToSword(enemy);
+		  if (!this.hasHitPlayer) {
+        (player as any).tryToSword(enemy);
+        this.hasHitPlayer = true;
+    }
 	}
+	// Llama a este método desde updateEnemy o donde corresponda para resetear el flag cuando ya no hay overlap
+resetPlayerHit(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
+    // Verifica si ya no hay overlap (puedes usar Arcade Physics para esto)
+    // Por ejemplo, si la distancia es mayor a cierto umbral o usando body.touching
+    if (!this.scene.physics.overlap(enemy, player)) {
+        this.hasHitPlayer = false;
+    }
+}
+
 	handlePlayerCollisionStand(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 
 		

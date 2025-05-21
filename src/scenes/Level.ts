@@ -310,6 +310,7 @@ createParticles() {
             const cannonX = platformX/2;
             const cannonY = platformY-platform.height*2 ; // Ajustar la posición del Cannon
             const cannon = new Cannon(this, cannonX, cannonY);
+            cannon.setDepth(this.player.depth - 1);
             this.add.existing(cannon);
         }
 
@@ -325,6 +326,7 @@ createParticles() {
 			this.physics.add.existing(floor, true);
 			 // Agregar colisión entre el jugador y el suelo
 			 this.physics.add.collider(this.player, floor);
+             floor.setDepth(this.player.depth - 1);
 			 this.platforms.add(floor);
 
 		}
@@ -477,6 +479,7 @@ createParticles() {
 
                 const newPlatform = this.add.rectangle(midX, midY, platformWidth, platformHeight, 0x000000) as Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
                 newPlatform.setOrigin(0.5, 0.5);
+                newPlatform.setDepth(this.player.depth - 1);
                 this.physics.add.existing(newPlatform, true);
 
                 // Agregar colisión entre el jugador y la nueva plataforma
