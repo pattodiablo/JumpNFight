@@ -199,49 +199,49 @@ export default class Level extends PhaserScene {
 
     createEnemies() {
         this.enemies = this.add.group();
-    
+
         let numEnemies = this.FactorDeDificultad * this.WaveNumber;
-    
+
         let minEnemyX = this.cameras.main.x - 10000;
         let maxEnemyX = this.cameras.main.x + 10000;
         let minEnemyY = this.player.y - 900;
         let maxEnemyY = this.scale.height - 2000;
-    
+
         // Array de clases de enemigos
         const EnemyClasses = [
             Enemy1, Enemy2, Enemy3, Enemy4, Enemy5, Enemy6,
             Enemy7, Enemy8, Enemy9, Enemy10, Enemy11, Enemy12
         ];
-    
+
         const generateEnemies = () => {
             let maxTypeIndex = Math.min(this.WaveNumber, EnemyClasses.length);
-    
+
             for (let i = 0; i < numEnemies; i++) {
                 const enemyX = Phaser.Math.Between(minEnemyX, maxEnemyX);
                 const enemyY = Phaser.Math.Between(minEnemyY, maxEnemyY);
-    
+
                 const randomTypeIndex = Phaser.Math.Between(0, maxTypeIndex - 1);
                 const EnemyClass = EnemyClasses[randomTypeIndex];
-    
+
                 const enemy = new EnemyClass(this, this.spine, enemyX, enemyY);
                 this.add.existing(enemy);
                 this.enemies.add(enemy);
             }
-    
+
             numEnemies += 2;
         };
-    
+
         const checkAndGenerateEnemies = () => {
             if (this.enemies.getLength() === 0) {
                 generateEnemies();
             }
-    
+
             this.time.delayedCall(5000, checkAndGenerateEnemies, [], this);
         };
-    
+
         checkAndGenerateEnemies();
     }
-    
+
 
 
 createParticles() {
@@ -334,7 +334,7 @@ createParticles() {
 	}
 
 	update(time: number, delta: number): void {
-       
+
         this._transform.execute();
         this._navigation.execute();
         this._setAcceleration.execute();
@@ -372,13 +372,13 @@ createParticles() {
          this.bg1.tilePositionX = this.cameras.main.scrollX * 0.05;
          const smoothFactor = 5; // Mayor = más rápido
          const t = smoothFactor * (delta / 1000)
-      
+
          const targetX = this.cameras.main.scrollX - this.bg1.width / 2;
          this.bg1.x += (targetX - this.bg1.x) * t; // Lerp hacia la posición deseada
 
          const targetY = this.cameras.main.scrollY-this.bg1.height/2;
          this.bg1.y += (targetY - this.bg1.y) * t; // Lerp hacia la posición deseada
-   
+
     }
 
 	updatePlatforms() {

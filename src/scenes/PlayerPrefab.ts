@@ -11,6 +11,7 @@ import  PhaserScene  from "~/presentation/phaser/models/PhaserScene";
 import { ColoredBulletBuilder, TexturedBulletBuilder } from "~/presentation/phaser/builders";
 import { Graphic, Sprite } from "~/presentation";
 import SawBullet from "./SawBullet";
+import AlertLabel from "./AlertLabel";
 
 
 /* END-USER-IMPORTS */
@@ -647,13 +648,14 @@ export default class PlayerPrefab extends SpineGameObject {
 				//console.log("Shield Life: "+this.ShieldLife);
 				this.scene.tweens.add({
                     targets: this.Shield,
-					alpha: {from: 1, to: 0.5},
+					alpha: {from: 1, to: 0.2},
                     duration: 100,	
 					repeat: 10,
                     ease: 'Bounce.easeOut'
                 });
 			}else if(this.ShieldLife<=0){
-
+				     const alert = new AlertLabel(this.scene, this.x-120, this.y - 120);
+            this.scene.add.existing(alert);
 				this.scene.tweens.add({
                     targets: this.Shield,
 					alpha: {from: 1, to: 0.1},
