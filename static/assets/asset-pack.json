@@ -2,6 +2,13 @@
     "section1": {
         "files": [
             {
+                "url": [
+                    "assets/sounds/Alert1_01.mp3"
+                ],
+                "type": "audio",
+                "key": "Alert1_01"
+            },
+            {
                 "url": "assets/AlertImg.png",
                 "type": "image",
                 "key": "AlertImg"
@@ -61,6 +68,34 @@
                 "textureURL": "assets/Animations/JumpNRunAnimations/Deacon.png",
                 "type": "atlas",
                 "key": "Deacon_1"
+            },
+            {
+                "url": [
+                    "assets/sounds/dead1_01.mp3"
+                ],
+                "type": "audio",
+                "key": "dead1_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/dead2_01.mp3"
+                ],
+                "type": "audio",
+                "key": "dead2_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/dead3_01.mp3"
+                ],
+                "type": "audio",
+                "key": "dead3_01"
+            },
+            {
+                "url": [
+                    "assets/sounds/dead4_01.mp3"
+                ],
+                "type": "audio",
+                "key": "dead4_01"
             },
             {
                 "url": "assets/SpineAnimations/Enemy1/Enemy1.json",
@@ -475,6 +510,11 @@
                 "url": "assets/swordWeapon.png",
                 "type": "image",
                 "key": "swordWeapon"
+            },
+            {
+                "url": "assets/TheBuilding.png",
+                "type": "image",
+                "key": "TheBuilding"
             },
             {
                 "url": "assets/UpgradeBtn.png",

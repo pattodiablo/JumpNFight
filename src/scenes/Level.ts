@@ -69,6 +69,11 @@ export default class Level extends PhaserScene {
 		const laserShot = new LaserShot(this, 715, 740);
 		this.add.existing(laserShot);
 
+		// theBuilding
+		const theBuilding = this.add.image(-518, -178, "TheBuilding");
+		theBuilding.scaleX = 3;
+		theBuilding.scaleY = 3;
+
 		this.player = player;
 		this.bg1 = bg1;
 		this.laserShot = laserShot;

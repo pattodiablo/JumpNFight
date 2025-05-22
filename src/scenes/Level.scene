@@ -55,6 +55,18 @@
             "scope": "PUBLIC",
             "x": 715,
             "y": 740
+        },
+        {
+            "type": "Image",
+            "id": "185fbf2a-8be3-44b1-aaac-c9b2e5c945d2",
+            "label": "theBuilding",
+            "texture": {
+                "key": "TheBuilding"
+            },
+            "x": -518,
+            "y": -178,
+            "scaleX": 3,
+            "scaleY": 3
         }
     ],
     "plainObjects": [],

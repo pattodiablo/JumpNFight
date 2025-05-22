@@ -146,6 +146,7 @@ resetPlayerHit(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.
 			gravityY: 3000
 
 		});
+		     const fx = bloodParticles.postFX.addBokeh(0.5, 10, 0.2);
 
 		bloodParticles.setDepth(1);
 			// Detener el sistema de partículas después de un tiempo y luego destruirlo

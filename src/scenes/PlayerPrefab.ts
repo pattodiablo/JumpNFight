@@ -655,6 +655,14 @@ export default class PlayerPrefab extends SpineGameObject {
                 });
 			}else if(this.ShieldLife<=0){
 				     const alert = new AlertLabel(this.scene, this.x-120, this.y - 120);
+					 const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+		if(!(levelScene as any).isFxMuted){
+			const jumpSounds = ['Alert1_01'];
+			// Select a random sound
+			const randomSound = Phaser.Math.RND.pick(jumpSounds);
+			// Play the selected sound
+			this.scene.sound.play(randomSound);
+		}
             this.scene.add.existing(alert);
 				this.scene.tweens.add({
                     targets: this.Shield,
@@ -673,6 +681,17 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		}else{
 			this.IsDead = true;
+
+					 const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+			if(!(levelScene as any).isFxMuted){
+				const deadSounds = ['dead1_01','dead2_01','dead3_01','dead4_01'];
+				// Select a random sound
+				const randomSound = Phaser.Math.RND.pick(deadSounds);
+				// Play the selected sound
+				this.scene.sound.play(randomSound);
+			}
+
+
 			const playerBody = this.body as Phaser.Physics.Arcade.Body;
 			playerBody.setEnable(false);
 			playerBody.setImmovable(true); // Hacer que el enemigo sea inmovible
