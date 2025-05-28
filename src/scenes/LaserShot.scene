@@ -42,7 +42,7 @@
             "name": "MissileVelocity",
             "label": "MissileVelocity",
             "tooltip": "",
-            "defValue": 2000,
+            "defValue": 3000,
             "customDefinition": false,
             "type": {
                 "id": "number"
@@ -52,7 +52,7 @@
             "name": "detectionRadius",
             "label": "detectionRadius",
             "tooltip": "detectionRadius",
-            "defValue": 1200,
+            "defValue": 2000,
             "customDefinition": false,
             "type": {
                 "id": "number"
@@ -102,7 +102,7 @@
             "name": "MissileNumber",
             "label": "MissileNumber",
             "tooltip": "",
-            "defValue": 0,
+            "defValue": 1,
             "customDefinition": false,
             "type": {
                 "id": "number"
@@ -122,7 +122,7 @@
             "name": "rainNumber",
             "label": "rainNumber",
             "tooltip": "",
-            "defValue": 0,
+            "defValue": 1,
             "customDefinition": false,
             "type": {
                 "id": "number"

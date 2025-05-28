@@ -23,15 +23,31 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		/* END-USER-CTR-CODE */
 	}
 
+	public detectionRadius: number = 2000;
+
+	public MissileNumber: number = 1;
 	public MissileVelocity: number = 3000;
-	public detectionRadius: number = 1200;
 	public MissileDamage: number = 10;
-	public LaserDamage: number = 1;
-	public swordWeaponDamage: number = 20;
+	public MissileInterval: number = 1000;
+	
 	public LaserShotsNumber: number = 1;
-	public MissileNumber: number = 0;
+	public LaserVelocity: number = 4500;
+	public LaserShotsInterval: number = 250;
+	public LaserDamage: number = 1;
+
+	
 	public SwordNumber: number = 0;
-	public rainNumber: number = 0;
+	public SwordVelocity: number = 2000;
+	public swordWeaponDamage: number = 20;
+	public SwordInterval: number = 1000;
+
+	public rainNumber: number = 1;
+	public rainInterval: number = 250;
+	public rainDamage: number = 5;
+	public RainVelocity: number = 8000;
+
+
+
 
 	/* START-USER-CODE */
 
@@ -41,14 +57,14 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		(this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
 		this.scene.time.addEvent({
-			delay: 500, // Tiempo en milisegundos (2 segundos)
+			delay: this.LaserShotsInterval, // Tiempo en milisegundos (2 segundos)
 			callback: this.fireLaser,
 			callbackScope: this,
 			loop: true // Repetir indefinidamente
 		});
 
 		this.scene.time.addEvent({
-			delay: 1000, // Tiempo en milisegundos (2 segundos)
+			delay: this.MissileInterval, // Tiempo en milisegundos (2 segundos)
 			callback: this.fireMissile,
 			callbackScope: this,
 			loop: true // Repetir indefinidamente
@@ -56,14 +72,14 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 
 		this.scene.time.addEvent({
-			delay: 2000, // Tiempo en milisegundos (2 segundos)
+			delay: this.SwordInterval, // Tiempo en milisegundos (2 segundos)
 			callback: this.fireSwords,
 			callbackScope: this,
 			loop: true // Repetir indefinidamente
 		});
 
 		this.scene.time.addEvent({
-			delay: 1000, // Tiempo en milisegundos (2 segundos)
+			delay: this.rainInterval, // Tiempo en milisegundos (2 segundos)
 			callback: this.rayCreator,
 			callbackScope: this,
 			loop: true // Repetir indefinidamente
@@ -111,7 +127,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 			const rayBody = ray.body as Phaser.Physics.Arcade.Body;
 			ray.setOrigin(0.5, 1);
 			// Set the ray's velocity to fall down
-			rayBody.setVelocityY(8000); // Adjust the speed as needed
+			rayBody.setVelocityY(this.RainVelocity); // Adjust the speed as needed
 			rayBody.setAllowGravity(false);
 
 
@@ -151,7 +167,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 
 		// Reduce the enemy's life or destroy it
-		(enemy as any).EnemyLife -= 5; // Adjust damage as needed
+		(enemy as any).EnemyLife -= this.rainDamage; // Adjust damage as needed
 		if ((enemy as any).EnemyLife <= 0) {
 			(enemy as any).handleDestroy();
 		}
@@ -195,13 +211,13 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 
 
-	fireSwords(){
+	fireSwords(){ //minas
 		for (let i = 0; i < this.SwordNumber; i++) {
 			const missile = this.scene.add.sprite(this.x, this.y, 'swordWeapon');
 			missile.setData('damage', this.swordWeaponDamage);
 			this.scene.physics.world.enable(missile);
-			const velocityX = Phaser.Math.Between(-2000, 2000);
-			const velocityY = Phaser.Math.Between( -1500 , -500);
+			const velocityX = Phaser.Math.Between(-this.SwordVelocity, this.SwordVelocity);
+			const velocityY = Phaser.Math.Between( -this.SwordVelocity , -this.SwordVelocity);
 			(missile.body as Phaser.Physics.Arcade.Body).setVelocity(velocityX, velocityY);
 			(missile.body as Phaser.Physics.Arcade.Body).setAllowGravity(true);
 			(missile.body as Phaser.Physics.Arcade.Body).gravity.y = 1000;
@@ -313,7 +329,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 		for (let i = 0; i < this.LaserShotsNumber; i++) {
 
-		
+
 
 			const enemies = (this.scene as any).enemies.getChildren();
 			let nearestEnemy: Phaser.GameObjects.Sprite | null = null;
@@ -336,8 +352,9 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 				// Play the selected sound
 				this.scene.sound.play(randomSound);
 				}
-	
+
 				const laser = this.scene.add.sprite(this.x, this.y, 'laserTexture');
+				laser.postFX.addBloom(0xffffff, 1, 1, 2, 1.2);
 				this.scene.physics.world.enable(laser);
 				const Level =this.scene.scene.get('Level') as any;;
 
@@ -346,7 +363,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 				laser.setData('damage', this.LaserDamage*EnergyLevel);
 				// Calculate the angle and velocity
 				const angle = Phaser.Math.Angle.Between(this.x, this.y, (nearestEnemy as Phaser.GameObjects.Sprite).x, (nearestEnemy as Phaser.GameObjects.Sprite).y);
-				const velocity = this.scene.physics.velocityFromRotation(angle, 4500);
+				const velocity = this.scene.physics.velocityFromRotation(angle, this.LaserVelocity);
 				(laser.body as Phaser.Physics.Arcade.Body).setVelocity(velocity.x, velocity.y);
 				(laser.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 				laser.angle = Phaser.Math.RadToDeg(angle);

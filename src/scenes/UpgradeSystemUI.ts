@@ -68,12 +68,13 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 
 	/* START-USER-CODE */
 	public MissileSize: Array<any> = [2,"ShieldIcon","Player", 0,"MissileSize","multiply", "Missile size"];
-	public SawMissile: Array<any> = [2,"ShieldIcon","Player", 0,"SawMissile","add", "Saw Missile Damage"];
+	public SawMissileDamage: Array<any> = [2,"ShieldIcon","Player", 0,"SawMissile","add", "Saw Missile Damage"];
 	public AddSawMissile: Array<any> = [1,"ShieldIcon","Player", 0,"AddSawMissile","add", "Add SawMissile"];
 	public LaserShotsNumber: Array<any> = [1,"LaserShotsNumber","LaserShot", 0,"LaserShotsNumber","add", "Add a LaserShot"];
 	public MissileNumber: Array<any> = [1,"MissileNumber","LaserShot", 0,"MissileNumber","add", "Add a Missile"];
 	public SwordNumber: Array<any> = [1,"SwordNumber","LaserShot", 0,"SwordNumber","add", "Add a Mine"];
- 	public upgrades: Array<any> = [this.SawMissile,this.PlayerSpeed, this.AddSawMissile, this.LaserShotsNumber, this.MissileNumber, this.SwordNumber];	
+ 	
+	public upgrades: Array<any> = [this.SawMissileDamage,this.PlayerSpeed, this.AddSawMissile, this.LaserShotsNumber, this.MissileNumber, this.SwordNumber];	
 	public optionPositions: Array<any> = [];
 //	public upgrades: Array<any> = [this.MissileSize];	
 	public AvailableUpgrades: Array<any> = [...this.upgrades];
@@ -113,14 +114,18 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		//this.add(this.background);
 		this.background.setDepth(-11);
 
-
-		this.btn1.scaleX = 0.4;
-        this.btn1.scaleY = 0.4;
-		this.btn2.scaleX = 0.4;
-        this.btn2.scaleY = 0.4;
-		this.btn3.scaleX = 0.4;
-        this.btn3.scaleY = 0.4;
-		const btnSpacing = width / 5;
+		const buttonOriginalWidth = this.btn1.width; // Ancho original del botón
+		const numButtons = 3;
+		const spacingRatio = 0.15; 
+		const totalSpacing = (numButtons + 1) * spacingRatio	; // Espacios entre y a los lados
+		const scaleRation = (width * (1 - totalSpacing)) / (numButtons * buttonOriginalWidth);
+		this.btn1.scaleX =  scaleRation;
+        this.btn1.scaleY = scaleRation;
+		this.btn2.scaleX = scaleRation;
+        this.btn2.scaleY = scaleRation;
+		this.btn3.scaleX = scaleRation;
+        this.btn3.scaleY = scaleRation;
+		const btnSpacing = (width / numButtons)+spacingRatio;
 		this.btn1.setPosition(width / 2 - btnSpacing, this.scene.scale.height / 2);
         this.btn2.setPosition(width / 2, this.scene.scale.height / 2);
         this.btn3.setPosition(width / 2 + btnSpacing, this.scene.scale.height / 2);

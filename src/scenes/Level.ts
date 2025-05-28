@@ -70,13 +70,22 @@ export default class Level extends PhaserScene {
 		this.add.existing(laserShot);
 
 		// theBuilding
-		const theBuilding = this.add.image(-518, -178, "TheBuilding");
+		const theBuilding = this.add.sprite(-1345, -178, "TheBuilding");
+		theBuilding.setInteractive(new Phaser.Geom.Rectangle(0, 0, 3072, 3072), Phaser.Geom.Rectangle.Contains);
 		theBuilding.scaleX = 3;
 		theBuilding.scaleY = 3;
+
+		// Wall
+		const wall = this.add.rectangle(-1210, -763, 1000, 8000);
+		wall.setInteractive(new Phaser.Geom.Rectangle(0, 0, 1000, 8000), Phaser.Geom.Rectangle.Contains);
+		wall.alpha = 0;
+		wall.isFilled = true;
 
 		this.player = player;
 		this.bg1 = bg1;
 		this.laserShot = laserShot;
+		this.theBuilding = theBuilding;
+		this.wall = wall;
 
 		this.events.emit("scene-awake");
 	}
@@ -84,6 +93,8 @@ export default class Level extends PhaserScene {
 	public player!: PlayerPrefab;
 	public bg1!: Phaser.GameObjects.TileSprite;
 	public laserShot!: LaserShot;
+	private theBuilding!: Phaser.GameObjects.Sprite;
+	private wall!: Phaser.GameObjects.Rectangle;
 
 	/* START-USER-CODE */
 
@@ -118,8 +129,14 @@ export default class Level extends PhaserScene {
 
 	create() {
 		this.editorCreate();
-     this.createParticles();
+    // this.createParticles();
          //this.cameras.main.postFX.addPixelate(0.01); // Cambia 8 por el tamaño de pixel deseado
+
+
+
+// Agregar colisión entre el jugador y la pared (wall)
+this.physics.add.existing(this.wall, true);
+this.physics.add.collider(this.player, this.wall);
 
        this.musicManager = this.sound;
        this.fxManager = this.sound;
@@ -170,12 +187,22 @@ export default class Level extends PhaserScene {
         this.player.animationState.setAnimation(0, "Idle", true);
 		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,0);
 		this.cameras.main.setZoom(factor/4); // Ajustar el zoom de la cámara para que parezca más alejada
-		this.platforms = this.add.group();
+		this.cameras.main.fadeIn(100);
+        const fxCamera = this.cameras.main.postFX.addPixelate(40);
+        this.add.tween({
+            targets: fxCamera,
+            duration: 700,
+            amount: -1,
+        });
+
+
+        this.platforms = this.add.group();
         this.enemies = this.add.group();
         this.bg1.setDepth(-1);
 
         this.bg1.setSize(this.cameras.main.displayWidth*20, this.cameras.main.displayHeight*10);
         this.bg1.setTileScale(4, 4);
+
 
 		this.createFloor();
 		this.createPlatforms();

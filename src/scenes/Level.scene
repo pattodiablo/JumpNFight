@@ -57,16 +57,35 @@
             "y": 740
         },
         {
-            "type": "Image",
+            "type": "Sprite",
             "id": "185fbf2a-8be3-44b1-aaac-c9b2e5c945d2",
             "label": "theBuilding",
+            "scope": "CLASS",
+            "hitArea.shape": "RECTANGLE",
+            "hitArea.width": 3072,
+            "hitArea.height": 3072,
             "texture": {
                 "key": "TheBuilding"
             },
-            "x": -518,
+            "x": -1345,
             "y": -178,
             "scaleX": 3,
             "scaleY": 3
+        },
+        {
+            "type": "Rectangle",
+            "id": "c9527a6f-d991-40e9-b31b-807b94608fd7",
+            "label": "Wall",
+            "scope": "CLASS",
+            "hitArea.shape": "RECTANGLE",
+            "hitArea.width": 1000,
+            "hitArea.height": 8000,
+            "x": -1210,
+            "y": -763,
+            "alpha": 0,
+            "isFilled": true,
+            "width": 1000,
+            "height": 8000
         }
     ],
     "plainObjects": [],
