@@ -77,7 +77,8 @@ export default class PlayerPrefab extends SpineGameObject {
 	public MissileSize: number = 100;
 	public SawMissileSize: number = 1;
 	public SawMissile: number = 1;
-	public SawMissileDamage: number = 1;
+	public SawMissileDamage: number = 5;
+	public SawMissileVelocity: number = 1000;
 	public SawBulletLifeTime: number = 3000;
 	public SawBulletInterval: number = 100;
 	public AddSawMissile: number = 1;
@@ -88,7 +89,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		this.factor = this.scene.scale.height / this.scene.scale.width;
 		this.flipX = true; // Flip horizontal
 		this.Shield = this.scene.add.sprite(0, 0, 'PlayerShield');
-		const shieldEff = this.Shield.postFX.addBloom(0xffffff, 1, 1, 1.5, 1);
+		this.Shield.postFX.addBloom(0xffffff, 1, 1, 1.5, 1);
 		this.Shield.postFX.addShine(1, 0.5, 4, 0.5, 0.5, 0.5);
 		this.scene.add.existing(this.Shield);
 
@@ -254,6 +255,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			if(this.SawMissile>0){
 				console.log("shooting saw missile");
 				const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
+				sawBullet.BulletVelocity = this.SawMissileVelocity;
 				sawBullet.setScale(this.SawMissileSize);
 				sawBullet.Damage = this.SawMissileDamage;
 				sawBullet.LifeTime = this.SawBulletLifeTime;

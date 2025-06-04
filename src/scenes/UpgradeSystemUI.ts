@@ -85,13 +85,18 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	public RainVelocity: Array<any> = [300,"RainVelocity","LaserShot", 0,"RainVelocity","add", "Rain Velocity"];
 	public RainInterval: Array<any> = [250,"RainInterval","LaserShot", 0,"rainInterval","substract", "Rain Interval"];
 
-	public SawMissileDamage: Array<any> = [2,"SawPower","Player", 0,"SawMissile","multiply", "Saw Damage"];
+	public SawMissileDamage: Array<any> = [2,"SawPower","Player", 0,"SawMissileDamage","multiply", "Saw Damage"];
 	public SawMissileVelocity: Array<any> = [300,"SawSpeed","Player", 0,"SawMissileVelocity","add", "Saw Missile Velocity"];
 	public SawMissileInterval: Array<any> = [1000,"SawInterval","Player", 0,"LastSawMissileTime","substract", "Saw Interval"];
 	public SawMissileSize: Array<any> = [1.5,"SawSize","Player", 0,"SawMissileSize","multiply", "Saw Size"];
 	public SawMissileLifetime: Array<any> = [1500,"SawBouncingTime","Player", 0,"SawBulletLifeTime","add", "Saw Lifetime"];
 
-	public upgrades: Array<any> = [this.SawMissileInterval];	
+	public upgrades: Array<any> = [this.SawMissileLifetime, this.SawMissileSize, this.SawMissileDamage, this.SawMissileVelocity, this.SawMissileInterval,
+		this.MissileVelocity, this.MissileSize, this.MissileDamage, this.MissileInterval,
+		this.LaserDamage, this.LaserVelocity, this.LaserInterval,
+		this.MineDamage, this.MineVelocity, this.MineInterval,
+		this.RainDamage, this.RainVelocity, this.RainInterval,
+		this.PlayerSpeed, this.CannonVelo, this.MissileVelocity];		
 	public optionPositions: Array<any> = [];
 //	public upgrades: Array<any> = [this.MissileSize];	
 	public AvailableUpgrades: Array<any> = [...this.upgrades];
