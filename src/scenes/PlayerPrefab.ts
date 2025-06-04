@@ -75,7 +75,8 @@ export default class PlayerPrefab extends SpineGameObject {
 	private WannaSord: boolean | undefined;
 	private justTinted: any;
 	public MissileSize: number = 100;
-	public SawMissile: number = 0;
+	public SawMissileSize: number = 1;
+	public SawMissile: number = 1;
 	public SawMissileDamage: number = 1;
 	public SawBulletLifeTime: number = 3000;
 	public SawBulletInterval: number = 100;
@@ -250,11 +251,18 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	shootSawBullet(enemy: Phaser.GameObjects.Sprite) {
 		for (let i = 0; i < this.AddSawMissile; i++) {
-			if(this.SawMissile>1){
+			if(this.SawMissile>0){
 				console.log("shooting saw missile");
 				const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
+				sawBullet.setScale(this.SawMissileSize);
 				sawBullet.Damage = this.SawMissileDamage;
 				sawBullet.LifeTime = this.SawBulletLifeTime;
+				this.scene.tweens.add({
+					targets: sawBullet,
+					angle: 360,
+					duration: 500, // tiempo para una vuelta completa (ajusta a gusto)
+					repeat: -1
+				});
 			}
 
 		}

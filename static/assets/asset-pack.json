@@ -403,6 +403,16 @@
                 "key": "LaserIcon"
             },
             {
+                "url": "assets/LaserInterval.png",
+                "type": "image",
+                "key": "LaserInterval"
+            },
+            {
+                "url": "assets/LaserPower.png",
+                "type": "image",
+                "key": "LaserPower"
+            },
+            {
                 "url": [
                     "assets/sounds/laserShoot1_01.mp3"
                 ],
@@ -431,9 +441,39 @@
                 "key": "laserShoot4_01"
             },
             {
+                "url": "assets/LaserSpeed.png",
+                "type": "image",
+                "key": "LaserSpeed"
+            },
+            {
                 "url": "assets/laserTexture.png",
                 "type": "image",
                 "key": "laserTexture"
+            },
+            {
+                "url": "assets/MagnetPower.png",
+                "type": "image",
+                "key": "MagnetPower"
+            },
+            {
+                "url": "assets/MagnetSpeed.png",
+                "type": "image",
+                "key": "MagnetSpeed"
+            },
+            {
+                "url": "assets/MineInterval.png",
+                "type": "image",
+                "key": "MineInterval"
+            },
+            {
+                "url": "assets/MinePower.png",
+                "type": "image",
+                "key": "MinePower"
+            },
+            {
+                "url": "assets/MineSpeed.png",
+                "type": "image",
+                "key": "MineSpeed"
             },
             {
                 "url": "assets/missileV1.png",
@@ -444,6 +484,26 @@
                 "url": "assets/MissileIcon.png",
                 "type": "image",
                 "key": "missile"
+            },
+            {
+                "url": "assets/MissileInterval.png",
+                "type": "image",
+                "key": "MissileInterval"
+            },
+            {
+                "url": "assets/MissilePower.png",
+                "type": "image",
+                "key": "MissilePower"
+            },
+            {
+                "url": "assets/MissileSize.png",
+                "type": "image",
+                "key": "MissileSize"
+            },
+            {
+                "url": "assets/MissileSpeed.png",
+                "type": "image",
+                "key": "MissileVelocity"
             },
             {
                 "url": "assets/MusicOffBtn.png",
@@ -482,6 +542,26 @@
                 "key": "PlayerShield"
             },
             {
+                "url": "assets/PlayerSpeed.png",
+                "type": "image",
+                "key": "PlayerSpeed"
+            },
+            {
+                "url": "assets/RainInterval.png",
+                "type": "image",
+                "key": "RainInterval"
+            },
+            {
+                "url": "assets/RainPower.png",
+                "type": "image",
+                "key": "RainPower"
+            },
+            {
+                "url": "assets/RainVelocity.png",
+                "type": "image",
+                "key": "RainVelocity"
+            },
+            {
                 "url": "assets/restartBtn.png",
                 "type": "image",
                 "key": "restartBtn"
@@ -492,9 +572,34 @@
                 "key": "RunningIcon"
             },
             {
+                "url": "assets/SawBouncingTime.png",
+                "type": "image",
+                "key": "SawBouncingTime"
+            },
+            {
                 "url": "assets/sawBullet.png",
                 "type": "image",
                 "key": "sawBullet"
+            },
+            {
+                "url": "assets/SawInterval.png",
+                "type": "image",
+                "key": "SawInterval"
+            },
+            {
+                "url": "assets/SawPower.png",
+                "type": "image",
+                "key": "SawPower"
+            },
+            {
+                "url": "assets/SawSize.png",
+                "type": "image",
+                "key": "SawSize"
+            },
+            {
+                "url": "assets/SawSpeed.png",
+                "type": "image",
+                "key": "SawSpeed"
             },
             {
                 "url": "assets/selector.png",
@@ -505,6 +610,16 @@
                 "url": "assets/ShieldIcon.png",
                 "type": "image",
                 "key": "ShieldIcon"
+            },
+            {
+                "url": "assets/ShieldLife.png",
+                "type": "image",
+                "key": "ShieldLife"
+            },
+            {
+                "url": "assets/ShieldLifeTime.png",
+                "type": "image",
+                "key": "ShieldLifeTime"
             },
             {
                 "url": "assets/swordWeapon.png",

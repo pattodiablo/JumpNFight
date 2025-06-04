@@ -205,7 +205,7 @@ function initializeGame() {
 		height: 580,
     
     title: "Eggy Carton",
-    type: Phaser.AUTO, 
+    type: Phaser.WEBGL, 
 		backgroundColor: "#e2e2e2",
 		scale: {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
