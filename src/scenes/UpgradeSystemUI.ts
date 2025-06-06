@@ -91,12 +91,14 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	public SawMissileSize: Array<any> = [1.5,"SawSize","Player", 0,"SawMissileSize","multiply", "Saw Size"];
 	public SawMissileLifetime: Array<any> = [1500,"SawBouncingTime","Player", 0,"SawBulletLifeTime","add", "Saw Lifetime"];
 
-	public upgrades: Array<any> = [this.SawMissileLifetime, this.SawMissileSize, this.SawMissileDamage, this.SawMissileVelocity, this.SawMissileInterval,
-		this.MissileVelocity, this.MissileSize, this.MissileDamage, this.MissileInterval,
-		this.LaserDamage, this.LaserVelocity, this.LaserInterval,
-		this.MineDamage, this.MineVelocity, this.MineInterval,
-		this.RainDamage, this.RainVelocity, this.RainInterval,
-		this.PlayerSpeed, this.CannonVelo, this.MissileVelocity];		
+	public Playerspeed: Array<any> = [300,"PlayerSpeed","Player", 0,"PlayerSpeed","add","Player speed"];
+	public MagnetPower: Array<any> = [2,"MagnetPower","Player", 0,"AttractionRange","multiply","Magnet Power"];
+	public AttractionSpeed: Array<any> = [1.5,"MagnetSpeed","Player", 0,"AttractionSpeed","multiply","Attraction Speed"];
+
+	public ShieldLifeTime: Array<any> = [2000,"ShieldLife","Player", 0,"ShieldRestoreTime","substract","Shield Life Time"];
+	public ShieldLife: Array<any> = [2,"ShieldLife","Player", 0,"ShieldLife","multiply","Shield Life"];
+
+	public upgrades: Array<any> = [this.ShieldLife];
 	public optionPositions: Array<any> = [];
 //	public upgrades: Array<any> = [this.MissileSize];	
 	public AvailableUpgrades: Array<any> = [...this.upgrades];
@@ -415,6 +417,22 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 									break;
 							}
 							console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
+						}else if (upgradeType.randomUpgrade[2] == "CollectableParticle") {
+							switch (upgradeType.randomUpgrade[5]) {
+								case "add":
+									currentLevel.collectableParticle[propertyName] += upgradeType.randomUpgrade[0];
+									break;
+								case "substract":
+									currentLevel.collectableParticle[propertyName] -= upgradeType.randomUpgrade[0];
+									break;
+								case "multiply":
+									currentLevel.collectableParticle[propertyName] *= upgradeType.randomUpgrade[0];
+									break;
+								case "divide":
+									currentLevel.collectableParticle[propertyName] /= upgradeType.randomUpgrade[0];
+									break;
+							}
+							console.log("Property " + propertyName + " " + currentLevel.collectableParticle[propertyName]);
 						}
 					}
 	

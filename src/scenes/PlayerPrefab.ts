@@ -82,6 +82,8 @@ export default class PlayerPrefab extends SpineGameObject {
 	public SawBulletLifeTime: number = 3000;
 	public SawBulletInterval: number = 100;
 	public AddSawMissile: number = 1;
+	public AttractionRange: number = 600;
+	public AttractionSpeed: number = 2000;
 	private _graphics: Phaser.GameObjects.Graphics = this.scene.add.graphics();
 
 	create(){
@@ -667,17 +669,18 @@ export default class PlayerPrefab extends SpineGameObject {
                     ease: 'Bounce.easeOut'
                 });
 			}else if(this.ShieldLife<=0){
-				     const alert = new AlertLabel(this.scene, this.x-120, this.y - 120);
-					 const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
-		if(!(levelScene as any).isFxMuted){
-			const jumpSounds = ['Alert1_01'];
-			// Select a random sound
-			const randomSound = Phaser.Math.RND.pick(jumpSounds);
-			// Play the selected sound
-			this.scene.sound.play(randomSound);
-		}
+				 const alert = new AlertLabel(this.scene, this.x-120, this.y - 120);
+				 const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+				if(!(levelScene as any).isFxMuted){
+					const jumpSounds = ['Alert1_01'];
+					// Select a random sound
+					const randomSound = Phaser.Math.RND.pick(jumpSounds);
+					// Play the selected sound
+					this.scene.sound.play(randomSound);
+				}
             this.scene.add.existing(alert);
-				this.scene.tweens.add({
+
+				this.scene.tweens.add({ 
                     targets: this.Shield,
 					alpha: {from: 1, to: 0.1},
                     duration: 50,					
@@ -712,7 +715,8 @@ export default class PlayerPrefab extends SpineGameObject {
 			const gameUIScene = this.scene.scene.get('GameUI') as Phaser.Scene;
 			(gameUIScene as any).ShowResults();
 		}
-		if(!this.IsRestoringShield){
+		
+		if(!this.IsRestoringShield && this.ShieldLife<this.OrioginalShieldLife){
 			this.scene.time.addEvent({
 				delay: this.ShieldRestoreTime, // Tiempo en milisegundos (5 segundos)
 				callback: () => {
