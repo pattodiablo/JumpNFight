@@ -1,4 +1,3 @@
-
 // You can write more code here
 
 /* START OF COMPILED CODE */
@@ -40,6 +39,14 @@ import Enemy10 from "./Enemy10";
 import Enemy11 from "./Enemy11";
 import Enemy12 from "./Enemy12";
 import { initializeGame } from "..";
+
+// Extend the Window interface to include 'game' and 'GAME'
+declare global {
+    interface Window {
+        game?: any;
+        GAME?: any;
+    }
+}
 
 
 /* END-USER-IMPORTS */
@@ -219,6 +226,10 @@ this.physics.add.collider(this.player, this.wall);
 this.game.events.once("RestartLevel", () => {
     console.log("Restarting level...");
 
+    // Guardar estado de mute antes de reiniciar
+    const wasMusicMuted = this.bgMusic && !this.bgMusic.isPlaying;
+    const wasFxMuted = this.isFxMuted;
+
     // Detener y destruir todos los sonidos activos antes de reiniciar escenas
     this.sound.stopAll();
     this.sound.removeAll();
@@ -231,10 +242,27 @@ this.game.events.once("RestartLevel", () => {
             scene.scene.restart();
         }
     });
+
     // Reiniciar la escena actual
- this.game.destroy(true);
-// Vuelve a crear el juego (debes tener tu función de inicialización disponible)
-initializeGame();
+    this.game.destroy(true);
+
+    // Vuelve a crear el juego (debes tener tu función de inicialización disponible)
+    initializeGame();
+
+    // Restaurar estado de mute después de reiniciar (usa un pequeño delay para asegurar que el juego esté listo)
+    setTimeout(() => {
+       
+        const newGame = window.game || window.GAME; // Ajusta según cómo guardes tu instancia global
+        if (newGame) {
+            const levelScene = newGame.scene.getScene('Level');
+            console.log("Level Scene "+ levelScene);
+            if (levelScene) {
+                console.log("was music mutted " + wasFxMuted);
+                levelScene.setMusic(!wasMusicMuted);
+                levelScene.setFX(!wasFxMuted);
+            }
+        }
+    }, 500);
 }, this);
 // ...existing code...
         // ...existing code...
@@ -324,60 +352,74 @@ createParticles() {
 }
 	createPlatforms() {
         // Crear un grupo para las plataformas
+    const minPlatformWidth = 400;
+    const maxPlatformWidth = 4000;
+    const minPlatformHeight = 800;
+    const maxPlatformHeight = 1400;
+    const minPlatformDistance = 2000;
+    const maxPlatformDistance = 4000;
+    const minPlatformY = 500;
+    const maxPlatformY = this.scale.height - 1200;
 
+    let previousPlatformX = 0;
 
-		const minPlatformWidth = 400; // Ancho mínimo de la plataforma
-        const maxPlatformWidth = 4000; // Ancho máximo de la plataforma
-        const minPlatformHeight = 800; // Altura mínima de la plataforma
-        const maxPlatformHeight = 1400; // Altura máxima de la plataforma
-        const minPlatformDistance = 2000; // Distancia mínima entre plataformas
-        const maxPlatformDistance = 4000; // Distancia máxima entre plataformas
-        const minPlatformY = 500; // Altura mínima de la plataforma
-        const maxPlatformY = this.scale.height - 1200; // Altura máxima de la plataformadad
+    // Generar plataformas iniciales
+    for (let i = 0; i < this.platformBuffer; i++) {
+        const platformWidth = Phaser.Math.Between(minPlatformWidth, maxPlatformWidth);
+        const platformHeight = Phaser.Math.Between(minPlatformHeight, maxPlatformHeight);
+        const platformDistance = Phaser.Math.Between(minPlatformDistance, maxPlatformDistance);
+        const platformX = previousPlatformX + platformDistance;
+        const platformY = Phaser.Math.Between(minPlatformY, maxPlatformY);
 
-        let previousPlatformX = 0;
+        // Crea la plataforma visual con bordes redondeados
+        const { graphics, collider } = this.createRoundedPlatform(platformX, platformY, platformWidth, platformHeight, 40);
 
-        // Generar plataformas iniciales
-        for (let i = 0; i < this.platformBuffer; i++) {
-            const platformWidth = Phaser.Math.Between(minPlatformWidth, maxPlatformWidth);
-            const platformHeight = Phaser.Math.Between(minPlatformHeight, maxPlatformHeight);
-            const platformDistance = Phaser.Math.Between(minPlatformDistance, maxPlatformDistance);
-            const platformX = previousPlatformX + platformDistance;
+        this.physics.add.collider(this.player, collider, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+        this.platforms.add(collider);
 
-            const platformY = Phaser.Math.Between(minPlatformY, maxPlatformY);
-            const platform = this.add.rectangle(platformX, platformY, platformWidth, platformHeight, 0x000000) as CustomRectangle;
-            platform.setOrigin(0.5, 0.5);
-            this.physics.add.existing(platform, true);
-            this.physics.add.collider(this.player, platform, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
-
-            // Agregar colisión entre el jugador y la plataforma
-            this.physics.add.collider(this.player, platform);
-
-            this.platforms.add(platform);
-
-
-            previousPlatformX = platformX;
-
-            this.platformCount++;
-            if (this.platformCount % 5 === 0 && !this.firtCannonPlaced) {
-                this.firtCannonPlaced = true;
-                const cannonX = platformX;
-                const cannonY = platformY - platformHeight - 500; // Ajustar la posición del Cannon
-                const cannon = new Cannon(this, cannonX, cannonY);
-                this.add.existing(cannon);
-            }
-            // Agregar un prefab de tipo Cannon cada 30 plataformas
-           // Agregar un prefab de tipo Cannon cada 30 plataformas
-           if (this.platformCount % this.CannonCountDistance === 0) {
-            const cannonX = platformX/2;
-            const cannonY = platformY-platform.height*2 ; // Ajustar la posición del Cannon
+        previousPlatformX = platformX;
+        this.platformCount++;
+        if (this.platformCount % 5 === 0 && !this.firtCannonPlaced) {
+            this.firtCannonPlaced = true;
+            const cannonX = platformX;
+            const cannonY = platformY - platformHeight - 500;
+            const cannon = new Cannon(this, cannonX, cannonY);
+            this.add.existing(cannon);
+        }
+        if (this.platformCount % this.CannonCountDistance === 0) {
+            const cannonX = platformX / 2;
+            const cannonY = platformY - platformHeight * 2;
             const cannon = new Cannon(this, cannonX, cannonY);
             cannon.setDepth(this.player.depth - 1);
             this.add.existing(cannon);
         }
-
-        }
     }
+}
+
+/**
+ * Crea una plataforma visual con bordes redondeados y un collider rectangular invisible.
+ */
+createRoundedPlatform(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number = 40,
+    color: number = 0x000000
+): { graphics: Phaser.GameObjects.Graphics, collider: Phaser.GameObjects.Rectangle } {
+    // Dibuja el rectángulo redondeado
+    const graphics = this.add.graphics();
+    graphics.fillStyle(color, 1);
+    graphics.fillRoundedRect(x - width / 2, y - height / 2, width, height, radius);
+
+    // Crea el collider rectangular invisible
+    const collider = this.add.rectangle(x, y, width, height, 0x000000, 0);
+    collider.setOrigin(0.5, 0.5);
+    collider.setVisible(false);
+    this.physics.add.existing(collider, true);
+
+    return { graphics, collider };
+}
 
 	createFloor() {
 
@@ -472,14 +514,11 @@ createParticles() {
 
                 const platformX = maxPlatformX + platformDistance;
 
-                const platform = this.add.rectangle(platformX, platformY, platformWidth, platformHeight, 0x000000);
-                platform.setOrigin(0.5, 0.5);
-                this.physics.add.existing(platform, true);
+                // Crea la plataforma visual con bordes redondeados
+                const { graphics, collider } = this.createRoundedPlatform(platformX, platformY, platformWidth, platformHeight, 40);
 
-                // Agregar colisión entre el jugador y la plataforma
-                this.physics.add.collider(this.player, platform, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
-
-                this.platforms.add(platform);
+                this.physics.add.collider(this.player, collider, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+                this.platforms.add(collider);
 
                 maxPlatformX = platformX;
                 this.platformCount++;
@@ -490,10 +529,10 @@ createParticles() {
 
                     const cannonX = platformX;
                     const cannonY = platformY- platformHeight * 2; // Ajustar la posición del Cannon
-                    const cannon = new Cannon(this, cannonX,  cannonY);
-                    console.log("cannon added "+ cannonX, cannonY);
-                   platform.fillColor = 0xff0000;
-                    this.add.existing(cannon);
+                const cannon = new Cannon(this, cannonX,  cannonY);
+                console.log("cannon added "+ cannonX, cannonY);
+                collider.fillColor = 0xff0000;
+                this.add.existing(cannon);
                 }
             }
         }
@@ -539,15 +578,12 @@ createParticles() {
                 const platformWidth = 400;
                 const platformHeight = 400;
 
-                const newPlatform = this.add.rectangle(midX, midY, platformWidth, platformHeight, 0x000000) as Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
-                newPlatform.setOrigin(0.5, 0.5);
-                newPlatform.setDepth(this.player.depth - 1);
-                this.physics.add.existing(newPlatform, true);
+                const { graphics, collider } = this.createRoundedPlatform(midX, midY, platformWidth, platformHeight, 40);
 
-                // Agregar colisión entre el jugador y la nueva plataforma
-                this.physics.add.collider(this.player, newPlatform, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+                collider.setDepth(this.player.depth - 1);
+                this.physics.add.collider(this.player, collider, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
-                this.platforms.add(newPlatform);
+                this.platforms.add(collider);
                 (currentPlatform as CustomRectangle).hasCreatedMidPlatform = true;
 
         }
@@ -558,14 +594,11 @@ createParticles() {
 			const platformWidth = 400;
 			const platformHeight = 400;
 
-			const newPlatform = this.add.rectangle(midX, midY, platformWidth, platformHeight, 0x000000) as Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
-			newPlatform.setOrigin(0.5, 0.5);
-			this.physics.add.existing(newPlatform, true);
+			const { graphics, collider } = this.createRoundedPlatform(midX, midY, platformWidth, platformHeight, 40);
 
-			// Agregar colisión entre el jugador y la nueva plataforma
-            this.physics.add.collider(this.player, newPlatform, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+            this.physics.add.collider(this.player, collider, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
-			this.platforms.add(newPlatform);
+			this.platforms.add(collider);
 			(currentPlatform as CustomRectangle).hasCreatedMidPlatform = true;
 		}
 	}
