@@ -39,6 +39,7 @@ import Enemy9 from "./Enemy9";
 import Enemy10 from "./Enemy10";
 import Enemy11 from "./Enemy11";
 import Enemy12 from "./Enemy12";
+import { initializeGame } from "..";
 
 
 /* END-USER-IMPORTS */
@@ -213,11 +214,30 @@ this.physics.add.collider(this.player, this.wall);
             this.fadeOut(1000); // Desvanecer la pantalla
         },this);
 
-        this.game.events.once("RestartLevel", () => {
-            console.log("Restarting level...");
-            this.events.removeAllListeners("update");
-            this.scene.restart(); // Reiniciar el nivel
-        },this);
+            // ...existing code...
+     // ...existing code...
+this.game.events.once("RestartLevel", () => {
+    console.log("Restarting level...");
+
+    // Detener y destruir todos los sonidos activos antes de reiniciar escenas
+    this.sound.stopAll();
+    this.sound.removeAll();
+
+    this.events.removeAllListeners("update");
+
+    // Reiniciar todas las escenas activas
+    this.scene.manager.getScenes(true).forEach((scene: Phaser.Scene) => {
+        if (scene.scene.key !== this.scene.key) {
+            scene.scene.restart();
+        }
+    });
+    // Reiniciar la escena actual
+ this.game.destroy(true);
+// Vuelve a crear el juego (debes tener tu función de inicialización disponible)
+initializeGame();
+}, this);
+// ...existing code...
+        // ...existing code...
 	}
 
     public setMusic(order:boolean){
@@ -328,7 +348,7 @@ createParticles() {
             const platform = this.add.rectangle(platformX, platformY, platformWidth, platformHeight, 0x000000) as CustomRectangle;
             platform.setOrigin(0.5, 0.5);
             this.physics.add.existing(platform, true);
-			this.physics.add.collider(this.player, platform, this.checkPlatformDistance, undefined, this);
+            this.physics.add.collider(this.player, platform, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
             // Agregar colisión entre el jugador y la plataforma
             this.physics.add.collider(this.player, platform);
@@ -457,7 +477,7 @@ createParticles() {
                 this.physics.add.existing(platform, true);
 
                 // Agregar colisión entre el jugador y la plataforma
-                this.physics.add.collider(this.player, platform, this.checkPlatformDistance, undefined, this);
+                this.physics.add.collider(this.player, platform, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
                 this.platforms.add(platform);
 
@@ -525,7 +545,7 @@ createParticles() {
                 this.physics.add.existing(newPlatform, true);
 
                 // Agregar colisión entre el jugador y la nueva plataforma
-                this.physics.add.collider(this.player, newPlatform, this.checkPlatformDistance, undefined, this);
+                this.physics.add.collider(this.player, newPlatform, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
                 this.platforms.add(newPlatform);
                 (currentPlatform as CustomRectangle).hasCreatedMidPlatform = true;
@@ -543,7 +563,7 @@ createParticles() {
 			this.physics.add.existing(newPlatform, true);
 
 			// Agregar colisión entre el jugador y la nueva plataforma
-			this.physics.add.collider(this.player, newPlatform, this.checkPlatformDistance, undefined, this);
+            this.physics.add.collider(this.player, newPlatform, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
 			this.platforms.add(newPlatform);
 			(currentPlatform as CustomRectangle).hasCreatedMidPlatform = true;
