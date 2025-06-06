@@ -65,24 +65,59 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	public CannonVelo: Array<any> = [1000,"RunningIcon","Cannon", 0,"CannonVelo","add", "Initial fire speed"];
 	public background!: Phaser.GameObjects.Rectangle;
 	public currentOption: number = 0;
+	public direction: number = 0; // Variable para controlar la dirección del selector
 
 	/* START-USER-CODE */
-	public MissileSize: Array<any> = [2,"ShieldIcon","Player", 0,"MissileSize","multiply", "Missile size"];
-	public SawMissileDamage: Array<any> = [2,"ShieldIcon","Player", 0,"SawMissile","add", "Saw Missile Damage"];
-	public AddSawMissile: Array<any> = [1,"ShieldIcon","Player", 0,"AddSawMissile","add", "Add SawMissile"];
-	public LaserShotsNumber: Array<any> = [1,"LaserShotsNumber","LaserShot", 0,"LaserShotsNumber","add", "Add a LaserShot"];
-	public MissileNumber: Array<any> = [1,"MissileNumber","LaserShot", 0,"MissileNumber","add", "Add a Missile"];
-	public SwordNumber: Array<any> = [1,"SwordNumber","LaserShot", 0,"SwordNumber","add", "Add a Mine"];
- 	
-	public upgrades: Array<any> = [this.SawMissileDamage,this.PlayerSpeed, this.AddSawMissile, this.LaserShotsNumber, this.MissileNumber, this.SwordNumber];	
+
+	public MissileVelocity: Array<any> = [225,"MissileVelocity","LaserShot", 0,"MissileVelocity","add", "Missile velocity"];
+	public MissileSize: Array<any> = [1.5,"MissileSize","LaserShot", 0,"MissileSize","multiply", "Missile size"];
+	public MissileDamage: Array<any> = [1.5,"MissilePower","LaserShot", 0,"MissileDamage","multiply", "Missile damage"];
+	public MissileInterval: Array<any> = [200,"MissileInterval","LaserShot", 0,"MissileInterval","substract", "Missile Interval"];
+
+	public LaserDamage: Array<any> = [2,"LaserPower","LaserShot", 0,"LaserDamage","multiply", "Laser Power"];
+	public LaserInterval: Array<any> = [150,"LaserInterval","LaserShot", 0,"LaserShotsInterval","substract", "Laser Interval"];
+	public LaserVelocity: Array<any> = [300,"LaserSpeed","LaserShot", 0,"LaserVelocity","add", "Laser Velocity"];
+
+	public MineDamage: Array<any> = [1.5,"MinePower","LaserShot", 0,"swordWeaponDamage","multiply", "Mine Damage"];
+	public MineVelocity: Array<any> = [300,"MineSpeed","LaserShot", 0,"SwordVelocity","add", "Mine Velocity"];
+	public MineInterval: Array<any> = [500,"MineInterval","LaserShot", 0,"SwordInterval","substract", "Mine Interval"];
+
+	public RainDamage: Array<any> = [1.5,"RainPower","LaserShot", 0,"rainDamage","multiply", "Rain Damage"];
+	public RainVelocity: Array<any> = [300,"RainVelocity","LaserShot", 0,"RainVelocity","add", "Rain Velocity"];
+	public RainInterval: Array<any> = [250,"RainInterval","LaserShot", 0,"rainInterval","substract", "Rain Interval"];
+
+	public SawMissileDamage: Array<any> = [2,"SawPower","Player", 0,"SawMissileDamage","multiply", "Saw Damage"];
+	public SawMissileVelocity: Array<any> = [300,"SawSpeed","Player", 0,"SawMissileVelocity","add", "Saw Missile Velocity"];
+	public SawMissileInterval: Array<any> = [1000,"SawInterval","Player", 0,"LastSawMissileTime","substract", "Saw Interval"];
+	public SawMissileSize: Array<any> = [1.5,"SawSize","Player", 0,"SawMissileSize","multiply", "Saw Size"];
+	public SawMissileLifetime: Array<any> = [1500,"SawBouncingTime","Player", 0,"SawBulletLifeTime","add", "Saw Lifetime"];
+
+	public Playerspeed: Array<any> = [300,"PlayerSpeed","Player", 0,"PlayerSpeed","add","Player speed"];
+	public MagnetPower: Array<any> = [2,"MagnetPower","Player", 0,"AttractionRange","multiply","Magnet Power"];
+	public AttractionSpeed: Array<any> = [1.5,"MagnetSpeed","Player", 0,"AttractionSpeed","multiply","Attraction Speed"];
+
+	public ShieldLifeTime: Array<any> = [2000,"ShieldLife","Player", 0,"ShieldRestoreTime","substract","Shield Life Time"];
+	public ShieldLife: Array<any> = [2,"ShieldLife","Player", 0,"ShieldLife","multiply","Shield Life"];
+
+	public upgrades: Array<any> = [this.MissileVelocity, this.MissileSize, this.MissileDamage, this.MissileInterval,
+		this.LaserDamage, this.LaserInterval, this.LaserVelocity,
+		this.MineDamage, this.MineVelocity, this.MineInterval,
+		this.RainDamage, this.RainVelocity, this.RainInterval,
+		this.SawMissileDamage, this.SawMissileVelocity, this.SawMissileInterval, this.SawMissileSize, this.SawMissileLifetime,
+		this.Playerspeed, this.MagnetPower, this.AttractionSpeed,
+		this.ShieldLifeTime, this.ShieldLife];
+
 	public optionPositions: Array<any> = [];
 //	public upgrades: Array<any> = [this.MissileSize];	
 	public AvailableUpgrades: Array<any> = [...this.upgrades];
 	public isUpgradeSelected = false;
-	
+	public IsWindowActive = false;
+	private keyboardListenerAdded: boolean = false;
+
 	
 	create(){
 	this.alpha = 0;
+	this.IsWindowActive = false;
 	}
 
 	createUpgradeWindow() {
@@ -94,7 +129,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.upgrade3.getRandomUpgrade(this.AvailableUpgrades);
 
 		this.alpha = 1;
-
+		this.IsWindowActive = true;
 		this.scene.scene.pause('Level');
 		this.upgrade1.visible = true;
 		this.upgrade2.visible = true;			
@@ -133,49 +168,54 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.btn2.setDepth(2);
 		this.btn3.setDepth(2);
 
+		// Limpia las posiciones antes de agregarlas de nuevo
+		this.optionPositions = [];
 		this.optionPositions.push({posx: this.btn1.x, posy:this.btn1.y});
 		this.optionPositions.push({posx: this.btn2.x, posy:this.btn2.y});
 		this.optionPositions.push({posx: this.btn3.x, posy:this.btn3.y});
 
-		this.selector.setOrigin(0.5, 0.5);
-		this.selector.setScale(this.btn1.scaleX*1.5);
-		this.selector.setPosition(this.btn1.x, this.btn1.y);
-		this.selector.setVisible(false);
+		// Coloca el selector en la opción inicial
+		this.currentOption = 0;
+		this.selector.setPosition(this.optionPositions[0].posx, this.optionPositions[0].posy);
 
-		if (this.scene.input.keyboard) {
-			this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => {
-				if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
-					this.moveSelector(1); // Move to the next position
-				} else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
-					this.moveSelector(-1); // Move to the previous position
-				}
-				if (event.key === 'Enter'  || event.key === 's' || event.key === 'ArrowDown') {
-					switch (this.currentOption) {
-						case 0:
-							if(this.selector.visible){
-								this.handleUpgradeClick(this.upgrade1);
-							}
-							
-							break;
-						case 1:
-							if(this.selector.visible){
-							this.handleUpgradeClick(this.upgrade2);
-							}
-							break;
-						case 2:
-							if(this.selector.visible){
-							this.handleUpgradeClick(this.upgrade3);
-							}
-							break;
-						default:
-							break;
+		// Solo agrega el listener de teclado una vez
+		if (!this.keyboardListenerAdded) {
+			if (this.scene.input.keyboard) {
+				this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => {
+					if (!this.IsWindowActive) return;
+					if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
+						this.moveSelector(1);
+					} else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
+						this.moveSelector(-1);
 					}
-					this.closeUpgradeSystem();
-				}
-			});
+					if (event.key === 'Enter'  || event.key === 's' || event.key === 'ArrowDown') {
+						switch (this.currentOption) {
+							case 0:
+								if(this.selector.visible){
+									this.handleUpgradeClick(this.upgrade1);
+								}
+								
+								break;
+							case 1:
+								if(this.selector.visible){
+								this.handleUpgradeClick(this.upgrade2);
+								}
+								break;
+							case 2:
+								if(this.selector.visible){
+								this.handleUpgradeClick(this.upgrade3);
+								}
+								break;
+							default:
+								break;
+						}
+						this.closeUpgradeSystem();
+					}
+				});
+			}
+			this.keyboardListenerAdded = true;
 		}
 
-		
 		this.scene.tweens.add({
             targets: this.background,
             x: width / 2,
@@ -301,12 +341,14 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	}
 
 	private moveSelector(direction: number) {
-
+		this.selector.setVisible(true); // Asegurarse de que el selector esté visible
+		if(!this.IsWindowActive) return; // No hacer nada si la ventana no está activa
+		this.direction = direction; // Update the direction variable
 		// Update the current option index
-		this.currentOption = (this.currentOption + direction + this.optionPositions.length) % this.optionPositions.length;
+		this.currentOption = (this.currentOption + this.direction + this.optionPositions.length) % this.optionPositions.length;
 		// Move the selector to the new position
-		const newPosition = this.optionPositions[this.currentOption];
-		this.selector.setPosition(newPosition.posx, newPosition.posy);
+		
+		this.selector.setPosition(this.optionPositions[this.currentOption].posx, this.optionPositions[this.currentOption].posy);
 	}
 
 	addHoverEffect(button: Phaser.GameObjects.Image) {
@@ -393,6 +435,22 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 									break;
 							}
 							console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
+						}else if (upgradeType.randomUpgrade[2] == "CollectableParticle") {
+							switch (upgradeType.randomUpgrade[5]) {
+								case "add":
+									currentLevel.collectableParticle[propertyName] += upgradeType.randomUpgrade[0];
+									break;
+								case "substract":
+									currentLevel.collectableParticle[propertyName] -= upgradeType.randomUpgrade[0];
+									break;
+								case "multiply":
+									currentLevel.collectableParticle[propertyName] *= upgradeType.randomUpgrade[0];
+									break;
+								case "divide":
+									currentLevel.collectableParticle[propertyName] /= upgradeType.randomUpgrade[0];
+									break;
+							}
+							console.log("Property " + propertyName + " " + currentLevel.collectableParticle[propertyName]);
 						}
 					}
 	
@@ -408,10 +466,13 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 
 
 	closeUpgradeSystem() {
+		this.IsWindowActive = false;
 		this.isUpgradeSelected = true;
         this.scene.scene.resume('Level');
 		this.background.destroy(); // Destruir el rectángulo
 		this.alpha = 0; // Ocultar el contenedor UpgradeSystemUI
+		
+		this.selector.setVisible(false); // Ocultar el selector
 		//this.destroy(); // Destruir el contenedor UpgradeSystemUI
     }
 

@@ -22,8 +22,8 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 		/* END-USER-CTR-CODE */
 	}
 
-	public attractionRange: number = 600;
-	public attractionSpeed: number = 2000;
+	public AttractionRange: number = 600;
+	public AttractionSpeed: number = 2000;
 	public player!: Phaser.GameObjects.Sprite ;
 	public isDestroyed: boolean = false;
 	public MaxKillTime: number = 10000;
@@ -34,12 +34,12 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 	create() {
 		this.scene.physics.add.existing(this);
 		const body = this.body as Phaser.Physics.Arcade.Body;
-		body.setCircle(this.width * 3); 
-		body.setOffset(-this.width*1.5, -this.height*1.5);
-
+		body.setCircle(this.width * 3);
+		body.setOffset(-this.width * 1.5, -this.height * 1.5);
 		body.setAllowGravity(false);
 		body.setImmovable(true);
 		this.player = (this.scene as Phaser.Scene & { player: Phaser.GameObjects.Sprite }).player;
+
 		this.scene.physics.add.overlap(this, this.player, this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
 		// Iniciar el temporizador para la destrucción automática
@@ -62,12 +62,18 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 
 	checkDistanceToPlayer() {
 		try {
-            const distance = Phaser.Math.Distance.Between(this.x, this.y, this.player.x, this.player.y);
+			const playerRange = (this.player as any).AttractionRange ?? this.AttractionRange;
+			
+			if (!this.player || !this.player.active) {
+				this.destroy();
+				return;
+			}
+			const distance = Phaser.Math.Distance.Between(this.x, this.y, this.player.x, this.player.y);
 
-            if (distance < this.attractionRange) {
-                this.moveToPlayer();
-            }
-        } catch (error) {
+			if (distance < playerRange) {
+				this.moveToPlayer();
+			}
+		} catch (error) {
 			this.destroy();
 
         }
@@ -77,9 +83,11 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
 		if (this.isDestroyed) return; // Verificar si la partícula ha sido destruida
         const angle = Phaser.Math.Angle.Between(this.x, this.y, this.player.x, this.player.y);
         const body = this.body as Phaser.Physics.Arcade.Body;
+		const AttractionSpeed = (this.player as any).AttractionSpeed ?? this.AttractionSpeed;
+			console.log("AttractionSpeed ", AttractionSpeed);
         body.setVelocity(
-            Math.cos(angle) * this.attractionSpeed,
-            Math.sin(angle) * this.attractionSpeed
+            Math.cos(angle) * AttractionSpeed,
+            Math.sin(angle) * AttractionSpeed
         );
     }
 

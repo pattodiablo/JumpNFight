@@ -27,22 +27,23 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 	public MissileNumber: number = 1;
 	public MissileVelocity: number = 3000;
+	public MissileSize: number = 1;
 	public MissileDamage: number = 10;
 	public MissileInterval: number = 1000;
 	
 	public LaserShotsNumber: number = 1;
 	public LaserVelocity: number = 4500;
-	public LaserShotsInterval: number = 250;
+	public LaserShotsInterval: number = 1000;
 	public LaserDamage: number = 1;
 
 	
-	public SwordNumber: number = 0;
+	public SwordNumber: number = 1;
 	public SwordVelocity: number = 2000;
 	public swordWeaponDamage: number = 20;
-	public SwordInterval: number = 1000;
+	public SwordInterval: number = 3000;
 
 	public rainNumber: number = 1;
-	public rainInterval: number = 250;
+	public rainInterval: number = 1000;
 	public rainDamage: number = 5;
 	public RainVelocity: number = 8000;
 
@@ -265,6 +266,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		if (nearestEnemy) {
 			const missile = this.scene.add.sprite(this.x, this.y, 'missile');
 			missile.setData('damage', this.MissileDamage);
+			missile.setScale(this.MissileSize);
 			this.scene.physics.world.enable(missile);
 			(missile as any).target = nearestEnemy; // Store the target enemy
 

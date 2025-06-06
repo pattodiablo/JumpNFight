@@ -75,11 +75,15 @@ export default class PlayerPrefab extends SpineGameObject {
 	private WannaSord: boolean | undefined;
 	private justTinted: any;
 	public MissileSize: number = 100;
-	public SawMissile: number = 0;
-	public SawMissileDamage: number = 1;
+	public SawMissileSize: number = 1;
+	public SawMissile: number = 1;
+	public SawMissileDamage: number = 5;
+	public SawMissileVelocity: number = 1000;
 	public SawBulletLifeTime: number = 3000;
 	public SawBulletInterval: number = 100;
 	public AddSawMissile: number = 1;
+	public AttractionRange: number = 600;
+	public AttractionSpeed: number = 2000;
 	private _graphics: Phaser.GameObjects.Graphics = this.scene.add.graphics();
 
 	create(){
@@ -87,7 +91,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		this.factor = this.scene.scale.height / this.scene.scale.width;
 		this.flipX = true; // Flip horizontal
 		this.Shield = this.scene.add.sprite(0, 0, 'PlayerShield');
-		const shieldEff = this.Shield.postFX.addBloom(0xffffff, 1, 1, 1.5, 1);
+		this.Shield.postFX.addBloom(0xffffff, 1, 1, 1.5, 1);
 		this.Shield.postFX.addShine(1, 0.5, 4, 0.5, 0.5, 0.5);
 		this.scene.add.existing(this.Shield);
 
@@ -250,11 +254,19 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	shootSawBullet(enemy: Phaser.GameObjects.Sprite) {
 		for (let i = 0; i < this.AddSawMissile; i++) {
-			if(this.SawMissile>1){
+			if(this.SawMissile>0){
 				console.log("shooting saw missile");
 				const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
+				sawBullet.BulletVelocity = this.SawMissileVelocity;
+				sawBullet.setScale(this.SawMissileSize);
 				sawBullet.Damage = this.SawMissileDamage;
 				sawBullet.LifeTime = this.SawBulletLifeTime;
+				this.scene.tweens.add({
+					targets: sawBullet,
+					angle: 360,
+					duration: 500, // tiempo para una vuelta completa (ajusta a gusto)
+					repeat: -1
+				});
 			}
 
 		}
@@ -657,17 +669,18 @@ export default class PlayerPrefab extends SpineGameObject {
                     ease: 'Bounce.easeOut'
                 });
 			}else if(this.ShieldLife<=0){
-				     const alert = new AlertLabel(this.scene, this.x-120, this.y - 120);
-					 const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
-		if(!(levelScene as any).isFxMuted){
-			const jumpSounds = ['Alert1_01'];
-			// Select a random sound
-			const randomSound = Phaser.Math.RND.pick(jumpSounds);
-			// Play the selected sound
-			this.scene.sound.play(randomSound);
-		}
+				 const alert = new AlertLabel(this.scene, this.x-120, this.y - 120);
+				 const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+				if(!(levelScene as any).isFxMuted){
+					const jumpSounds = ['Alert1_01'];
+					// Select a random sound
+					const randomSound = Phaser.Math.RND.pick(jumpSounds);
+					// Play the selected sound
+					this.scene.sound.play(randomSound);
+				}
             this.scene.add.existing(alert);
-				this.scene.tweens.add({
+
+				this.scene.tweens.add({ 
                     targets: this.Shield,
 					alpha: {from: 1, to: 0.1},
                     duration: 50,					
@@ -702,7 +715,8 @@ export default class PlayerPrefab extends SpineGameObject {
 			const gameUIScene = this.scene.scene.get('GameUI') as Phaser.Scene;
 			(gameUIScene as any).ShowResults();
 		}
-		if(!this.IsRestoringShield){
+		
+		if(!this.IsRestoringShield && this.ShieldLife<this.OrioginalShieldLife){
 			this.scene.time.addEvent({
 				delay: this.ShieldRestoreTime, // Tiempo en milisegundos (5 segundos)
 				callback: () => {

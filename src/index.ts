@@ -205,14 +205,14 @@ function initializeGame() {
 		height: 580,
     
     title: "Eggy Carton",
-    type: Phaser.AUTO, 
+    type: Phaser.WEBGL, 
 		backgroundColor: "#e2e2e2",
 		scale: {
 			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
 			autoCenter: Phaser.Scale.Center.CENTER_BOTH
 		}, 
     fps: {
-      target: 60,       // Objetivo de 60fps
+      target: 30,       // Objetivo de 60fps
       forceSetTimeOut: false // Asegura que use requestAnimationFrame, no setTimeout
   },
 
@@ -258,13 +258,17 @@ function initializeGame() {
             default: 'arcade',
             arcade: {
                 gravity: { x:0,y: 300 }, // Configura la gravedad en el eje Y
-                debug: false // Activa la depuración de colisiones
+                debug: false,// Activa la depuración de colisiones
+                fps: 60,
+                timeScale: 1
             }
         },
 		render: {
             pixelArt: false, // Habilita el modo de pixel art
             antialias: true, // Desactiva el antialiasing
-            roundPixels: true, // Redondea las posiciones de los píxeles
+            powerPreference: "high-performance",// Sugerencia para la GPU
+            clearBeforeRender: true
+          //  roundPixels: true, // Redondea las posiciones de los píxeles
           
         }
 	});
