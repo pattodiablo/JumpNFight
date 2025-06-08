@@ -140,7 +140,9 @@ export default class Level extends PhaserScene {
     // this.createParticles();
          //this.cameras.main.postFX.addPixelate(0.01); // Cambia 8 por el tamaño de pixel deseado
 
+     // Actualizar la posición de bg1 para crear el efecto parallax
 
+  
 
 // Agregar colisión entre el jugador y la pared (wall)
 this.physics.add.existing(this.wall, true);
@@ -190,9 +192,10 @@ this.physics.add.collider(this.player, this.wall);
 
         // this.scene.launch("GameUI");
         const factor = this.scale.height/this.scale.width;
-        this.bg1.width = this.scale.width;
+       
         // Reproduce la animación 'Idle' por defecto
         this.player.animationState.setAnimation(0, "Idle", true);
+        this.cameras.main.setBackgroundColor(0xd0cfcf); // Azul
 		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,0);
 		this.cameras.main.setZoom(factor/4); // Ajustar el zoom de la cámara para que parezca más alejada
 		this.cameras.main.fadeIn(100);
@@ -208,11 +211,13 @@ this.physics.add.collider(this.player, this.wall);
         this.enemies = this.add.group();
         this.bg1.setDepth(-1);
 
-        this.bg1.setSize(this.cameras.main.displayWidth*20, this.cameras.main.displayHeight*10);
+    
+        this.bg1.setOrigin(0, 0);
+        this.bg1.setPosition(-this.scale.width*4, -this.scale.height*4);
+        this.bg1.setSize(this.scale.width*20, this.scale.height*10);
         this.bg1.setTileScale(4, 4);
-
-
-		this.createFloor();
+        this.bg1.setScrollFactor(0, 0.5); // Ajustar el factor de desplazamiento para el efecto parallax
+		this.createFloor(); 
 		this.createPlatforms();
         this.createEnemies();
 
@@ -472,16 +477,8 @@ createRoundedPlatform(
             this.cameras.main.shake(500, 0.1); // Duración de 500ms y intensidad de 0.1
         }
 
-         // Actualizar la posición de bg1 para crear el efecto parallax
-         this.bg1.tilePositionX = this.cameras.main.scrollX * 0.05;
-         const smoothFactor = 5; // Mayor = más rápido
-         const t = smoothFactor * (delta / 1000)
-
-         const targetX = this.cameras.main.scrollX - this.bg1.width / 2;
-         this.bg1.x += (targetX - this.bg1.x) * t; // Lerp hacia la posición deseada
-
-         const targetY = this.cameras.main.scrollY-this.bg1.height/2;
-         this.bg1.y += (targetY - this.bg1.y) * t; // Lerp hacia la posición deseada
+this.bg1.tilePositionX = this.cameras.main.scrollX * 0.05;
+this.bg1.tilePositionY = this.cameras.main.scrollY * 0.05;
 
     }
 

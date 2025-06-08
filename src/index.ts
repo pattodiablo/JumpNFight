@@ -21,54 +21,6 @@ declare global {
 window.onload = () => {
     console.log("Loading game...");
   
-    // ✅ Crear el div #animation_container dinámicamente
-    let animationDiv = document.getElementById("animation_container");
-    if (!animationDiv) {
-      animationDiv = document.createElement("div");
-      animationDiv.id = "animation_container";
-      document.body.appendChild(animationDiv); // o colócalo donde lo necesites exactamente
-    }
-  
-    // 👉 Cargar la intro animada
-    /*
-    fetch('MovieLoader.html')
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("animation_container");
-        if (!container) return;
-  
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = html;
-  
-        const visualContent = Array.from(tempDiv.children).filter(el => el.tagName !== "SCRIPT");
-        container.innerHTML = "";
-        visualContent.forEach(el => container.appendChild(el));
-  
-        const scripts = tempDiv.querySelectorAll("script");
-        scripts.forEach(oldScript => {
-          const newScript = document.createElement("script");
-          if (oldScript.src) {
-            newScript.src = oldScript.src;
-          } else {
-            newScript.textContent = oldScript.textContent;
-          }
-          document.body.appendChild(newScript);
-        });
-  
-        setTimeout(() => {
-          if (typeof window.init === "function") {
-            window.init(); // 👈 Llama a la función del MovieLoader
-          
-            const gameContainer = document.getElementById("game_canvas");
-            console.log("Game container:", gameContainer);
-            if (gameContainer) {
-            gameContainer.style.display = "none";
-            }
-          } else {
-            console.warn("init() no está definido todavía.");
-          }
-        }, 500);
-      });*/
       initializeGame(); // 👈 Esto puede lanzarse luego si quieres mostrar el juego tras la intro
  
   };
@@ -125,8 +77,8 @@ if(isMobile){
 function getDPI() {
     // Crear un elemento div temporal
     const div = document.createElement('div');
-    div.style.width = '1in'; // Establecer el ancho del div a 1 pulgada
-    div.style.height = '1in'; // Establecer la altura del div a 1 pulgada
+    div.style.width = '0in'; // Establecer el ancho del div a 1 pulgada
+    div.style.height = '0in'; // Establecer la altura del div a 1 pulgada
     div.style.position = 'absolute';
     div.style.top = '-100%'; // Mover el div fuera de la pantalla
     document.body.appendChild(div);
