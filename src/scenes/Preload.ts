@@ -1,4 +1,3 @@
-
 // You can write more code here
 
 /* START OF COMPILED CODE */
@@ -19,29 +18,45 @@ export default class Preload extends Phaser.Scene {
 
 	editorCreate(): void {
 
-		// progressBar
-		const progressBar = this.add.rectangle(553.0120849609375, 361, 256, 20);
-		progressBar.setOrigin(0, 0);
-		progressBar.isFilled = true;
-		progressBar.fillColor = 14737632;
+		// Fondo negro que cubre toda la pantalla
+		const bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 1);
+		bg.setOrigin(0, 0);
 
-		// progressBarBg
-		const progressBarBg = this.add.rectangle(553.0120849609375, 361, 256, 20);
-		progressBarBg.setOrigin(0, 0);
-		progressBarBg.fillColor = 14737632;
-		progressBarBg.isStroked = true;
+		// Dimensiones de la barra
+		const barWidth = this.scale.width / 2;
+		const barHeight = 32;
+		const barX = (this.scale.width - barWidth) / 2;
+		const barY = (this.scale.height - barHeight) / 2;
 
-		// loadingText
-		const loadingText = this.add.text(552.0120849609375, 329, "", {});
-		loadingText.text = "Loading...";
-		loadingText.setStyle({ "color": "#e0e0e0", "fontFamily": "arial", "fontSize": "20px" });
+		// Barra de fondo (solo bordes, roja)
+		const progressBarBg = this.add.graphics();
+		progressBarBg.lineStyle(4, 0xff0000, 1);
+		progressBarBg.strokeRect(barX, barY, barWidth, barHeight);
 
+		// Barra de progreso (roja, relleno)
+		const progressBar = this.add.graphics();
 		this.progressBar = progressBar;
+		this.progressBarX = barX;
+		this.progressBarY = barY;
+		this.progressBarWidth = barWidth;
+		this.progressBarHeight = barHeight;
+
+		// Texto centrado
+		const loadingText = this.add.text(this.scale.width / 2, barY - 40, "Loading...", {
+			color: "#ff0000",
+			fontFamily: "arial",
+			fontSize: "24px"
+		});
+		loadingText.setOrigin(0.5, 0.5);
 
 		this.events.emit("scene-awake");
 	}
 
-	private progressBar!: Phaser.GameObjects.Rectangle;
+	private progressBar!: Phaser.GameObjects.Graphics;
+	private progressBarX!: number;
+	private progressBarY!: number;
+	private progressBarWidth!: number;
+	private progressBarHeight!: number;
 
 	/* START-USER-CODE */
 
@@ -53,11 +68,15 @@ export default class Preload extends Phaser.Scene {
 
 		this.load.pack("asset-pack", assetPackUrl);
 
-		const width = this.progressBar.width;
-
 		this.load.on("progress", (value: number) => {
-
-			this.progressBar.width = width * value;
+			this.progressBar.clear();
+			this.progressBar.fillStyle(0xff0000, 1);
+			this.progressBar.fillRect(
+				this.progressBarX,
+				this.progressBarY,
+				this.progressBarWidth * value,
+				this.progressBarHeight
+			);
 		});
 	}
 
@@ -77,6 +96,7 @@ export default class Preload extends Phaser.Scene {
 		}
 
 		this.scene.start("Level");
+		this.scene.start("GameUI");
 	}
 
 	/* END-USER-CODE */

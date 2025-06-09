@@ -74,7 +74,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.join(__dirname, "src/index.html"),
     
-            minify: false
+            minify: true
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin({

@@ -29,7 +29,7 @@ export default class PlayerPrefab extends SpineGameObject {
 		/* START-USER-CTR-CODE */
 		this.setOrigin(0.5, 0.5);
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
-		this.scene.events.on("update", (time: number, delta: number) => this.updatePlayer(delta));
+		this.scene.events.on("update", this.updatePlayerCallback, this);
 	//	this.scene.input.on('pointermove', () => this.resetMouseInactiveTimer());
 		/* END-USER-CTR-CODE */
 	}
@@ -85,6 +85,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	public AttractionRange: number = 600;
 	public AttractionSpeed: number = 2000;
 	private _graphics: Phaser.GameObjects.Graphics = this.scene.add.graphics();
+	private updatePlayerCallback = (time: number, delta: number) => this.updatePlayer(delta);
 
 	create(){
 
@@ -128,7 +129,11 @@ export default class PlayerPrefab extends SpineGameObject {
 				   gameUIScene.events.on('joystickMove', this.handleJoystickMove, this);
 				   gameUIScene.events.on('jump', this.handleJump, this);
 
-
+		this.on("PlayerIsDead", () => {
+			const playerBody = this.body as Phaser.Physics.Arcade.Body;
+			playerBody.setEnable(false);
+			playerBody.setImmovable(true); // Hacer que el enemigo sea inmovible
+		}, this);
 
 	}
 
@@ -708,12 +713,7 @@ export default class PlayerPrefab extends SpineGameObject {
 			}
 
 
-			const playerBody = this.body as Phaser.Physics.Arcade.Body;
-			playerBody.setEnable(false);
-			playerBody.setImmovable(true); // Hacer que el enemigo sea inmovible
-			this.scene.cameras.main.fadeOut(2000, 0, 0, 0); // Desvanecer a negro en 1 segundo
-			const gameUIScene = this.scene.scene.get('GameUI') as Phaser.Scene;
-			(gameUIScene as any).ShowResults();
+			this.scene.game.events.emit("PlayerIsDead");
 		}
 		
 		if(!this.IsRestoringShield && this.ShieldLife<this.OrioginalShieldLife){
@@ -801,6 +801,10 @@ export default class PlayerPrefab extends SpineGameObject {
         return this.collectedParticles;
     }
 
+	destroy() {
+		if (this.scene == undefined) return;
+		super.destroy();
+	}
 
     /* END-USER-CODE */
 }
