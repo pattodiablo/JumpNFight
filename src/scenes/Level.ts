@@ -217,6 +217,7 @@ this.physics.add.collider(this.player, this.wall);
         this.bg1.setSize(this.scale.width*20, this.scale.height*10);
         this.bg1.setTileScale(4, 4);
         this.bg1.setScrollFactor(0, 0.5); // Ajustar el factor de desplazamiento para el efecto parallax
+        
 		this.createFloor(); 
 		this.createPlatforms();
         this.createEnemies();

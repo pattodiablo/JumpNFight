@@ -329,6 +329,16 @@ if (this.timers && Array.isArray(this.timers)) {
 	}
 	shootLaser(player: Phaser.GameObjects.Sprite) {
 		if(this.canShoot){
+						 const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+			if(!(levelScene as any).isFxMuted){
+				const deadSounds = ['EnemyLaser_01'];
+				// Select a random sound
+				const randomSound = Phaser.Math.RND.pick(deadSounds);
+				// Play the selected sound
+				this.scene.sound.play(randomSound);
+			}
+
+
 			const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
 			const laser = this.scene.add.ellipse(this.x, this.y, 200, 40, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
 			this.scene.physics.add.existing(laser);

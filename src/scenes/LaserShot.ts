@@ -33,7 +33,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 	
 	public LaserShotsNumber: number = 1;
 	public LaserVelocity: number = 4500;
-	public LaserShotsInterval: number = 1000;
+	public LaserShotsInterval: number = 750;
 	public LaserDamage: number = 1;
 
 	
@@ -250,6 +250,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 		for (let i = 0; i < this.MissileNumber; i++) {
 
+			
 			const enemies = (this.scene as any).enemies.getChildren();
 		let nearestEnemy: Phaser.GameObjects.Sprite | null = null;
 		let minDistance = this.detectionRadius;
@@ -264,6 +265,18 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		});
 
 		if (nearestEnemy) {
+
+				const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+				if(!(levelScene as any).isFxMuted){
+					const jumpSounds = ['MissileShot_01'];
+				// Select a random sound
+				const randomSound = Phaser.Math.RND.pick(jumpSounds);
+				// Play the selected sound
+				this.scene.sound.play(randomSound);
+				}
+
+
+				
 			const missile = this.scene.add.sprite(this.x, this.y, 'missile');
 			missile.setData('damage', this.MissileDamage);
 			missile.setScale(this.MissileSize);

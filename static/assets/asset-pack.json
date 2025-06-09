@@ -273,6 +273,13 @@
             },
             {
                 "url": [
+                    "assets/sounds/EnemyLaser_01.mp3"
+                ],
+                "type": "audio",
+                "key": "EnemyLaser_01"
+            },
+            {
+                "url": [
                     "assets/sounds/EnemylaserShoot1_01.mp3"
                 ],
                 "type": "audio",
@@ -350,6 +357,13 @@
                 "url": "assets/SpineAnimations/IdlePlayer/Idle.atlas",
                 "type": "spineAtlas",
                 "key": "Idle-atlas"
+            },
+            {
+                "url": [
+                    "assets/sounds/IsDead_01.mp3"
+                ],
+                "type": "audio",
+                "key": "IsDead_01"
             },
             {
                 "url": [
@@ -496,6 +510,13 @@
                 "key": "MissilePower"
             },
             {
+                "url": [
+                    "assets/sounds/MissileShot_01.mp3"
+                ],
+                "type": "audio",
+                "key": "MissileShot_01"
+            },
+            {
                 "url": "assets/MissileSize.png",
                 "type": "image",
                 "key": "MissileSize"
@@ -545,6 +566,13 @@
                 "url": "assets/PlayerSpeed.png",
                 "type": "image",
                 "key": "PlayerSpeed"
+            },
+            {
+                "url": [
+                    "assets/sounds/powerUp_01.mp3"
+                ],
+                "type": "audio",
+                "key": "powerUp_01"
             },
             {
                 "url": "assets/RainInterval.png",

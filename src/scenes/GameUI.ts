@@ -340,6 +340,15 @@ this.time.delayedCall(1500, () => {
 
         // Verificar si el jugador ha alcanzado el nivel actual
         if (this.collectedParticles >= this.LevelReach) {
+				const levelScene = this.scene.get('Level') as Phaser.Scene;
+		if(!(levelScene as any).isFxMuted){
+			const jumpSounds = ['powerUp_01'];
+		// Select a random sound
+		const randomSound = Phaser.Math.RND.pick(jumpSounds);
+		// Play the selected sound
+		this.sound.play(randomSound);
+		}
+
             this.level++;
             this.LevelReach+= this.LevelReach * 0.5; // Incrementar el requisito de partículas para el siguiente nivel
             this.collectedParticles = 0; // Reiniciar el conteo de partículas recolectadas

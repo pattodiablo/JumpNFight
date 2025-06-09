@@ -640,6 +640,15 @@ export default class PlayerPrefab extends SpineGameObject {
 		}
 	}
 	handleDamage(EnemyDamage: number) {
+
+		const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+		if(!(levelScene as any).isFxMuted){
+			const jumpSounds = ['EnemyExplode2_01'];
+		// Select a random sound
+		const randomSound = Phaser.Math.RND.pick(jumpSounds);
+		// Play the selected sound
+		this.scene.sound.play(randomSound);
+		}
 		if (!this.justTinted) {
 			this.justTinted = true;
 
@@ -705,7 +714,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 					 const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
 			if(!(levelScene as any).isFxMuted){
-				const deadSounds = ['dead1_01','dead2_01','dead3_01','dead4_01'];
+				const deadSounds = ['IsDead_01'];
 				// Select a random sound
 				const randomSound = Phaser.Math.RND.pick(deadSounds);
 				// Play the selected sound
