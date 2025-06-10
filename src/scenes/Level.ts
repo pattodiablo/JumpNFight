@@ -38,6 +38,7 @@ import Enemy9 from "./Enemy9";
 import Enemy10 from "./Enemy10";
 import Enemy11 from "./Enemy11";
 import Enemy12 from "./Enemy12";
+import MainEnemy from "./MainEnemy";
 import { initializeGame } from "..";
 
 // Extend the Window interface to include 'game' and 'GAME'
@@ -217,7 +218,7 @@ this.physics.add.collider(this.player, this.wall);
         this.bg1.setSize(this.scale.width*20, this.scale.height*10);
         this.bg1.setTileScale(4, 4);
         this.bg1.setScrollFactor(0, 0.5); // Ajustar el factor de desplazamiento para el efecto parallax
-        
+
 		this.createFloor(); 
 		this.createPlatforms();
         this.createEnemies();
@@ -300,13 +301,25 @@ this.game.events.once("RestartLevel", () => {
 
         let minEnemyX = this.cameras.main.x - 10000;
         let maxEnemyX = this.cameras.main.x + 10000;
-        let minEnemyY = this.player.y - 900;
-        let maxEnemyY = this.scale.height - 2000;
+        let minEnemyY = this.player.y - 2000;
+        let maxEnemyY = this.player.y + 500;
 
         // Array de clases de enemigos
         const EnemyClasses = [
-            Enemy1, Enemy2, Enemy3, Enemy4, Enemy5, Enemy6,
-            Enemy7, Enemy8, Enemy9, Enemy10, Enemy11, Enemy12
+       
+            Enemy1,
+            Enemy2,
+            Enemy3,
+            Enemy4,
+            Enemy5,
+            Enemy6,
+            Enemy7,
+            Enemy8,
+            Enemy9,
+            Enemy10,
+            Enemy11,
+            Enemy12,
+            MainEnemy
         ];
 
         const generateEnemies = () => {

@@ -69,6 +69,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 
 	/* START-USER-CODE */
 
+	private canSelectUpgrade: boolean = false;
 	public MissileVelocity: Array<any> = [225,"MissileVelocity","LaserShot", 0,"MissileVelocity","add", "Missile velocity"];
 	public MissileSize: Array<any> = [1.5,"MissileSize","LaserShot", 0,"MissileSize","multiply", "Missile size"];
 	public MissileDamage: Array<any> = [1.5,"MissilePower","LaserShot", 0,"MissileDamage","multiply", "Missile damage"];
@@ -121,6 +122,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	}
 
 	createUpgradeWindow() {
+		this.canSelectUpgrade = false;
 		console.log("is upgrade selected " + this.isUpgradeSelected);
 		this.AvailableUpgrades = [...this.upgrades];
 
@@ -182,7 +184,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		if (!this.keyboardListenerAdded) {
 			if (this.scene.input.keyboard) {
 				this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => {
-					if (!this.IsWindowActive) return;
+					if (!this.IsWindowActive || !this.canSelectUpgrade) return;
 					if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
 						this.moveSelector(1);
 					} else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
@@ -323,6 +325,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
                     delay: 900,
                     ease: 'Bounce.easeOut',
 					onComplete: () => {
+						 this.canSelectUpgrade = true; // <-- Habilita la selección aquí
 						this.selector.setVisible(true);
 					}
                 });
@@ -362,16 +365,13 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
     }
 
 	addClickEvent(button: Phaser.GameObjects.Image, upgrade: Upgrade) {
-        button.setInteractive();
-        button.on('pointerdown', () => {
-
-          this.handleUpgradeClick(upgrade);
-		  this.closeUpgradeSystem();
-
-
-
-        });
-    }
+    button.setInteractive();
+    button.on('pointerdown', () => {
+        if (!this.canSelectUpgrade) return;
+        this.handleUpgradeClick(upgrade);
+        this.closeUpgradeSystem();
+    });
+}
 
 	handleUpgradeClick(upgrade: Upgrade) {
 		if(!this.isUpgradeSelected){

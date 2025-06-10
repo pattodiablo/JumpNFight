@@ -188,7 +188,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		if(direction.y>0.9){
 			this.TouchY=1;
-			console.log("abajo");
+			//console.log("abajo");
 		}else if (direction.y < 0) {
 			this.TouchY=-1;
 		} else {
@@ -260,7 +260,7 @@ export default class PlayerPrefab extends SpineGameObject {
 	shootSawBullet(enemy: Phaser.GameObjects.Sprite) {
 		for (let i = 0; i < this.AddSawMissile; i++) {
 			if(this.SawMissile>0){
-				console.log("shooting saw missile");
+			//	console.log("shooting saw missile");
 				const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
 				sawBullet.BulletVelocity = this.SawMissileVelocity;
 				sawBullet.setScale(this.SawMissileSize);
@@ -358,7 +358,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 	public tryToSword(enemy: Phaser.GameObjects.Sprite) {
 		if(this.isJumping){
-			console.log("wanna sword");
+			//console.log("wanna sword");
 			this.WannaSord = true;
 			this.handleSowrdCollision(this, enemy);
 		}

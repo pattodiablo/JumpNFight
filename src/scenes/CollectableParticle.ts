@@ -84,7 +84,7 @@ export default class CollectableParticle extends Phaser.GameObjects.Ellipse {
         const angle = Phaser.Math.Angle.Between(this.x, this.y, this.player.x, this.player.y);
         const body = this.body as Phaser.Physics.Arcade.Body;
 		const AttractionSpeed = (this.player as any).AttractionSpeed ?? this.AttractionSpeed;
-			console.log("AttractionSpeed ", AttractionSpeed);
+			//console.log("AttractionSpeed ", AttractionSpeed);
         body.setVelocity(
             Math.cos(angle) * AttractionSpeed,
             Math.sin(angle) * AttractionSpeed

@@ -1,4 +1,3 @@
-
 // You can write more code here
 
 /* START OF COMPILED CODE */
@@ -63,12 +62,13 @@ export default class Enemy1V1 extends SpineGameObject {
 	public shootMissile: boolean = false;
 	public shootingrate: number = 200;
 	public canHitPlayer: boolean = false;
-	public canPlayerStand: boolean = false;
+	public canPlayerStand: boolean = true;
 	public canPlayerHit: boolean = true;
-private hasHitPlayer: boolean = false;
+	private hasHitPlayer: boolean = false;
+	public IsMegaLaser: boolean = false; // Variable para controlar si es un Mega Laser
 	/* START-USER-CODE */
 	create(){
-
+console.log("enemy is mega laser", this.IsMegaLaser);
 		const gameUI = this.scene.scene.get('GameUI') as any;
 		const EnergyLevel = gameUI.level;
 		
@@ -186,7 +186,13 @@ resetPlayerHit(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.
 								if(this.shootMissile){
 									this.shootAMissile(player)
 								}else{
-									this.shootLaser(player);
+									if(this.IsMegaLaser){
+										console.log("shootMegaLaser");
+										this.shootMegaLaser(player);
+									}else{
+										this.shootLaser(player);	
+									}
+								
 								}
 							
 							});
@@ -239,8 +245,8 @@ if (this.timers && Array.isArray(this.timers)) {
 			speed: { min: -3000, max: 3000 },
 			angle: { min: 0, max: 360 },
 			lifespan: { min: 30, max: 500 },
-			scale: { start: 5, end: 0 },
-			quantity: 30,
+			scale: { start: 8, end: 0 },
+			quantity: 60,
 
 			maxParticles: 50,
 			frequency: 1,
@@ -304,68 +310,162 @@ if (this.timers && Array.isArray(this.timers)) {
 	}
 
 	shootAMissile(player: Phaser.GameObjects.Sprite) {
-		if(this.canShoot){
-			const missile = this.scene.add.ellipse(this.x, this.y+80, 60, 80, 0xff0000) as Phaser.GameObjects.Ellipse & { lifespan?: number };
-			this.scene.physics.add.existing(missile);
-			const missileBody = missile.body as Phaser.Physics.Arcade.Body;
-			missileBody.setAllowGravity(true);
-			missileBody.setGravityY(3000); // Configura la gravedad para el misil
-		//	missileBody.setVelocityX(-this.EnemyVelo);
-	
-			// Calcular la dirección del misil hacia el jugador
-			
-			// Establecer la duración del misil
-			missile.lifespan = this.laserDuration;
-			this.scene.time.addEvent({
-				delay: this.laserDuration,
-				callback: () => {
-					missile.destroy();
-				}
-			});
-	
-			  // Agregar colisión entre el misil y el jugador
-			  this.scene.physics.add.overlap(missile, player, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
-		}
-	}
+    if (this.canShoot) {
+        let flashes = 0;
+        const maxFlashes = 3;
+
+        const flash = () => {
+            if (flashes < maxFlashes * 2) {
+                // Alterna entre rojo y blanco usando skeleton.color
+                if (flashes % 2 === 0) {
+                    this.skeleton.color.set(1, 0, 0, 1); // Rojo
+                } else {
+                    this.skeleton.color.set(1, 1, 1, 1); // Blanco
+                }
+                flashes++;
+                this.scene.time.delayedCall(60, flash, [], this);
+            } else {
+                // Restaurar a blanco y disparar el misil
+                this.skeleton.color.set(1, 1, 1, 1);
+
+                const missile = this.scene.add.ellipse(this.x, this.y + 80, 60, 80, 0xff0000) as Phaser.GameObjects.Ellipse & { lifespan?: number };
+                this.scene.physics.add.existing(missile);
+                const missileBody = missile.body as Phaser.Physics.Arcade.Body;
+                missileBody.setAllowGravity(true);
+                missileBody.setGravityY(3000);
+
+                // Puedes calcular la dirección hacia el jugador aquí si lo deseas
+
+                missile.lifespan = this.laserDuration;
+                this.scene.time.addEvent({
+                    delay: this.laserDuration,
+                    callback: () => {
+                        missile.destroy();
+                    }
+                });
+
+                // Agregar colisión entre el misil y el jugador
+                this.scene.physics.add.overlap(missile, player, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+            }
+        };
+
+        flash();
+    }
+}
 	shootLaser(player: Phaser.GameObjects.Sprite) {
-		if(this.canShoot){
-						 const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
-			if(!(levelScene as any).isFxMuted){
-				const deadSounds = ['EnemyLaser_01'];
-				// Select a random sound
-				const randomSound = Phaser.Math.RND.pick(deadSounds);
-				// Play the selected sound
-				this.scene.sound.play(randomSound);
-			}
+		if (this.canShoot) {
+        let flashes = 0;
+        const maxFlashes = 3;
 
+        const flash = () => {
+            if (flashes < maxFlashes * 2) {
+                // Alterna entre rojo y blanco
+                if (flashes % 2 === 0) {
+                    this.skeleton.color.set(1, 0, 0, 1); // Rojo
+                } else {
+                    this.skeleton.color.set(1, 1, 1, 1); // Blanco
+                }
+                flashes++;
+                this.scene.time.delayedCall(60, flash, [], this);
+            } else {
+                // Restaurar a blanco y disparar
+                this.skeleton.color.set(1, 1, 1, 1);
 
-			const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
-			const laser = this.scene.add.ellipse(this.x, this.y, 200, 40, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
-			this.scene.physics.add.existing(laser);
-			const laserBody = laser.body as Phaser.Physics.Arcade.Body;
-			laserBody.setAllowGravity(false);
-	
-			// Calcular la dirección del láser hacia el jugador
-			const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
-			const velocityX = Math.cos(angle) * this.laserSpeed;
-			const velocityY = Math.sin(angle) * this.laserSpeed;
-			laserBody.setVelocity(velocityX, velocityY);
-			laser.rotation = angle;
-			// Establecer la duración del láser
-			laser.lifespan = this.laserDuration;
-			this.scene.time.addEvent({
-				delay: this.laserDuration,
-				callback: () => {
-					laser.destroy();
-				}
-			});
-	
-			  // Agregar colisión entre el láser y el jugador
-			  this.scene.physics.add.overlap(laser, player, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
-		}
-		
+                const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+                if (!(levelScene as any).isFxMuted) {
+                    const deadSounds = ['EnemyLaser_01'];
+                    const randomSound = Phaser.Math.RND.pick(deadSounds);
+                    this.scene.sound.play(randomSound);
+                }
+
+                // Disparo real después del efecto de tint
+                const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
+                const laser = this.scene.add.ellipse(this.x, this.y, 200, 40, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
+                this.scene.physics.add.existing(laser);
+                const laserBody = laser.body as Phaser.Physics.Arcade.Body;
+                laserBody.setAllowGravity(false);
+
+                // Calcular la dirección del láser hacia el jugador
+                const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
+                const velocityX = Math.cos(angle) * this.laserSpeed;
+                const velocityY = Math.sin(angle) * this.laserSpeed;
+                laserBody.setVelocity(velocityX, velocityY);
+                laser.rotation = angle;
+                laser.lifespan = this.laserDuration;
+                this.scene.time.addEvent({
+                    delay: this.laserDuration,
+                    callback: () => {
+                        laser.destroy();
+                    }
+                });
+
+                this.scene.physics.add.overlap(laser, player, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+            }
+        };
+
+        flash();
+    }
 
 	}
+
+
+	shootMegaLaser(player: Phaser.GameObjects.Sprite) {
+		if (this.canShoot) {
+        let flashes = 0;
+        const maxFlashes = 3;
+
+        const flash = () => {
+            if (flashes < maxFlashes * 2) {
+                // Alterna entre rojo y blanco
+                if (flashes % 2 === 0) {
+                    this.skeleton.color.set(1, 0, 0, 1); // Rojo
+                } else {
+                    this.skeleton.color.set(1, 1, 1, 1); // Blanco
+                }
+                flashes++;
+                this.scene.time.delayedCall(60, flash, [], this);
+            } else {
+                // Restaurar a blanco y disparar
+                this.skeleton.color.set(1, 1, 1, 1);
+
+                const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+                if (!(levelScene as any).isFxMuted) {
+                    const deadSounds = ['EnemyLaser_01'];
+                    const randomSound = Phaser.Math.RND.pick(deadSounds);
+                    this.scene.sound.play(randomSound);
+                }
+
+                // Disparo real después del efecto de tint
+                const laserColorNumber = Phaser.Display.Color.HexStringToColor(this.laserColor).color;
+                const laser = this.scene.add.ellipse(this.x, this.y, 400, 120, laserColorNumber) as Phaser.GameObjects.Ellipse & { lifespan?: number };
+                this.scene.physics.add.existing(laser);
+                const laserBody = laser.body as Phaser.Physics.Arcade.Body;
+                laserBody.setAllowGravity(false);
+
+                // Calcular la dirección del láser hacia el jugador
+                const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
+                const velocityX = Math.cos(angle) * this.laserSpeed;
+                const velocityY = Math.sin(angle) * this.laserSpeed;
+                laserBody.setVelocity(velocityX, velocityY);
+                laser.rotation = angle;
+                laser.lifespan = this.laserDuration;
+                this.scene.time.addEvent({
+                    delay: this.laserDuration,
+                    callback: () => {
+                        laser.destroy();
+                    }
+                });
+
+                this.scene.physics.add.overlap(laser, player, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+            }
+        };
+
+        flash();
+    }
+
+	}
+
+
 	handleLaserCollision(laser: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
 		// Manejar la colisión entre el láser y el jugador
 

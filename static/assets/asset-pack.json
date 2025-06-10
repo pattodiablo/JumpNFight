@@ -46,6 +46,25 @@
                 "key": "Cannon"
             },
             {
+                "url": "assets/Animations/JumpNRunAnimations/CompanionBot.png",
+                "frameConfig": {
+                    "frameWidth": 32,
+                    "frameHeight": 32,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "CompanionBot"
+            },
+            {
+                "atlasURL": "assets/Animations/JumpNRunAnimations/CompanionBot.json",
+                "textureURL": "assets/Animations/JumpNRunAnimations/CompanionBot.png",
+                "type": "atlas",
+                "key": "CompanionBot_1"
+            },
+            {
                 "url": "assets/CoreIcon.png",
                 "type": "image",
                 "key": "CoreIcon"
@@ -475,6 +494,17 @@
                 "key": "MagnetSpeed"
             },
             {
+                "url": "assets/SpineAnimations/Enemy7/MainEnemy.json",
+                "type": "spineJson",
+                "key": "MainEnemy",
+                "previewAtlasKey": "MainEnemy-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/Enemy7/MainEnemy.atlas",
+                "type": "spineAtlas",
+                "key": "MainEnemy-atlas"
+            },
+            {
                 "url": "assets/MineInterval.png",
                 "type": "image",
                 "key": "MineInterval"
@@ -535,6 +565,11 @@
                 "url": "assets/MusicOnBtn.png",
                 "type": "image",
                 "key": "MusicOnBtn"
+            },
+            {
+                "url": "assets/OnlyCannon.png",
+                "type": "image",
+                "key": "OnlyCannon"
             },
             {
                 "url": "assets/particleImage.png",

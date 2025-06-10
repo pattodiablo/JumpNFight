@@ -10,11 +10,11 @@ import Enemy1 from "./Enemy1V1";
 export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 	constructor(scene: Phaser.Scene, x?: number, y?: number, texture?: string, frame?: number | string) {
-		super(scene, x ?? 0, y ?? 0, texture || "Deacon_1", frame ?? "WeaponBeacon0000");
+		super(scene, x ?? 0, y ?? 0, texture || "CompanionBot_1", frame ?? "WeaponBeacon0000");
 
 		this.scaleX = 2;
 		this.scaleY = 2;
-		this.play("Deacon");
+		this.play("CompanionBot");
 
 		/* START-USER-CTR-CODE */
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
@@ -258,7 +258,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
 			const distance = Phaser.Math.Distance.Between(this.x, this.y, (enemy as Phaser.GameObjects.Sprite).x, (enemy as Phaser.GameObjects.Sprite).y);
 			if (distance < minDistance) {
-				console.log("Firing missile");
+				//console.log("Firing missile");
 				minDistance = distance;
 				nearestEnemy = enemy as Phaser.GameObjects.Sprite;
 			}

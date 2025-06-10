@@ -1,0 +1,36 @@
+{
+    "id": "e36e5f14-3231-4bed-a189-d7bca6f8caf4",
+    "sceneType": "PREFAB",
+    "settings": {
+        "exportClass": true,
+        "autoImport": true,
+        "superClassName": "Enemy1V1",
+        "preloadMethodName": "",
+        "preloadPackFiles": [],
+        "createMethodName": "",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
+        "borderWidth": 1280,
+        "borderHeight": 720
+    },
+    "displayList": [
+        {
+            "type": "SpineGameObject",
+            "id": "682166da-0915-404c-97f5-e9e9fdb94e51",
+            "label": "MainEnemy",
+            "dataKey": "MainEnemy",
+            "atlasKey": "MainEnemy-atlas",
+            "skinName": "default",
+            "bpType": 1,
+            "previewAnimation": "",
+            "scaleX": 1.6,
+            "scaleY": 1.6
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor - Scene Editor",
+        "url": "https://phaser.io/editor",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    }
+}
