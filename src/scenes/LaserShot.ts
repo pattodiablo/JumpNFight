@@ -18,7 +18,10 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 		/* START-USER-CTR-CODE */
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
-		this.scene.events.on("update", (time: number, delta: number) => this.update(delta));
+
+		// Guarda la referencia para poder quitar el listener después
+		this.updateListener = (time: number, delta: number) => this.update(delta);
+		this.scene.events.on("update", this.updateListener);
 
 		/* END-USER-CTR-CODE */
 	}
@@ -47,6 +50,12 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 	public rainDamage: number = 5;
 	public RainVelocity: number = 8000;
 
+	private updateListener?: Function;
+    private laserEvent?: Phaser.Time.TimerEvent;
+    private missileEvent?: Phaser.Time.TimerEvent;
+    private swordEvent?: Phaser.Time.TimerEvent;
+    private rainEvent?: Phaser.Time.TimerEvent;
+
 
 
 
@@ -57,14 +66,14 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		this.scene.physics.world.enable(this);
 		(this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
-		this.scene.time.addEvent({
+		this.laserEvent = this.scene.time.addEvent({
 			delay: this.LaserShotsInterval, // Tiempo en milisegundos (2 segundos)
 			callback: this.fireLaser,
 			callbackScope: this,
 			loop: true // Repetir indefinidamente
 		});
 
-		this.scene.time.addEvent({
+		this.missileEvent = this.scene.time.addEvent({
 			delay: this.MissileInterval, // Tiempo en milisegundos (2 segundos)
 			callback: this.fireMissile,
 			callbackScope: this,
@@ -72,14 +81,14 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		});
 
 
-		this.scene.time.addEvent({
+		this.swordEvent = this.scene.time.addEvent({
 			delay: this.SwordInterval, // Tiempo en milisegundos (2 segundos)
 			callback: this.fireSwords,
 			callbackScope: this,
 			loop: true // Repetir indefinidamente
 		});
 
-		this.scene.time.addEvent({
+		this.rainEvent = this.scene.time.addEvent({
 			delay: this.rainInterval, // Tiempo en milisegundos (2 segundos)
 			callback: this.rayCreator,
 			callbackScope: this,
@@ -421,6 +430,22 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		}, [], this);
 		laser.destroy(); // Destroy the laser upon collision with the enemy
 	}
+
+	destroy(fromScene?: boolean) {
+        // Limpia el listener de update
+        if (this.updateListener) {
+            this.scene.events.off("update", this.updateListener);
+            this.updateListener = undefined;
+        }
+
+        // Cancela los eventos periódicos
+        this.laserEvent?.remove();
+        this.missileEvent?.remove();
+        this.swordEvent?.remove();
+        this.rainEvent?.remove();
+
+        super.destroy(fromScene);
+    }
 
 	/* END-USER-CODE */
 }

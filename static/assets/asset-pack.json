@@ -352,6 +352,16 @@
                 "key": "EnemyV1-atlas"
             },
             {
+                "url": "assets/FinalBtn.png",
+                "type": "image",
+                "key": "FinalBtn"
+            },
+            {
+                "url": "assets/FinalImage.png",
+                "type": "image",
+                "key": "FinalImage"
+            },
+            {
                 "url": "assets/FullScreenBtn.png",
                 "type": "image",
                 "key": "FullScreenBtn"

@@ -2,14 +2,16 @@
     "id": "fd6157ae-d1e1-4d7d-9271-228c102f7055",
     "sceneType": "SCENE",
     "settings": {
+        "snapWidth": 599,
+        "snapHeight": 275,
         "exportClass": true,
         "autoImport": true,
         "preloadPackFiles": [],
         "createMethodName": "editorCreate",
         "sceneKey": "GameUI",
         "compilerOutputLanguage": "TYPE_SCRIPT",
-        "borderWidth": 1920,
-        "borderHeight": 1080
+        "borderWidth": 1031,
+        "borderHeight": 580
     },
     "displayList": [
         {
@@ -68,7 +70,7 @@
             "label": "restartBtn",
             "scope": "PUBLIC",
             "texture": {
-                "key": "restartBtn"
+                "key": "FinalBtn"
             },
             "x": 769,
             "y": 1398
@@ -91,6 +93,31 @@
             "texture": {
                 "key": "MusicOnBtn"
             },
+            "scaleX": 0
+        },
+        {
+            "type": "Image",
+            "id": "528a0610-fb68-46a6-8928-9359ed96c20c",
+            "label": "finalImage",
+            "scope": "CLASS",
+            "texture": {
+                "key": "FinalImage"
+            },
+            "x": 340,
+            "y": 291,
+            "scaleX": 0.5108707683450882,
+            "scaleY": 0.5108707683450882
+        },
+        {
+            "type": "Image",
+            "id": "997032e0-b3f5-47ed-a121-9f0042e2b642",
+            "label": "finalBtn",
+            "scope": "CLASS",
+            "texture": {
+                "key": "FinalBtn"
+            },
+            "x": 679,
+            "y": 427,
             "scaleX": 0
         }
     ],

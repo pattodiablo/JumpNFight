@@ -42,7 +42,7 @@ export default class GameUI extends Phaser.Scene {
 		this.add.existing(upgradeSystem);
 
 		// restartBtn
-		const restartBtn = this.add.sprite(769, 1398, "restartBtn");
+		const restartBtn = this.add.sprite(769, 1398, "FinalBtn");
 
 		// fxOnBtn
 		const fxOnBtn = this.add.image(0, 0, "FxOnBtn");
@@ -52,6 +52,15 @@ export default class GameUI extends Phaser.Scene {
 		const musicOnBtn = this.add.sprite(0, 0, "MusicOnBtn");
 		musicOnBtn.scaleX = 0;
 
+		// finalImage
+		const finalImage = this.add.image(340, 291, "FinalImage");
+		finalImage.scaleX = 0.5108707683450882;
+		finalImage.scaleY = 0.5108707683450882;
+
+		// finalBtn
+		const finalBtn = this.add.image(679, 427, "FinalBtn");
+		finalBtn.scaleX = 0;
+
 		this.weveanaJoystick = weveanaJoystick;
 		this.jumpBtn = jumpBtn;
 		this.fullScreenBtn = fullScreenBtn;
@@ -59,6 +68,8 @@ export default class GameUI extends Phaser.Scene {
 		this.restartBtn = restartBtn;
 		this.fxOnBtn = fxOnBtn;
 		this.musicOnBtn = musicOnBtn;
+		this.finalImage = finalImage;
+		this.finalBtn = finalBtn;
 
 		this.events.emit("scene-awake");
 	}
@@ -70,6 +81,8 @@ export default class GameUI extends Phaser.Scene {
 	public restartBtn!: Phaser.GameObjects.Sprite;
 	public fxOnBtn!: Phaser.GameObjects.Image;
 	public musicOnBtn!: Phaser.GameObjects.Sprite;
+	private finalImage!: Phaser.GameObjects.Image;
+	private finalBtn!: Phaser.GameObjects.Image;
 
 	/* START-USER-CODE */
 	public levelText!: Phaser.GameObjects.Text;
@@ -137,14 +150,14 @@ export default class GameUI extends Phaser.Scene {
 		this.fxOnBtn.setInteractive();
 		this.musicOnBtn.on("pointerover", () => {
 			this.musicOnBtn.setTint(0xff0000); // Agregar tinte rojizo
-		
+
 		});
 		this.musicOnBtn.on("pointerup", () => {
 			this.musicOnBtn.clearTint(); // Eliminar tinte
 		});
 		this.fxOnBtn.on("pointerover", () => {
 			this.fxOnBtn.setTint(0xff0000); // Agregar tinte rojizo
-		
+
 		});
 		this.fxOnBtn.on("pointerup", () => {
 			this.fxOnBtn.clearTint(); // Eliminar tinte
@@ -166,7 +179,7 @@ export default class GameUI extends Phaser.Scene {
 				this.musicOnBtn.setTexture("MusicOnBtn");
 				(levelScene as any).setMusic(true);
 			}
-			
+
 		});
 
 		this.fxOnBtn.on("pointerdown", () => {
@@ -180,10 +193,10 @@ export default class GameUI extends Phaser.Scene {
 				this.fxOnBtn.setTexture("FxOnBtn");
 				(levelScene as any).setFX(true);
 			}
-			
+
 		});
 
-		
+
 		const factor = this.scale.height / this.scale.width;
 
 		this.input.addPointer(2); // Agregar dos punteros adicionales
@@ -255,13 +268,14 @@ export default class GameUI extends Phaser.Scene {
 
 		this.game.events.on("PlayerIsDead", this.ShowResults, this);
 
-
+		this.finalImage.setVisible(false);
+	//	this.ShowResults();
 	}
 
 
 
 	public ShowResults(): void {
-	
+
 		const factor = this.scale.height / this.scale.width;
 		this.levelBar.setVisible(false);
 		this.updateBar.setVisible(false);
@@ -271,19 +285,13 @@ export default class GameUI extends Phaser.Scene {
 		this.jumpBtn.setVisible(false);	
 		this.weveanaJoystick.setVisible(false);
 		this.fullScreenBtn.setVisible(false);
+		this.finalImage.setVisible(true);
 
-		const levelText = this.add.text(this.scale.width / 2, this.scale.height/5, 'GAME OVER', {
-			fontFamily: 'Bahiana',
-            fontSize: '264px',
-            color: '#ffffff',
-            fontStyle: 'bold'
-        });
-        levelText.setOrigin(0.5, 0.5);
-		levelText.setScale(factor);
+const fixerY = 30;
 
-		const disntancetraveled = this.add.text(this.scale.width / 3, this.scale.height/2.5, 'Distance traveled', {
+		const disntancetraveled = this.add.text(750, 200-fixerY, 'Distance traveled', {
 			fontFamily: 'Bahiana',
-            fontSize: '50px',
+            fontSize: '80px',
             color: '#ffffff',
             fontStyle: 'bold'
         });
@@ -291,18 +299,18 @@ export default class GameUI extends Phaser.Scene {
 		disntancetraveled.setScale(factor);
 
 		const distancereached = (this.scoreCounter as any).GetDistance();
-		const distanceReachedText = this.add.text(this.scale.width / 3, this.scale.height/2 , distancereached + " " + "M", {
+		const distanceReachedText = this.add.text(750, 260-fixerY, distancereached + " " + "M", {
 			fontFamily: 'Bahiana',
-            fontSize: '60px',
+            fontSize: '120px',
             color: '#ff0000',
             fontStyle: 'bold'
         });
         distanceReachedText.setOrigin(0.5, 0.5);
 		distanceReachedText.setScale(factor);
 
-		const LevelReachedText = this.add.text(this.scale.width / 1.5, this.scale.height/2.5, 'Level reached', {
+		const LevelReachedText = this.add.text(750, 330-fixerY, 'Level reached', {
 			fontFamily: 'Bahiana',
-            fontSize: '50px',
+            fontSize: '80px',
             color: '#ffffff',
             fontStyle: 'bold'
         });
@@ -310,9 +318,9 @@ export default class GameUI extends Phaser.Scene {
 		LevelReachedText.setScale(factor);
 
 		const LevelGet = this.level.toString();
-		const LevelReached = this.add.text(this.scale.width / 1.5, this.scale.height/2 , LevelGet, {
+		const LevelReached = this.add.text(750, 390-fixerY, LevelGet, {
 			fontFamily: 'Bahiana',
-            fontSize: '60px',
+            fontSize: '120px',
             color: '#ff0000',
             fontStyle: 'bold'
         });
@@ -320,8 +328,8 @@ export default class GameUI extends Phaser.Scene {
 		LevelReached.setScale(factor);
 
 		this.restartBtn.setVisible(true);
-		this.restartBtn.setPosition(this.scale.width / 2, this.scale.height / 1.5);
-		this.restartBtn.setScale(factor/2);
+		this.restartBtn.setPosition(750, 500-fixerY);
+		this.restartBtn.setScale(factor);
 
 		// Esperar unos segundos y luego pausar el nivel
 this.time.delayedCall(1500, () => {
