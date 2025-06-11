@@ -122,6 +122,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	}
 
 	createUpgradeWindow() {
+		
 		this.canSelectUpgrade = false;
 		console.log("is upgrade selected " + this.isUpgradeSelected);
 		this.AvailableUpgrades = [...this.upgrades];
