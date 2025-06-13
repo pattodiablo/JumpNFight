@@ -21,6 +21,9 @@ declare global {
 
 export default class Enemy1V1 extends SpineGameObject {
 	timers: Phaser.Time.TimerEvent[] = [];
+	private _updateListener: (time: number,
+		/* START OF COMPILED CODE */
+		delta: number) => void;
 	/**
 	 * @param scene The scene to which this GameObject belongs.
 	 * @param plugin The SpinePlugin instance.
@@ -40,7 +43,8 @@ export default class Enemy1V1 extends SpineGameObject {
 
 		/* START-USER-CTR-CODE */
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
-		this.scene.events.on("update", (time: number, delta: number) => this.updateEnemy(delta));
+		this._updateListener = (time: number, delta: number) => this.updateEnemy(delta);
+		this.scene.events.on("update", this._updateListener);
 
 		/* END-USER-CTR-CODE */
 	}
@@ -285,6 +289,7 @@ if (this.timers && Array.isArray(this.timers)) {
         }
     }
 
+	
 	createLaserParticles() {
 
 		const appearParicles =  this.scene.add.particles(0, 0, 'particleImage', {

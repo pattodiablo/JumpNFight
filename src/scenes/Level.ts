@@ -381,6 +381,8 @@ createParticles() {
         // Crea la plataforma visual con bordes redondeados
         const { graphics, collider } = this.createRoundedPlatform(platformX, platformY, platformWidth, platformHeight, 40);
 
+        (collider as any).graphics = graphics;
+
         this.physics.add.collider(this.player, collider, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
         this.platforms.add(collider);
 
@@ -516,6 +518,8 @@ this.bg1.tilePositionY = this.cameras.main.scrollY * 0.05;
                 // Crea la plataforma visual con bordes redondeados
                 const { graphics, collider } = this.createRoundedPlatform(platformX, platformY, platformWidth, platformHeight, 40);
 
+                (collider as any).graphics = graphics;
+
                 this.physics.add.collider(this.player, collider, this.checkPlatformDistance as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
                 this.platforms.add(collider);
 
@@ -541,8 +545,11 @@ this.bg1.tilePositionY = this.cameras.main.scrollY * 0.05;
         // Destruir plataformas que están fuera del buffer
         this.platforms.getChildren().forEach((platform) => {
             if ((platform as Phaser.GameObjects.Rectangle).x < this.player.x - this.scale.width * this.platformBuffer) {
-                platform.destroy();
-
+                // Destruye el gráfico asociado si existe
+                if ((platform as any).graphics) {
+                    (platform as any).graphics.destroy();
+                }
+                this.platforms.remove(platform, true, true);
             }
         });
     }

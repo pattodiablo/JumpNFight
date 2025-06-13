@@ -56,6 +56,9 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
     private swordEvent?: Phaser.Time.TimerEvent;
     private rainEvent?: Phaser.Time.TimerEvent;
 
+    private swordsGroup!: Phaser.Physics.Arcade.Group;
+    private missilesGroup!: Phaser.Physics.Arcade.Group;
+
 
 
 
@@ -65,6 +68,10 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 		// Add physics to the LaserShot sprite
 		this.scene.physics.world.enable(this);
 		(this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+
+		// Crea los grupos para proyectiles/minas
+		this.swordsGroup = this.scene.physics.add.group();
+		this.missilesGroup = this.scene.physics.add.group();
 
 		this.laserEvent = this.scene.time.addEvent({
 			delay: this.LaserShotsInterval, // Tiempo en milisegundos (2 segundos)
@@ -99,6 +106,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 	update(delta: number): void {
 		if (this.active) {
+			// Sigue al player
 			const player = (this.scene as any).player;
 			if (player) {
 				const body = this.body as Phaser.Physics.Arcade.Body;
@@ -111,6 +119,24 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 				body.velocity.x = (targetX - this.x) * lerp * 60;
 				body.velocity.y = (targetY - this.y) * lerp * 60;
 			}
+
+			// Rota todas las minas activas
+			this.swordsGroup?.getChildren().forEach((missile) => {
+				(missile as Phaser.GameObjects.Sprite).angle += 10;
+			});
+
+			// Misiles buscan a su objetivo
+			this.missilesGroup?.getChildren().forEach((missile) => {
+				const target = (missile as any).target;
+				if ((missile as Phaser.GameObjects.Sprite).active && target && !target.IsDestroyed) {
+					const newAngle = Phaser.Math.Angle.Between((missile as Phaser.GameObjects.Sprite).x, (missile as Phaser.GameObjects.Sprite).y, target.x, target.y);
+					const newVelocity = this.scene.physics.velocityFromRotation(newAngle, 1000);
+					((missile as Phaser.GameObjects.Sprite).body as Phaser.Physics.Arcade.Body).setVelocity(newVelocity.x, newVelocity.y);
+					(missile as Phaser.GameObjects.Sprite).angle = Phaser.Math.RadToDeg(newAngle);
+				} else if ((missile as Phaser.GameObjects.Sprite).active && target && target.IsDestroyed) {
+					this.destroyMissile(missile as Phaser.GameObjects.Sprite);
+				}
+			});
 		}
 	}
 
@@ -221,19 +247,15 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 			missile.setData('damage', this.swordWeaponDamage);
 			this.scene.physics.world.enable(missile);
 			const velocityX = Phaser.Math.Between(-this.SwordVelocity, this.SwordVelocity);
-			const velocityY = Phaser.Math.Between( -this.SwordVelocity , -this.SwordVelocity);
+			const velocityY = Phaser.Math.Between(-this.SwordVelocity, -this.SwordVelocity);
 			(missile.body as Phaser.Physics.Arcade.Body).setVelocity(velocityX, velocityY);
 			(missile.body as Phaser.Physics.Arcade.Body).setAllowGravity(true);
 			(missile.body as Phaser.Physics.Arcade.Body).gravity.y = 1000;
 			(missile.body as Phaser.Physics.Arcade.Body).setCircle(200);
 
+			this.swordsGroup.add(missile);
+
 			this.scene.physics.add.overlap(missile, this.scene.enemies, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
-
-
-			this.scene.events.on('update', () => {
-				missile.angle += 10;	
-			});
-
 
 
 			this.scene.time.delayedCall(10000, () => {
@@ -285,6 +307,8 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 			missile.setScale(this.MissileSize);
 			this.scene.physics.world.enable(missile);
 			(missile as any).target = nearestEnemy; // Store the target enemy
+
+			this.missilesGroup.add(missile);
 
 			// Calculate the angle and velocity
 			const angle = Phaser.Math.Angle.Between(this.x, this.y, (nearestEnemy as Phaser.GameObjects.Sprite).x, (nearestEnemy as Phaser.GameObjects.Sprite).y);
@@ -437,6 +461,10 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
         this.missileEvent?.remove();
         this.swordEvent?.remove();
         this.rainEvent?.remove();
+
+        // Limpia los grupos de proyectiles/minas
+        this.swordsGroup?.clear(true, true);
+        this.missilesGroup?.clear(true, true);
 
         super.destroy(fromScene);
     }
