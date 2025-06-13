@@ -64,7 +64,7 @@ export default class Upgrade extends Phaser.GameObjects.Container {
 	
 		if (upgrades.length > 0) {
 			this.randomUpgrade = Phaser.Math.RND.pick(upgrades);
-			console.log("Random Upgrade:", this.randomUpgrade);
+			//console.log("Random Upgrade:", this.randomUpgrade);
 			AvailableUpgrades.splice(AvailableUpgrades.indexOf(this.randomUpgrade), 1);
 			this.upgradeIcon.setTexture(this.randomUpgrade[1] as string);
 			this.upgradeType.text = this.randomUpgrade[6] as string;
@@ -85,7 +85,7 @@ export default class Upgrade extends Phaser.GameObjects.Container {
 			this.upgradeIcon.setTexture("ShieldIcon");
 			this.levelNumber.text = "MAX";
 			this.upgradeType.text = "No more upgrades";
-			console.log("No upgrades available below max level");
+			//console.log("No upgrades available below max level");
 		}
 	}
 	/* END-USER-CODE */

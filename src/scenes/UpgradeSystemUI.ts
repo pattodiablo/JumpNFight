@@ -115,6 +115,22 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	public IsWindowActive = false;
 	private keyboardListenerAdded: boolean = false;
 
+
+        async showPokiAdAndPauseGame() {
+            const poki = this.scene.plugins.get('poki');
+            if (poki) {
+                // Pausa el juego antes del anuncio
+                this.scene.scene.pause(); // Pausa la escena actual
+                (poki as any).gameplayStop();
+
+                // Espera a que termine el comercial
+                await (poki as any).commercialBreak();
+
+                // Reanuda el juego después del anuncio
+                (poki as any).gameplayStart();
+                this.scene.scene.resume(); // Reanuda la escena actual
+            }
+        }
 	
 	create(){
 	this.alpha = 0;
@@ -123,8 +139,9 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 
 	createUpgradeWindow() {
 		
+		this.showPokiAdAndPauseGame();
 		this.canSelectUpgrade = false;
-		console.log("is upgrade selected " + this.isUpgradeSelected);
+		//console.log("is upgrade selected " + this.isUpgradeSelected);
 		this.AvailableUpgrades = [...this.upgrades];
 
 		this.upgrade1.getRandomUpgrade(this.AvailableUpgrades);
@@ -134,6 +151,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.alpha = 1;
 		this.IsWindowActive = true;
 		this.scene.scene.pause('Level');
+		
 		this.upgrade1.visible = true;
 		this.upgrade2.visible = true;			
 		this.upgrade3.visible = true;
@@ -143,6 +161,9 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.upgrade1.setScale(0.5);
 		this.upgrade2.setScale(0.5);
 		this.upgrade3.setScale(0.5);
+
+
+		
 
 		const width = this.scene.scale.width;
         const height = this.scene.scale.height;
@@ -402,7 +423,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 									currentLevel.player[propertyName] /= upgradeType.randomUpgrade[0];
 									break;
 							}
-							console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
+							//console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
 						} else if (upgradeType.randomUpgrade[2] == "LaserShot") {
 							console.log("entro en upgrade de laserShot " );
 							switch (upgradeType.randomUpgrade[5]) {
@@ -419,7 +440,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 									currentLevel.laserShot[propertyName] /= upgradeType.randomUpgrade[0];
 									break;
 							}
-							console.log("Property " + propertyName + " " + currentLevel.laserShot[propertyName]);
+							//console.log("Property " + propertyName + " " + currentLevel.laserShot[propertyName]);
 						} else if (upgradeType.randomUpgrade[2] == "Cannon") {
 							switch (upgradeType.randomUpgrade[5]) {
 								case "add":
@@ -435,7 +456,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 									currentLevel.player[propertyName] /= upgradeType.randomUpgrade[0];
 									break;
 							}
-							console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
+							//console.log("Property " + propertyName + " " + currentLevel.player[propertyName]);
 						}else if (upgradeType.randomUpgrade[2] == "CollectableParticle") {
 							switch (upgradeType.randomUpgrade[5]) {
 								case "add":
@@ -451,7 +472,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 									currentLevel.collectableParticle[propertyName] /= upgradeType.randomUpgrade[0];
 									break;
 							}
-							console.log("Property " + propertyName + " " + currentLevel.collectableParticle[propertyName]);
+							//console.log("Property " + propertyName + " " + currentLevel.collectableParticle[propertyName]);
 						}
 					}
 	
@@ -474,6 +495,8 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.alpha = 0; // Ocultar el contenedor UpgradeSystemUI
 		
 		this.selector.setVisible(false); // Ocultar el selector
+
+
 		//this.destroy(); // Destruir el contenedor UpgradeSystemUI
     }
 

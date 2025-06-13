@@ -24,20 +24,38 @@ window.onload = () => {
       initializeGame(); // 👈 Esto puede lanzarse luego si quieres mostrar el juego tras la intro
  
   };
-  
+  function loadLocalFont(fontName: string, fontUrl: string): Promise<void> {
+    // @ts-ignore
+    if (document.fonts && window.FontFace) {
+        const font = new FontFace(fontName, `url(${fontUrl})`);
+        return font.load().then((loadedFont: FontFace) => {
+            // @ts-ignore
+            document.fonts.add(loadedFont);
+        });
+    } else {
+        // fallback: inject CSS
+        const style = document.createElement('style');
+        style.innerHTML = `
+        @font-face {
+            font-family: '${fontName}';
+            src: url('${fontUrl}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }`;
+        document.head.appendChild(style);
+        return Promise.resolve();
+    }
+}
 
-WebFont.load({
-    google: {
-      families: ["Bahiana"],
-    },
-    active: () => {
-      console.log('Fonts have been loaded');
-    },
-    inactive: () => {
-      console.log('Fonts could not be loaded');
-    },
-    timeout: 2000 // Set the timeout to two seconds
-  });
+window.onload = () => {
+    console.log("Loading game...");
+    loadLocalFont("Bahiana", "fonts/Bahiana-Regular.ttf").then(() => {
+        console.log("Local font loaded");
+        initializeGame();
+    });
+};
+
+
 var renderer: string;
 
 class Boot extends Phaser.Scene {
@@ -176,7 +194,7 @@ function initializeGame() {
                   start: true, // must be true, in order to load
                   data: {
                     // This must be the key/name of your loading scene
-                    loadingSceneKey: 'Boot',
+                    loadingSceneKey: 'Preload',
           
                     // This must be the key/name of your game (gameplay) scene
                     gameplaySceneKey: 'Level',

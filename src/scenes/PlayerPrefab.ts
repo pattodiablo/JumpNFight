@@ -95,7 +95,11 @@ export default class PlayerPrefab extends SpineGameObject {
 		this.Shield.postFX.addBloom(0xffffff, 1, 1, 1.5, 1);
 		this.Shield.postFX.addShine(1, 0.5, 4, 0.5, 0.5, 0.5);
 		this.scene.add.existing(this.Shield);
-
+		this.scene.physics.add.existing(this.Shield);
+		const shieldBody = this.Shield.body as Phaser.Physics.Arcade.Body;
+		shieldBody.setAllowGravity(false);
+		shieldBody.setImmovable(true);
+		shieldBody.setCircle(this.Shield.width / 2); // Opcional: si quieres colisión circular
 
 
 		this.scene.physics.add.existing(this);
@@ -454,9 +458,6 @@ export default class PlayerPrefab extends SpineGameObject {
 
     updatePlayer(delta: number) {
 
-
-
-
 			const offsetX = 160;
 			const offsetY = 70;
 
@@ -723,6 +724,11 @@ export default class PlayerPrefab extends SpineGameObject {
 
 
 			this.scene.game.events.emit("PlayerIsDead");
+			const poki = this.scene.plugins.get('poki');
+			if(poki){
+				(poki as any).gameplayStop();
+			}
+			
 		}
 		
 		if(!this.IsRestoringShield && this.ShieldLife<this.OrioginalShieldLife){

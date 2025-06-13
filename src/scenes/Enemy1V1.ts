@@ -68,7 +68,6 @@ export default class Enemy1V1 extends SpineGameObject {
 	public IsMegaLaser: boolean = false; // Variable para controlar si es un Mega Laser
 	/* START-USER-CODE */
 	create(){
-console.log("enemy is mega laser", this.IsMegaLaser);
 		const gameUI = this.scene.scene.get('GameUI') as any;
 		const EnergyLevel = gameUI.level;
 		
@@ -187,7 +186,7 @@ resetPlayerHit(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.
 									this.shootAMissile(player)
 								}else{
 									if(this.IsMegaLaser){
-										console.log("shootMegaLaser");
+										//console.log("shootMegaLaser");
 										this.shootMegaLaser(player);
 									}else{
 										this.shootLaser(player);	
@@ -276,7 +275,7 @@ if (this.timers && Array.isArray(this.timers)) {
 
 		const NumberOfParticles = Math.ceil(EnergyLevel*Level.FactorDeDificultad); 
 
-		console.log("numberOfParticles", NumberOfParticles);
+		//console.log("numberOfParticles", NumberOfParticles);
         for (let i = 0; i < NumberOfParticles; i++) {
             const x = this.x + Phaser.Math.Between(-130, 130); // Posición aleatoria cerca del enemigo
             const y = this.y + Phaser.Math.Between(-130, 130); // Posición aleatoria cerca del enemigo

@@ -14,7 +14,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 		this.scaleX = 2;
 		this.scaleY = 2;
-		this.play("CompanionBot");
+		this.play("CompanionBot_1");
 
 		/* START-USER-CTR-CODE */
 		this.scene.events.once(Phaser.Scenes.Events.UPDATE, this.create, this);
@@ -98,24 +98,18 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 	}	
 
 	update(delta: number): void {
-		if(this.active){
-			const player = (this.scene as any).player; // Assuming the player is stored in the scene
+		if (this.active) {
+			const player = (this.scene as any).player;
 			if (player) {
-				// Use lerp to smoothly move the LaserShot towards the player's position
-				this.x = Phaser.Math.Linear(this.x, player.x, 0.1);
-				this.y = Phaser.Math.Linear(this.y, player.y - player.height / 2 - 10, 0.1); // Adjust the offset as needed
+				const body = this.body as Phaser.Physics.Arcade.Body;
+				// Calcula la posición objetivo (puedes ajustar el offset)
+				const targetX = player.x;
+				const targetY = player.y - player.height / 2 - 10;
 
-				// Check if any enemy is near the player
-				const enemies = (this.scene as any).enemies.getChildren(); // Get the list of enemies
-				enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
-					const distance = Phaser.Math.Distance.Between(this.x, this.y, (enemy as Phaser.GameObjects.Sprite).x, (enemy as Phaser.GameObjects.Sprite).y);
-					if (distance <= this.detectionRadius && (enemy as any).IsNearPlayer) {
-						// Calculate the angle between the LaserShot and the player
-						const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
-						// Set the rotation of the LaserShot
-						this.setRotation(angle);
-					}
-				});
+				// Calcula la velocidad necesaria para acercarse suavemente
+				const lerp = 0.1; // Ajusta para suavidad
+				body.velocity.x = (targetX - this.x) * lerp * 60;
+				body.velocity.y = (targetY - this.y) * lerp * 60;
 			}
 		}
 	}

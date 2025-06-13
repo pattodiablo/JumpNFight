@@ -107,12 +107,27 @@ export default class Level extends PhaserScene {
 
 	/* START-USER-CODE */
 
+        async showPokiAdAndPauseGame() {
 
+            const poki = this.plugins.get('poki');
+
+            if (poki) {
+                // Pausa el juego antes del anuncio
+                this.scene.pause(); // Pausa la escena actual
+                (poki as any).gameplayStart();
+                
+
+                // Espera a que termine el comercial
+                await (poki as any).commercialBreak();
+
+                // Reanuda el juego después del anuncio
+                this.scene.resume(); // Reanuda la escena actual
+          
+            }
+        }
 
 	// Write your code here
     private currentPlatform!: Phaser.GameObjects.Rectangle;
-    private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-    private currentAnimation: string = "Idle";
 	public platforms!: Phaser.GameObjects.Group;
     private platformBuffer: number = 20; // Número de plataformas de buffer por delante y por detrás del jugador
     public enemies!: Phaser.GameObjects.Group; // Grupo de enemigos
@@ -136,8 +151,10 @@ export default class Level extends PhaserScene {
     private _setAcceleration: DynamicMotionSystem = new DynamicMotionSystem(this, this.world, new AccelerationService());
     private _textureRender: TextureRenderSystem = new TextureRenderSystem(this, this.world);
 
+
 	create() {
 		this.editorCreate();
+        this.showPokiAdAndPauseGame();
     // this.createParticles();
          //this.cameras.main.postFX.addPixelate(0.01); // Cambia 8 por el tamaño de pixel deseado
 
@@ -159,37 +176,8 @@ this.physics.add.collider(this.player, this.wall);
 
 
 
-        const poki = this.plugins.get('pokii');
 
-        if (poki) {
-
-            (poki as any).runWhenInitialized((poki: { hasAdblock: boolean }) => {
-                console.log('PokiSDK has been initialized');
-                (poki as any).gameplayStart();
-                if (poki.hasAdblock) {
-                    this.add.text(10, 10, 'Adblock detected!', {
-                      color: 'black'
-                    })
-                  }
-               // (poki as any).gameplayStart();
-                if (!poki.hasAdblock) {
-                  // When ads are available: enable the rewarded ad button:
-                  /*
-                  (poki as any).rewardedBreak().then((success: boolean) => {
-
-                    if (success) {
-                        console.log('Give coins!');
-                        // Give coins!
-                    }
-
-                });
-                 */
-                }
-              })
-
-
-
-        };
+        
 
         // this.scene.launch("GameUI");
         const factor = this.scale.height/this.scale.width;
