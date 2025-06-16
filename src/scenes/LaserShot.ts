@@ -272,77 +272,52 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 	fireMissile() {
 		// Find the nearest enemy within the detection radius
-
 		for (let i = 0; i < this.MissileNumber; i++) {
-
-			
 			const enemies = (this.scene as any).enemies.getChildren();
-		let nearestEnemy: Phaser.GameObjects.Sprite | null = null;
-		let minDistance = this.detectionRadius;
+			let nearestEnemy: Phaser.GameObjects.Sprite | null = null;
+			let minDistance = this.detectionRadius;
 
-		enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
-			const distance = Phaser.Math.Distance.Between(this.x, this.y, (enemy as Phaser.GameObjects.Sprite).x, (enemy as Phaser.GameObjects.Sprite).y);
-			if (distance < minDistance) {
-				//console.log("Firing missile");
-				minDistance = distance;
-				nearestEnemy = enemy as Phaser.GameObjects.Sprite;
-			}
-		});
+			enemies.forEach((enemy: Phaser.GameObjects.GameObject) => {
+				const distance = Phaser.Math.Distance.Between(this.x, this.y, (enemy as Phaser.GameObjects.Sprite).x, (enemy as Phaser.GameObjects.Sprite).y);
+				if (distance < minDistance) {
+					minDistance = distance;
+					nearestEnemy = enemy as Phaser.GameObjects.Sprite;
+				}
+			});
 
-		if (nearestEnemy) {
-
+			if (nearestEnemy) {
 				const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
-				if(!(levelScene as any).isFxMuted){
+				if (!(levelScene as any).isFxMuted) {
 					const jumpSounds = ['MissileShot_01'];
-				// Select a random sound
-				const randomSound = Phaser.Math.RND.pick(jumpSounds);
-				// Play the selected sound
-				this.scene.sound.play(randomSound);
+					const randomSound = Phaser.Math.RND.pick(jumpSounds);
+					this.scene.sound.play(randomSound);
 				}
 
+				const missile = this.scene.add.sprite(this.x, this.y, 'missile');
+				missile.setData('damage', this.MissileDamage);
+				missile.setScale(this.MissileSize);
+				this.scene.physics.world.enable(missile);
+				(missile as any).target = nearestEnemy; // Store the target enemy
 
-				
-			const missile = this.scene.add.sprite(this.x, this.y, 'missile');
-			missile.setData('damage', this.MissileDamage);
-			missile.setScale(this.MissileSize);
-			this.scene.physics.world.enable(missile);
-			(missile as any).target = nearestEnemy; // Store the target enemy
+				this.missilesGroup.add(missile);
 
-			this.missilesGroup.add(missile);
+				// Calculate the angle and velocity
+				const angle = Phaser.Math.Angle.Between(this.x, this.y, (nearestEnemy as any).x, (nearestEnemy as any).y);
+				const velocity = this.scene.physics.velocityFromRotation(angle, this.MissileVelocity);
+				(missile.body as Phaser.Physics.Arcade.Body).setVelocity(velocity.x, velocity.y);
+				(missile.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+				missile.angle = Phaser.Math.RadToDeg(angle);
 
-			// Calculate the angle and velocity
-			const angle = Phaser.Math.Angle.Between(this.x, this.y, (nearestEnemy as Phaser.GameObjects.Sprite).x, (nearestEnemy as Phaser.GameObjects.Sprite).y);
-			const velocity = this.scene.physics.velocityFromRotation(angle, this.MissileVelocity);
-			(missile.body as Phaser.Physics.Arcade.Body).setVelocity(velocity.x, velocity.y);
-			(missile.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
-			missile.angle = Phaser.Math.RadToDeg(angle);
+				// Add collision logic with the enemies
+				this.scene.physics.add.overlap(missile, this.scene.enemies, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
 
-			// Add collision logic with the player
-			this.scene.physics.add.overlap(missile, this.scene.enemies, this.handleLaserCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
-
-			// Continuously adjust the missile's velocity towards the nearest enemy
-			this.scene.events.on('update', () => {
-				if (missile.active && nearestEnemy && !(nearestEnemy as any).IsDestroyed) {
-					const currentTarget = (missile as any).target;
-					if (currentTarget !== nearestEnemy) {
+				// Set a timer to destroy the missile after 2 seconds
+				this.scene.time.delayedCall(2000, () => {
+					if (missile.active) {
 						this.destroyMissile(missile);
-					} else {
-						const newAngle = Phaser.Math.Angle.Between(missile.x, missile.y, (nearestEnemy as Phaser.GameObjects.Sprite).x, (nearestEnemy as Phaser.GameObjects.Sprite).y);
-						const newVelocity = this.scene.physics.velocityFromRotation(newAngle, 1000);
-						(missile.body as Phaser.Physics.Arcade.Body).setVelocity(newVelocity.x, newVelocity.y);
-						missile.angle = Phaser.Math.RadToDeg(newAngle);
 					}
-				} else if (missile.active && nearestEnemy && (nearestEnemy as any).IsDestroyed) {
-					this.destroyMissile(missile);
-				}
-			});
-
-			this.scene.time.delayedCall(2000, () => {
-				if (missile.active) {
-					this.destroyMissile(missile);
-				}
-			});
-		}
+				});
+			}
 		}
 
 
