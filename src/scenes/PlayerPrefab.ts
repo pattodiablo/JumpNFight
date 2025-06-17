@@ -18,6 +18,8 @@ import AlertLabel from "./AlertLabel";
 
 export default class PlayerPrefab extends SpineGameObject {
 
+	trailParticles: Phaser.GameObjects.Particles.ParticleEmitter | undefined;
+
 	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, dataKey?: string, atlasKey?: string, skin?: string, boundsProvider?: SpineGameObjectBoundsProvider, xargs?: any) {
 		super(scene, plugin, x ?? 0, y ?? 0, dataKey ?? "Player", atlasKey ?? "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
 
@@ -526,7 +528,7 @@ export default class PlayerPrefab extends SpineGameObject {
 					if (this.mouseInactiveTimer <= this.mouseInactiveThreshold) {
 					newAnimation = "RundAndGun";
 					}else{
-						newAnimation = "Run";
+					 newAnimation = "Run";
 					}
 				}
 			} else {
@@ -617,6 +619,37 @@ export default class PlayerPrefab extends SpineGameObject {
         });
     }
 
+ // Detectar si está cayendo rápido (tecla abajo o joystick abajo)
+    const playerBody = this.body as Phaser.Physics.Arcade.Body;
+	const isDownPressed = (
+		(this.cursors && this.cursors.down && this.cursors.down.isDown) ||
+		(this.scene.input.keyboard && this.scene.input.keyboard.keys && this.scene.input.keyboard.keys[83] && this.scene.input.keyboard.keys[83].isDown) ||
+		this.TouchY == 1
+	);
+
+    if (this.isInAir && isDownPressed && playerBody.velocity.y > 0) {
+        // Si no existe el trail, créalo
+   
+	this.trailParticles =  this.scene.add.particles(0, 0, 'particleImage', {
+			x: this.x,
+			y: this.y,
+			speed: { min: 0, max: -1000 },
+			angle: { min: 0, max: 360 },
+			lifespan: { min: 30, max: 500 },
+			scale: { start: 2, end: 0 },
+			quantity: 5,
+			maxParticles: 5,
+			frequency: 100,
+			gravityY: -3000
+
+		});
+    } else {
+        // Si ya no está cayendo rápido, destruye el trail si existe
+        if (this.trailParticles) {
+			this.trailParticles.stop();
+        
+        }
+    }
 
 	//	this.ArmsFollowMouse(this, this.scene.input.mousePointer);
 
@@ -712,6 +745,12 @@ export default class PlayerPrefab extends SpineGameObject {
 
 		}else{
 			this.IsDead = true;
+
+			// Destruir trailParticles si existen al morir
+			if (this.trailParticles) {
+				this.trailParticles.stop();
+				this.trailParticles = undefined;
+			}
 
 					 const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
 			if(!(levelScene as any).isFxMuted){
@@ -817,6 +856,11 @@ export default class PlayerPrefab extends SpineGameObject {
     }
 
 	destroy() {
+		// Limpieza de trailParticles al destruir el jugador
+		if (this.trailParticles) {
+			this.trailParticles.stop();
+			this.trailParticles = undefined;
+		}
 		if (this.scene == undefined) return;
 		super.destroy();
 	}

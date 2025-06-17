@@ -438,9 +438,11 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
         this.rainEvent?.remove();
 
         // Limpia los grupos de proyectiles/minas
-        this.swordsGroup?.clear(true, true);
-        this.missilesGroup?.clear(true, true);
+     
+		if (this.missilesGroup && this.missilesGroup.children) {
+			this.missilesGroup.clear(true, true);
 
+		}
         super.destroy(fromScene);
     }
 

@@ -5,6 +5,7 @@
 import PhaserScene from "../presentation/phaser/models/PhaserScene";
 import PlayerPrefab from "./PlayerPrefab";
 import LaserShot from "./LaserShot";
+import InfoSphere from "./InfoSphere";
 import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 /* START-USER-IMPORTS */
 import Enemy1V1 from "./Enemy1V1";
@@ -90,11 +91,16 @@ export default class Level extends PhaserScene {
 		wall.alpha = 0;
 		wall.isFilled = true;
 
+		// infoSphere
+		const infoSphere = new InfoSphere(this, this.spine, 264, -645);
+		this.add.existing(infoSphere);
+
 		this.player = player;
 		this.bg1 = bg1;
 		this.laserShot = laserShot;
 		this.theBuilding = theBuilding;
 		this.wall = wall;
+		this.infoSphere = infoSphere;
 
 		this.events.emit("scene-awake");
 	}
@@ -104,6 +110,7 @@ export default class Level extends PhaserScene {
 	public laserShot!: LaserShot;
 	private theBuilding!: Phaser.GameObjects.Sprite;
 	private wall!: Phaser.GameObjects.Rectangle;
+	public infoSphere!: InfoSphere;
 
 	/* START-USER-CODE */
 
@@ -115,14 +122,14 @@ export default class Level extends PhaserScene {
                 // Pausa el juego antes del anuncio
                 this.scene.pause(); // Pausa la escena actual
                 (poki as any).gameplayStart();
-                
+
 
                 // Espera a que termine el comercial
                 await (poki as any).commercialBreak();
 
                 // Reanuda el juego después del anuncio
                 this.scene.resume(); // Reanuda la escena actual
-          
+
             }
         }
 
@@ -160,7 +167,7 @@ export default class Level extends PhaserScene {
 
      // Actualizar la posición de bg1 para crear el efecto parallax
 
-  
+
 
 // Agregar colisión entre el jugador y la pared (wall)
 this.physics.add.existing(this.wall, true);
@@ -177,11 +184,11 @@ this.physics.add.collider(this.player, this.wall);
 
 
 
-        
+
 
         // this.scene.launch("GameUI");
         const factor = this.scale.height/this.scale.width;
-       
+
         // Reproduce la animación 'Idle' por defecto
         this.player.animationState.setAnimation(0, "Idle", true);
         this.cameras.main.setBackgroundColor(0xd0cfcf); // Azul
@@ -200,7 +207,7 @@ this.physics.add.collider(this.player, this.wall);
         this.enemies = this.add.group();
         this.bg1.setDepth(-1);
 
-    
+
         this.bg1.setOrigin(0, 0);
         this.bg1.setPosition(-this.scale.width*4, -this.scale.height*4);
         this.bg1.setSize(this.scale.width*20, this.scale.height*10);
@@ -246,7 +253,7 @@ this.game.events.once("RestartLevel", () => {
 
     // Restaurar estado de mute después de reiniciar (usa un pequeño delay para asegurar que el juego esté listo)
     setTimeout(() => {
-       
+
         const newGame = window.game || window.GAME; // Ajusta según cómo guardes tu instancia global
         if (newGame) {
             const levelScene = newGame.scene.getScene('Level');
@@ -294,7 +301,7 @@ this.game.events.once("RestartLevel", () => {
 
         // Array de clases de enemigos
         const EnemyClasses = [
-       
+
             Enemy1,
             Enemy2,
             Enemy3,
@@ -447,7 +454,6 @@ createRoundedPlatform(
 	}
 
 	update(time: number, delta: number): void {
-
         this._transform.execute();
         this._navigation.execute();
         this._setAcceleration.execute();
@@ -484,6 +490,17 @@ createRoundedPlatform(
 this.bg1.tilePositionX = this.cameras.main.scrollX * 0.05;
 this.bg1.tilePositionY = this.cameras.main.scrollY * 0.05;
 
+// Destruir theBuilding si el jugador está a más de 15000px de distancia
+    if (this.theBuilding && this.player) {
+        const distance = Phaser.Math.Distance.Between(
+            this.theBuilding.x, this.theBuilding.y,
+            this.player.x, this.player.y
+        );
+        if (distance > 15000) {
+            this.theBuilding.destroy();
+            this.theBuilding = undefined as any;
+        }
+    }
     }
 
 	updatePlatforms() {

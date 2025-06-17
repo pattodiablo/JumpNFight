@@ -61,6 +61,9 @@ export default class GameUI extends Phaser.Scene {
 		const finalBtn = this.add.image(679, 427, "FinalBtn");
 		finalBtn.scaleX = 0;
 
+		// helpPc
+		const helpPc = this.add.image(0, 0, "HelpPc");
+
 		this.weveanaJoystick = weveanaJoystick;
 		this.jumpBtn = jumpBtn;
 		this.fullScreenBtn = fullScreenBtn;
@@ -70,6 +73,7 @@ export default class GameUI extends Phaser.Scene {
 		this.musicOnBtn = musicOnBtn;
 		this.finalImage = finalImage;
 		this.finalBtn = finalBtn;
+		this.helpPc = helpPc;
 
 		this.events.emit("scene-awake");
 	}
@@ -83,6 +87,7 @@ export default class GameUI extends Phaser.Scene {
 	public musicOnBtn!: Phaser.GameObjects.Sprite;
 	private finalImage!: Phaser.GameObjects.Image;
 	private finalBtn!: Phaser.GameObjects.Image;
+	public helpPc!: Phaser.GameObjects.Image;
 
 	/* START-USER-CODE */
 	public levelText!: Phaser.GameObjects.Text;
@@ -103,6 +108,22 @@ export default class GameUI extends Phaser.Scene {
 	create() {
 
 		this.editorCreate();
+ 		
+		if (this.game.device.os.android || this.game.device.os.iOS) {
+        this.helpPc.setTexture("HelpMovile");
+    	}
+
+		this.helpPc.setScale(0.8, 0.8);
+		this.helpPc.setOrigin(0.5, 0.5);
+		this.helpPc.setPosition(this.cameras.main.centerX, this.cameras.main.centerY);
+		this.physics.add.existing(this.helpPc, false); // false = no estático, true = estático
+		(this.helpPc.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+
+		this.helpPc.setInteractive();
+		this.helpPc.setVisible(false);
+		this.helpPc.on("pointerdown", () => {
+			this.helpPc.setVisible(false);
+		});
 
 		this.restartBtn.visible = false;
 		this.restartBtn.setInteractive();

@@ -119,6 +119,15 @@
             "x": 679,
             "y": 427,
             "scaleX": 0
+        },
+        {
+            "type": "Image",
+            "id": "b7cd55e3-f492-4104-a898-e187f997fc45",
+            "label": "helpPc",
+            "scope": "PUBLIC",
+            "texture": {
+                "key": "HelpPc"
+            }
         }
     ],
     "plainObjects": [],

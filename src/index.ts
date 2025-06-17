@@ -191,7 +191,7 @@ function initializeGame() {
                 {
                   plugin: PokiPlugin,
                   key: 'poki',
-                  start: true, // must be true, in order to load
+                  start: false, // must be true, in order to load
                   data: {
                     // This must be the key/name of your loading scene
                     loadingSceneKey: 'Preload',

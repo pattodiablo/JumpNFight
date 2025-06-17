@@ -1,0 +1,45 @@
+{
+    "id": "bde89dc0-970e-4a85-abed-b1a826b5a929",
+    "settings": {
+        "createMethodName": "",
+        "preloadMethodName": "",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
+        "exportClass": true,
+        "autoImport": true,
+        "importFileExtension": false,
+        "generateAwakeHandler": false,
+        "compilerInsertSpaces": false,
+        "compilerTabSize": 4,
+        "borderWidth": 1280,
+        "borderHeight": 720,
+        "borderX": 0,
+        "borderY": 0
+    },
+    "sceneType": "PREFAB",
+    "displayList": [
+        {
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "type": "SpineGameObject",
+            "id": "3b3fef85-97ca-4844-a625-f3469de25407",
+            "label": "infoSphere",
+            "scope": "PUBLIC",
+            "dataKey": "InfoSphere",
+            "atlasKey": "InfoSphere-atlas",
+            "skinName": "default",
+            "bpType": 1,
+            "previewAnimation": "",
+            "x": 0,
+            "y": 0,
+            "scaleX": 3.6406729013562154,
+            "scaleY": 3.6406729013562154
+        }
+    ],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType"
+    }
+}

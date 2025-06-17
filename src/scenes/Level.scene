@@ -2,8 +2,8 @@
     "id": "b685c081-ee5f-4b67-b583-415922c9e2c4",
     "sceneType": "SCENE",
     "settings": {
-        "snapWidth": 197.00000830742698,
-        "snapHeight": 197.99999999999994,
+        "snapWidth": 132.00000559242991,
+        "snapHeight": 240.99999999999994,
         "exportClass": true,
         "autoImport": true,
         "superClassName": "PhaserScene",
@@ -86,6 +86,18 @@
             "isFilled": true,
             "width": 1000,
             "height": 8000
+        },
+        {
+            "prefabId": "bde89dc0-970e-4a85-abed-b1a826b5a929",
+            "id": "48a200a6-cee5-40f7-a4bd-32bb032a692b",
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "label": "infoSphere",
+            "scope": "PUBLIC",
+            "x": 264,
+            "y": -645
         }
     ],
     "plainObjects": [],

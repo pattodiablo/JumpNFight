@@ -377,6 +377,16 @@
                 "key": "FxOnBtn"
             },
             {
+                "url": "assets/HelpMovile.png",
+                "type": "image",
+                "key": "HelpMovile"
+            },
+            {
+                "url": "assets/HelpPc.png",
+                "type": "image",
+                "key": "HelpPc"
+            },
+            {
                 "url": "assets/SpineAnimations/IdlePlayer/Idle.json",
                 "type": "spineJson",
                 "key": "Idle",
@@ -386,6 +396,17 @@
                 "url": "assets/SpineAnimations/IdlePlayer/Idle.atlas",
                 "type": "spineAtlas",
                 "key": "Idle-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/InfoSphere/InfoSphere.json",
+                "type": "spineJson",
+                "key": "InfoSphere",
+                "previewAtlasKey": "InfoSphere-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/InfoSphere/InfoSphere.atlas",
+                "type": "spineAtlas",
+                "key": "InfoSphere-atlas"
             },
             {
                 "url": [

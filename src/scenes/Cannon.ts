@@ -1,4 +1,3 @@
-
 // You can write more code here
 
 import GameUI from "./GameUI";
@@ -66,15 +65,20 @@ handlePlayerCollision(cannon: Phaser.GameObjects.GameObject, player: Phaser.Game
 		, [], this);
 	}
 
-
-
-
-
 }
 
+update() {
+    // Destruir el cañón si está a más de 15000px del jugador
+    const player = (this.scene as Phaser.Scene & { player: Phaser.GameObjects.Sprite }).player;
+    if (player && this.active) {
+        const distance = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+        if (distance > 15000) {
+            this.destroy();
+        }
+    }
+}
 
-
-	/* END-USER-CODE */
+/* END-USER-CODE */
 }
 
 /* END OF COMPILED CODE */
