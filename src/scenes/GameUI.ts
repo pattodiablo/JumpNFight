@@ -29,8 +29,7 @@ export default class GameUI extends Phaser.Scene {
 
 		// JumpBtn
 		const jumpBtn = this.add.image(387, 675, "JumpBtn");
-		jumpBtn.scaleX = 0.5;
-		jumpBtn.scaleY = 0.5;
+	
 
 		// fullScreenBtn
 		const fullScreenBtn = this.add.image(0, 0, "FullScreenBtn");
@@ -106,16 +105,90 @@ export default class GameUI extends Phaser.Scene {
 	// Write your code here
 
 	create() {
-
 		this.editorCreate();
- 		
-		if (this.game.device.os.android || this.game.device.os.iOS) {
-        this.helpPc.setTexture("HelpMovile");
-    	}
 
-		this.helpPc.setScale(0.8, 0.8);
+		// Crea primero las barras y el texto de nivel
+		const levelBar = this.add.rectangle(this.scale.width / 2, 40, this.scale.width / 2, 35, 0xffffff);
+		levelBar.setOrigin(0.5, 0.5);
+
+		const UpdateBar = this.add.rectangle(this.scale.width / 2 - this.scale.width / 4, 40, this.scale.width / 2, 35, 0xff0000);
+		UpdateBar.setOrigin(0, 0.5);
+		UpdateBar.scaleX = 0;
+
+		const strokeBar = this.add.graphics();
+		strokeBar.lineStyle(6, 0x000000);
+		strokeBar.strokeRoundedRect(this.scale.width / 4 - 2, 23, this.scale.width / 2 + 4, 35, 10);
+
+		const levelText = this.add.text(this.scale.width / 4 + 10, 40, 'Level 1', {
+			fontFamily: 'Bahiana',
+			fontSize: '24px',
+			color: '#e1e1e1',
+			fontStyle: 'bold'
+		});
+		levelText.setOrigin(0, 0.5);
+
+		this.levelBar = levelBar;
+		this.updateBar = UpdateBar;
+		this.strokeBar = strokeBar;
+		this.levelText = levelText;
+
+		// Detectar si es móvil
+		const isMobile = this.game.device.os.android || this.game.device.os.iOS;
+		const factor = this.scale.height / this.scale.width;
+
+		// Ajustes para móvil
+		if (isMobile) {
+
+			this.finalImage.setScale(0.5 * factor);
+			this.finalImage.setPosition(this.cameras.main.centerX, this.cameras.main.centerY);
+			this.finalBtn.setVisible(false);
+			// Reposicionar el botón final
+			this.finalBtn.setPosition(this.cameras.main.centerX, this.cameras.main.centerY + 200 * factor);
+			this.finalBtn.setScale(0.5 * factor);
+			// Escalar y reposicionar elementos principales
+			this.helpPc.setScale(0.7 * factor);
+			this.helpPc.setPosition(this.cameras.main.centerX, this.cameras.main.centerY);
+
+	//		this.jumpBtn.setScale(100);
+			this.weveanaJoystick.setScale(factor / 1.2);
+
+			this.levelBar.setScale(1, 1);
+			this.updateBar.setScale(1, 1);
+			this.strokeBar.setScale(1, 1);
+
+			this.levelText.setFontSize(18);
+			this.levelText.setPosition(this.scale.width / 4 + 10, 40 );
+
+			this.musicOnBtn.setScale(0.4 * factor);
+			this.fxOnBtn.setScale(0.4 * factor);
+
+			this.musicOnBtn.setPosition(this.scale.width - 50 * factor, this.levelBar.y);
+			this.fxOnBtn.setPosition(this.scale.width - 120 * factor, this.levelBar.y);
+
+			this.jumpBtn.setPosition(0.3, 0.3);
+			this.weveanaJoystick.setPosition(this.scale.width * 0.15, this.scale.height - this.scale.height * 0.08);
+
+			this.fullScreenBtn.setVisible(true); // Opcional: ocultar en móvil
+					this.restartBtn.setVisible(false);
+		} else {
+			// Desktop: dejar todo como está
+			this.helpPc.setScale(0.8, 0.8);
+			this.helpPc.setPosition(this.cameras.main.centerX, this.cameras.main.centerY);
+			//this.jumpBtn.setScale(factor / 2);
+			this.weveanaJoystick.setScale(factor / 1.5);
+			this.musicOnBtn.setScale(0.5);
+			this.fxOnBtn.setScale(0.5);
+			this.musicOnBtn.setPosition(this.scale.width - 50, this.levelBar.y);
+			this.fxOnBtn.setPosition(this.scale.width - 120, this.levelBar.y);
+			this.jumpBtn.setPosition(this.scale.width * 0.15, this.scale.height - this.scale.height * 0.25);
+			this.weveanaJoystick.setPosition(this.weveanaJoystick.x, this.weveanaJoystick.y);
+			this.fullScreenBtn.setVisible(false);
+			this.finalBtn.setVisible(false);
+	
+		}
+
+		
 		this.helpPc.setOrigin(0.5, 0.5);
-		this.helpPc.setPosition(this.cameras.main.centerX, this.cameras.main.centerY);
 		this.physics.add.existing(this.helpPc, false); // false = no estático, true = estático
 		(this.helpPc.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
@@ -138,29 +211,29 @@ export default class GameUI extends Phaser.Scene {
 				}
 			});
 		}
-		const levelBar = this.add.rectangle(this.scale.width / 2, 40, this.scale.width / 2, 35, 0xffffff);
-        levelBar.setOrigin(0.5, 0.5);
+		// const levelBar = this.add.rectangle(this.scale.width / 2, 40, this.scale.width / 2, 35, 0xffffff);
+  //       levelBar.setOrigin(0.5, 0.5);
 
-		const UpdateBar = this.add.rectangle(this.scale.width / 2-this.scale.width/4, 40, this.scale.width / 2, 35, 0xff0000);
-        UpdateBar.setOrigin(0, 0.5);
-		UpdateBar.scaleX=0;
+		// const UpdateBar = this.add.rectangle(this.scale.width / 2-this.scale.width/4, 40, this.scale.width / 2, 35, 0xff0000);
+  //       UpdateBar.setOrigin(0, 0.5);
+		// UpdateBar.scaleX=0;
 
-		const strokeBar = this.add.graphics();
-        strokeBar.lineStyle(6, 0x000000); // Grosor de 2 píxeles y color blanco
-		strokeBar.strokeRoundedRect(this.scale.width / 4-2, 23, this.scale.width / 2+4, 35, 10); // Dibuja el rectángulo con bordes redondeados
+		// const strokeBar = this.add.graphics();
+  //       strokeBar.lineStyle(6, 0x000000); // Grosor de 2 píxeles y color blanco
+		// strokeBar.strokeRoundedRect(this.scale.width / 4-2, 23, this.scale.width / 2+4, 35, 10); // Dibuja el rectángulo con bordes redondeados
 
-		const levelText = this.add.text(this.scale.width / 4+10, 40, 'Level 1', {
-			fontFamily: 'Bahiana',
-            fontSize: '24px',
-            color: '#e1e1e1',
-            fontStyle: 'bold'
-        });
-        levelText.setOrigin(0, 0.5);
+		// const levelText = this.add.text(this.scale.width / 4+10, 40, 'Level 1', {
+		// 	fontFamily: 'Bahiana',
+  //           fontSize: '24px',
+  //           color: '#e1e1e1',
+  //           fontStyle: 'bold'
+  //       });
+  //       levelText.setOrigin(0, 0.5);
 
-		this.levelBar = levelBar;
-        this.updateBar = UpdateBar;
-        this.strokeBar = strokeBar;
-        this.levelText = levelText;
+		// this.levelBar = levelBar;
+  //       this.updateBar = UpdateBar;
+  //       this.strokeBar = strokeBar;
+  //       this.levelText = levelText;
 
 		this.musicOnBtn.setPosition(this.scale.width-50, this.levelBar.y);
 		this.musicOnBtn.setScale(0.5);
@@ -218,7 +291,7 @@ export default class GameUI extends Phaser.Scene {
 		});
 
 
-		const factor = this.scale.height / this.scale.width;
+		// const factor = this.scale.height / this.scale.width; // Removed duplicate declaration
 
 		this.input.addPointer(2); // Agregar dos punteros adicionales
 
@@ -241,7 +314,7 @@ export default class GameUI extends Phaser.Scene {
 			this.events.emit('jump',false);
         });
 
-		this.jumpBtn.setScale(factor/2);
+		this.jumpBtn.setScale(0.2);
 		this.weveanaJoystick.setScale(factor/1.5);
 
 
@@ -296,67 +369,120 @@ export default class GameUI extends Phaser.Scene {
 
 
 	public ShowResults(): void {
+    const factor = this.scale.height / this.scale.width;
+    this.levelBar.setVisible(false);
+    this.updateBar.setVisible(false);
+    this.strokeBar.setVisible(false);
+    this.levelText.setVisible(false);
 
-		const factor = this.scale.height / this.scale.width;
-		this.levelBar.setVisible(false);
-		this.updateBar.setVisible(false);
-		this.strokeBar.setVisible(false);
-		this.levelText.setVisible(false);
+    this.jumpBtn.setVisible(false);	
+    this.weveanaJoystick.setVisible(false);
+    this.fullScreenBtn.setVisible(false);
+    this.finalImage.setVisible(true);
 
-		this.jumpBtn.setVisible(false);	
-		this.weveanaJoystick.setVisible(false);
-		this.fullScreenBtn.setVisible(false);
-		this.finalImage.setVisible(true);
+    const fixerY = 30;
+    const isMobile = this.game.device.os.android || this.game.device.os.iOS;
 
-const fixerY = 30;
+    if (isMobile) {
+        const fixerY = 90;
+        this.finalImage.setPosition(150, this.cameras.main.centerY);
+        this.finalBtn.setVisible(false);
+        this.weveanaJoystick.setVisible(false);
+        const disntancetraveled = this.add.text(400, 200-fixerY, 'Distance traveled', {
+				fontFamily: 'Bahiana',
+				fontSize: '60px',
+				color: '#ffffff',
+				fontStyle: 'bold'
+			});
+			disntancetraveled.setOrigin(0.5, 0.5);
+			disntancetraveled.setScale(factor);
 
-		const disntancetraveled = this.add.text(750, 200-fixerY, 'Distance traveled', {
-			fontFamily: 'Bahiana',
-            fontSize: '80px',
-            color: '#ffffff',
-            fontStyle: 'bold'
-        });
-        disntancetraveled.setOrigin(0.5, 0.5);
-		disntancetraveled.setScale(factor);
+			const distancereached = (this.scoreCounter as any).GetDistance();
+			const distanceReachedText = this.add.text(400, 260-fixerY, distancereached + " " + "M", {
+				fontFamily: 'Bahiana',
+				fontSize: '100px',
+				color: '#ff0000',
+				fontStyle: 'bold'
+			});
+			distanceReachedText.setOrigin(0.5, 0.5);
+			distanceReachedText.setScale(factor);
 
-		const distancereached = (this.scoreCounter as any).GetDistance();
-		const distanceReachedText = this.add.text(750, 260-fixerY, distancereached + " " + "M", {
-			fontFamily: 'Bahiana',
-            fontSize: '120px',
-            color: '#ff0000',
-            fontStyle: 'bold'
-        });
-        distanceReachedText.setOrigin(0.5, 0.5);
-		distanceReachedText.setScale(factor);
+			const LevelReachedText = this.add.text(400, 330-fixerY, 'Level reached', {
+				fontFamily: 'Bahiana',
+				fontSize: '60px',
+				color: '#ffffff',
+				fontStyle: 'bold'
+			});
+			LevelReachedText.setOrigin(0.5, 0.5);
+			LevelReachedText.setScale(factor);
 
-		const LevelReachedText = this.add.text(750, 330-fixerY, 'Level reached', {
-			fontFamily: 'Bahiana',
-            fontSize: '80px',
-            color: '#ffffff',
-            fontStyle: 'bold'
-        });
-        LevelReachedText.setOrigin(0.5, 0.5);
-		LevelReachedText.setScale(factor);
+			const LevelGet = this.level.toString();
+			const LevelReached = this.add.text(400, 390-fixerY, LevelGet, {
+				fontFamily: 'Bahiana',
+				fontSize: '100px',
+				color: '#ff0000',
+				fontStyle: 'bold'
+			});
+			LevelReached.setOrigin(0.5, 0.5);
+			LevelReached.setScale(factor);
 
-		const LevelGet = this.level.toString();
-		const LevelReached = this.add.text(750, 390-fixerY, LevelGet, {
-			fontFamily: 'Bahiana',
-            fontSize: '120px',
-            color: '#ff0000',
-            fontStyle: 'bold'
-        });
-        LevelReached.setOrigin(0.5, 0.5);
-		LevelReached.setScale(factor);
+			this.restartBtn.setVisible(true);
+			this.restartBtn.setPosition(400, 500 - fixerY);
+			this.restartBtn.setScale(factor);
 
-		this.restartBtn.setVisible(true);
-		this.restartBtn.setPosition(750, 500-fixerY);
-		this.restartBtn.setScale(factor);
+			// Reiniciar el juego al tocar la pantalla en mobile
+			this.input.once('pointerdown', () => {
+				this.game.events.emit("RestartLevel");
+			});
+    } else {
+        const disntancetraveled = this.add.text(750, 200-fixerY, 'Distance traveled', {
+				fontFamily: 'Bahiana',
+				fontSize: '80px',
+				color: '#ffffff',
+				fontStyle: 'bold'
+			});
+			disntancetraveled.setOrigin(0.5, 0.5);
+			disntancetraveled.setScale(factor);
 
-		// Esperar unos segundos y luego pausar el nivel
-this.time.delayedCall(1500, () => {
-    this.scene.pause('Level');
-});
-	}
+			const distancereached = (this.scoreCounter as any).GetDistance();
+			const distanceReachedText = this.add.text(750, 260-fixerY, distancereached + " " + "M", {
+				fontFamily: 'Bahiana',
+				fontSize: '120px',
+				color: '#ff0000',
+				fontStyle: 'bold'
+			});
+			distanceReachedText.setOrigin(0.5, 0.5);
+			distanceReachedText.setScale(factor);
+
+			const LevelReachedText = this.add.text(750, 330-fixerY, 'Level reached', {
+				fontFamily: 'Bahiana',
+				fontSize: '80px',
+				color: '#ffffff',
+				fontStyle: 'bold'
+			});
+			LevelReachedText.setOrigin(0.5, 0.5);
+			LevelReachedText.setScale(factor);
+
+			const LevelGet = this.level.toString();
+			const LevelReached = this.add.text(750, 390-fixerY, LevelGet, {
+				fontFamily: 'Bahiana',
+				fontSize: '120px',
+				color: '#ff0000',
+				fontStyle: 'bold'
+			});
+			LevelReached.setOrigin(0.5, 0.5);
+			LevelReached.setScale(factor);
+
+			this.restartBtn.setVisible(true);
+			this.restartBtn.setPosition(750, 500 - fixerY);
+			this.restartBtn.setScale(factor);
+    }
+
+    // Esperar unos segundos y luego pausar el nivel
+    this.time.delayedCall(1500, () => {
+        this.scene.pause('Level');
+    });
+}
 
 	updateLevelBar(collectedParticles: number) {
         this.collectedParticles += collectedParticles;
@@ -396,7 +522,7 @@ this.time.delayedCall(1500, () => {
 
 	handleResize() {
         const factor = this.scale.height / this.scale.width;
-        this.jumpBtn.setScale(factor / 2);
+     //   this.jumpBtn.setScale(factor / 4);
         this.weveanaJoystick.setScale(factor / 2);
         this.jumpBtn.setPosition(this.scale.width * 0.15, this.scale.height - this.scale.height * 0.25);
     }

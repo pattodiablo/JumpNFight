@@ -36,6 +36,17 @@
                 "key": "bgMusic"
             },
             {
+                "url": "assets/SpineAnimations/InfoSphere/BIGBUS.json",
+                "type": "spineJson",
+                "key": "BIGBUS",
+                "previewAtlasKey": "BIGBUS-atlas"
+            },
+            {
+                "url": "assets/SpineAnimations/InfoSphere/BIGBUS.atlas",
+                "type": "spineAtlas",
+                "key": "BIGBUS-atlas"
+            },
+            {
                 "url": "assets/BulletIcon.png",
                 "type": "image",
                 "key": "BulletIcon"

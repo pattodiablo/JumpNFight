@@ -138,109 +138,126 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 	}
 
 	createUpgradeWindow() {
-		
-		this.showPokiAdAndPauseGame();
-		this.canSelectUpgrade = false;
-		//console.log("is upgrade selected " + this.isUpgradeSelected);
-		this.AvailableUpgrades = [...this.upgrades];
+    this.showPokiAdAndPauseGame();
+    this.canSelectUpgrade = false;
+    this.AvailableUpgrades = [...this.upgrades];
 
-		this.upgrade1.getRandomUpgrade(this.AvailableUpgrades);
-		this.upgrade2.getRandomUpgrade(this.AvailableUpgrades);
-		this.upgrade3.getRandomUpgrade(this.AvailableUpgrades);
+    this.upgrade1.getRandomUpgrade(this.AvailableUpgrades);
+    this.upgrade2.getRandomUpgrade(this.AvailableUpgrades);
+    this.upgrade3.getRandomUpgrade(this.AvailableUpgrades);
 
-		this.alpha = 1;
-		this.IsWindowActive = true;
-		this.scene.scene.pause('Level');
-		
-		this.upgrade1.visible = true;
-		this.upgrade2.visible = true;			
-		this.upgrade3.visible = true;
-		this.upgrade1.alpha = 0;
-		this.upgrade2.alpha = 0;
-		this.upgrade3.alpha = 0;
-		this.upgrade1.setScale(0.5);
-		this.upgrade2.setScale(0.5);
-		this.upgrade3.setScale(0.5);
+    this.alpha = 1;
+    this.IsWindowActive = true;
+    this.scene.scene.pause('Level');
 
+    this.upgrade1.visible = true;
+    this.upgrade2.visible = true;			
+    this.upgrade3.visible = true;
+    this.upgrade1.alpha = 0;
+    this.upgrade2.alpha = 0;
+    this.upgrade3.alpha = 0;
+    this.upgrade1.setScale(0.5);
+    this.upgrade2.setScale(0.5);
+    this.upgrade3.setScale(0.5);
 
-		
+    const width = this.scene.scale.width;
+    const height = this.scene.scale.height;
 
-		const width = this.scene.scale.width;
-        const height = this.scene.scale.height;
+    // Detectar si es móvil
+    const isMobile = this.scene.sys.game.device.os.android || this.scene.sys.game.device.os.iOS;
+    const factor = this.scene.scale.height / this.scene.scale.width;
 
-     	this.background = this.scene.add.rectangle(width / 2, this.scene.scale.height / 2, width, height, 0x000000, 0.8);
-        this.background.setOrigin(0.5, 0.5)
-		//this.add(this.background);
-		this.background.setDepth(-11);
+    // Ajustes para móvil
+    let btnScale = factor;
+    let upgradeScale = factor;
+    let upgradeFontSize = 64 * factor;
+    let btnYOffset = 0;
+    let upgradeTextY = height - 40;
+    let btnY = this.scene.scale.height / 2;
 
-		const buttonOriginalWidth = this.btn1.width; // Ancho original del botón
-		const numButtons = 3;
-		const spacingRatio = 0.15; 
-		const totalSpacing = (numButtons + 1) * spacingRatio	; // Espacios entre y a los lados
-		const scaleRation = (width * (1 - totalSpacing)) / (numButtons * buttonOriginalWidth);
-		this.btn1.scaleX =  scaleRation;
-        this.btn1.scaleY = scaleRation;
-		this.btn2.scaleX = scaleRation;
-        this.btn2.scaleY = scaleRation;
-		this.btn3.scaleX = scaleRation;
-        this.btn3.scaleY = scaleRation;
-		const btnSpacing = (width / numButtons)+spacingRatio;
-		this.btn1.setPosition(width / 2 - btnSpacing, this.scene.scale.height / 2);
-        this.btn2.setPosition(width / 2, this.scene.scale.height / 2);
-        this.btn3.setPosition(width / 2 + btnSpacing, this.scene.scale.height / 2);
-		this.btn1.setDepth(2);
-		this.btn2.setDepth(2);
-		this.btn3.setDepth(2);
+    if (isMobile) {
+        btnScale =  0.4;
+        upgradeScale = 0.4;
+        upgradeFontSize = 40 * factor;
+        btnYOffset = 10 * factor;
+        upgradeTextY = height - 20 * factor;
+        btnY = this.scene.scale.height / 2 + btnYOffset;
+    }
 
-		// Limpia las posiciones antes de agregarlas de nuevo
-		this.optionPositions = [];
-		this.optionPositions.push({posx: this.btn1.x, posy:this.btn1.y});
-		this.optionPositions.push({posx: this.btn2.x, posy:this.btn2.y});
-		this.optionPositions.push({posx: this.btn3.x, posy:this.btn3.y});
+    this.background = this.scene.add.rectangle(width / 2, this.scene.scale.height / 2, width, height, 0x000000, 0.8);
+    this.background.setOrigin(0.5, 0.5);
+    this.background.setDepth(-11);
 
-		// Coloca el selector en la opción inicial
-		this.currentOption = 0;
-		this.selector.setPosition(this.optionPositions[0].posx, this.optionPositions[0].posy);
+    const buttonOriginalWidth = this.btn1.width;
+    const numButtons = 3;
+    const spacingRatio = 0.15;
+    const totalSpacing = (numButtons + 1) * spacingRatio;
+    const scaleRation = (width * (1 - totalSpacing)) / (numButtons * buttonOriginalWidth);
 
-		// Solo agrega el listener de teclado una vez
-		if (!this.keyboardListenerAdded) {
-			if (this.scene.input.keyboard) {
-				this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => {
-					if (!this.IsWindowActive || !this.canSelectUpgrade) return;
-					if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
-						this.moveSelector(1);
-					} else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
-						this.moveSelector(-1);
-					}
-					if (event.key === 'Enter'  || event.key === 's' || event.key === 'ArrowDown') {
-						switch (this.currentOption) {
-							case 0:
-								if(this.selector.visible){
-									this.handleUpgradeClick(this.upgrade1);
-								}
-								
-								break;
-							case 1:
-								if(this.selector.visible){
-								this.handleUpgradeClick(this.upgrade2);
-								}
-								break;
-							case 2:
-								if(this.selector.visible){
-								this.handleUpgradeClick(this.upgrade3);
-								}
-								break;
-							default:
-								break;
-						}
-						this.closeUpgradeSystem();
-					}
-				});
-			}
-			this.keyboardListenerAdded = true;
-		}
+    this.btn1.scaleX = btnScale;
+    this.btn1.scaleY = btnScale;
+    this.btn2.scaleX = btnScale;
+    this.btn2.scaleY = btnScale;
+    this.btn3.scaleX = btnScale;
+    this.btn3.scaleY = btnScale;
 
-		this.scene.tweens.add({
+    const btnSpacing = (width / numButtons) + spacingRatio;
+    this.btn1.setPosition(width / 2 - btnSpacing, btnY);
+    this.btn2.setPosition(width / 2, btnY);
+    this.btn3.setPosition(width / 2 + btnSpacing, btnY);
+    this.btn1.setDepth(2);
+    this.btn2.setDepth(2);
+    this.btn3.setDepth(2);
+	
+
+    this.optionPositions = [];
+    this.optionPositions.push({ posx: this.btn1.x, posy: this.btn1.y });
+    this.optionPositions.push({ posx: this.btn2.x, posy: this.btn2.y });
+    this.optionPositions.push({ posx: this.btn3.x, posy: this.btn3.y });
+
+    // Coloca el selector en la opción inicial
+    this.currentOption = 0;
+    this.selector.setPosition(this.optionPositions[0].posx, this.optionPositions[0].posy);
+
+    // Solo agrega el listener de teclado una vez
+    if (!this.keyboardListenerAdded) {
+      if (this.scene.input.keyboard) {
+        this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => {
+          if (!this.IsWindowActive || !this.canSelectUpgrade) return;
+          if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
+            this.moveSelector(1);
+          } else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
+            this.moveSelector(-1);
+          }
+          if (event.key === 'Enter'  || event.key === 's' || event.key === 'ArrowDown') {
+            switch (this.currentOption) {
+              case 0:
+                if(this.selector.visible){
+                  this.handleUpgradeClick(this.upgrade1);
+                }
+                
+                break;
+              case 1:
+                if(this.selector.visible){
+                this.handleUpgradeClick(this.upgrade2);
+                }
+                break;
+              case 2:
+                if(this.selector.visible){
+                this.handleUpgradeClick(this.upgrade3);
+                }
+                break;
+              default:
+                break;
+            }
+            this.closeUpgradeSystem();
+          }
+        });
+      }
+      this.keyboardListenerAdded = true;
+    }
+
+    this.scene.tweens.add({
             targets: this.background,
             x: width / 2,
             duration: 250,
@@ -259,7 +276,7 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
             
             }
         })
-		const factor = this.scene.scale.height/this.scene.scale.width;
+		const localFactor = this.scene.scale.height/this.scene.scale.width;
 		this.upgrade1.x = this.btn1.x;
 		this.upgrade1.y = this.btn1.y;	
 		this.upgrade2.x = this.btn2.x;
@@ -267,29 +284,29 @@ export default class UpgradeSystemUI extends Phaser.GameObjects.Container {
 		this.upgrade3.x = this.btn3.x;
 		this.upgrade3.y = this.btn3.y;
 
-		this.background.x = width+width/2;
+		this.background.x = width + width / 2;
 
-		this.btn1.y = this.scene.scale.height;
-		this.btn2.y = this.scene.scale.height;
-		this.btn3.y = this.scene.scale.height;
+		this.btn1.y = btnY;
+		this.btn2.y = btnY;
+		this.btn3.y = btnY;
 
-		this.btn1.setScale(factor);
-		this.btn2.setScale(factor);
-		this.btn3.setScale(factor);
-		this.upgrade1.setScale(factor);
-		this.upgrade2.setScale(factor);
-		this.upgrade3.setScale(factor);
+		this.btn1.setScale(btnScale);
+		this.btn2.setScale(btnScale);
+		this.btn3.setScale(btnScale);
+		this.upgrade1.setScale(upgradeScale);
+		this.upgrade2.setScale(upgradeScale);
+		this.upgrade3.setScale(upgradeScale);
 
 		// Agregar el texto "Upgrade" en el centro arriba de los botones
-        const upgradeText = this.scene.add.text(width / 2, height-40, 'Upgrade', {
+        const upgradeText = this.scene.add.text(width / 2, upgradeTextY, 'Upgrade', {
             fontFamily: 'Bahiana',
-			fontSize: '64px',
+			fontSize: `${upgradeFontSize}px`,
             color: '#ffffff',
             fontStyle: 'bold'
         });
         upgradeText.setOrigin(0.5, 0.5);
-		upgradeText.setScale(factor);
-        this.add(upgradeText);
+		upgradeText.setScale(localFactor);
+		this.add(upgradeText);
 
 
 		// Animación tween para que el cuadrado negro transparente aparezca de derecha a izquierda

@@ -29,7 +29,7 @@ export default class InfoSphere extends SpineGameObject {
 		this.animationState.setAnimation(0, "idle", true);
 
 		// Habilita físicas para InfoSphere si no lo has hecho ya
-		this.scene.physics.add.existing(this, false); // false = cuerpo dinámico, true = estático
+		this.scene.physics.add.existing(this, false);
 		(this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
 		// Detecta overlap con el player
@@ -54,8 +54,16 @@ export default class InfoSphere extends SpineGameObject {
 				const playerRect = new Phaser.Geom.Rectangle(playerBody.x, playerBody.y, playerBody.width, playerBody.height);
 				const overlapping = Phaser.Geom.Intersects.RectangleToRectangle(thisRect, playerRect);
 				const gameUIScene = this.scene.scene.get('GameUI') as Phaser.Scene & { helpPc?: Phaser.GameObjects.Image };
+
 				if (overlapping) {
 					if (!isOverlapping && gameUIScene && gameUIScene.helpPc) {
+						// Detectar si es móvil y cambiar la textura si corresponde
+						const isMobile = this.scene.sys.game.device.os.android || this.scene.sys.game.device.os.iOS;
+						if (isMobile) {
+							gameUIScene.helpPc.setTexture("HelpMovile");
+						} else {
+							gameUIScene.helpPc.setTexture("helpPc");
+						}
 						gameUIScene.helpPc.setVisible(true);
 					}
 					isOverlapping = true;

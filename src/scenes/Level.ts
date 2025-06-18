@@ -11,6 +11,7 @@ import { SpineGameObject } from "@esotericsoftware/spine-phaser";
 import Enemy1V1 from "./Enemy1V1";
 import CollectableParticle from "./CollectableParticle";
 import Cannon from "./Cannon";
+import Bigbus from "./Bigbus";
 type CustomRectangle = Phaser.GameObjects.Rectangle & { hasCreatedMidPlatform?: boolean };
 
 
@@ -66,7 +67,7 @@ export default class Level extends PhaserScene {
 	editorCreate(): void {
 
 		// Player
-		const player = new PlayerPrefab(this, this.spine, 900, -964);
+		const player = new PlayerPrefab(this, this.spine, 900, -1786);
 		this.add.existing(player);
 		player.scaleX = 0.5;
 		player.scaleY = 0.5;
@@ -92,7 +93,7 @@ export default class Level extends PhaserScene {
 		wall.isFilled = true;
 
 		// infoSphere
-		const infoSphere = new InfoSphere(this, this.spine, 264, -645);
+		const infoSphere = new InfoSphere(this, this.spine, 264, -771);
 		this.add.existing(infoSphere);
 
 		this.player = player;
@@ -165,7 +166,31 @@ export default class Level extends PhaserScene {
     // this.createParticles();
          //this.cameras.main.postFX.addPixelate(0.01); // Cambia 8 por el tamaño de pixel deseado
 
-     // Actualizar la posición de bg1 para crear el efecto parallax
+// Instanciar 5 Bigbus a 20000px a la derecha del player y alturas aleatorias, distanciados en X
+const minDistanceBetweenBuses = 200; // Distancia mínima entre buses en Y
+const usedHeights: number[] = [];
+const minY = this.player.y;
+const maxY = this.player.y - 800;
+const numBuses = 5;
+const baseX = this.player.x + 20000;
+const distanceBetweenBusesX = 1200; // Distancia en X entre cada bus
+
+for (let i = 0; i < numBuses; i++) {
+    let bigbusY: number;
+    let attempts = 0;
+    do {
+        bigbusY = Phaser.Math.Between(minY, maxY);
+        attempts++;
+        // Evita alturas demasiado cercanas a las ya usadas
+    } while (
+        usedHeights.some(y => Math.abs(y - bigbusY) < minDistanceBetweenBuses) && attempts < 20
+    );
+    usedHeights.push(bigbusY);
+
+    const bigbusX = baseX + i * distanceBetweenBusesX;
+    const bigbus = new Bigbus(this, this.spine, bigbusX, bigbusY);
+    this.add.existing(bigbus);
+}
 
 
 
@@ -193,7 +218,17 @@ this.physics.add.collider(this.player, this.wall);
         this.player.animationState.setAnimation(0, "Idle", true);
         this.cameras.main.setBackgroundColor(0xd0cfcf); // Azul
 		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,0);
-		this.cameras.main.setZoom(factor/4); // Ajustar el zoom de la cámara para que parezca más alejada
+
+
+        // Detectar si es móvil
+        const isMobile = this.sys.game.device.os.android || this.sys.game.device.os.iOS;
+
+        // Ajustar el zoom de la cámara según el dispositivo
+        if (isMobile) {
+            this.cameras.main.setZoom(factor / 6);
+        } else {
+            this.cameras.main.setZoom(factor / 4);
+        }
 		this.cameras.main.fadeIn(100);
         const fxCamera = this.cameras.main.postFX.addPixelate(40);
         this.add.tween({
@@ -267,7 +302,6 @@ this.game.events.once("RestartLevel", () => {
     }, 500);
 }, this);
 // ...existing code...
-        // ...existing code...
 	}
 
     public setMusic(order:boolean){
@@ -377,13 +411,21 @@ createParticles() {
 
     let previousPlatformX = 0;
 
+    // --- Obtener la altura del suelo creado en createFloor ---
+    // Suponiendo que el suelo se crea en Y = this.scale.height - 600
+    const floorY = this.scale.height - 600;
+
     // Generar plataformas iniciales
     for (let i = 0; i < this.platformBuffer; i++) {
-        const platformWidth = Phaser.Math.Between(minPlatformWidth, maxPlatformWidth);
+        // --- Cambia solo la primera plataforma ---
+        let platformWidth = (i === 0) ? 15000 : Phaser.Math.Between(minPlatformWidth, maxPlatformWidth);
         const platformHeight = Phaser.Math.Between(minPlatformHeight, maxPlatformHeight);
         const platformDistance = Phaser.Math.Between(minPlatformDistance, maxPlatformDistance);
+
+        // La primera plataforma siempre a la altura del suelo
+        const platformY = (i === 0) ? floorY : Phaser.Math.Between(minPlatformY, maxPlatformY);
+
         const platformX = previousPlatformX + platformDistance;
-        const platformY = Phaser.Math.Between(minPlatformY, maxPlatformY);
 
         // Crea la plataforma visual con bordes redondeados
         const { graphics, collider } = this.createRoundedPlatform(platformX, platformY, platformWidth, platformHeight, 40);

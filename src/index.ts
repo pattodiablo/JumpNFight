@@ -163,94 +163,73 @@ class CustomGameImpl extends Phaser.Game implements CustomGame {
 }
 
 function initializeGame() {
+    // Detecta si es móvil
+    const isMobile = isMobileDevice();
 
-    
+    // Define el tamaño según el dispositivo
+    const width = isMobile ? 640 : 1031;
+    const height = isMobile ? 360 : 580;
+
     const game = new CustomGameImpl({
-      /*
-        width: window.innerWidth,
-		height:  window.innerHeight,
-    */
-       
-    width: 1031,
-		height: 580,
-    
-    title: "Eggy Carton",
-    type: Phaser.WEBGL, 
-		backgroundColor: "#e2e2e2",
-		scale: {
-			mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
-			autoCenter: Phaser.Scale.Center.CENTER_BOTH
-		}, 
-    fps: {
-      target: 30,       // Objetivo de 60fps
-      forceSetTimeOut: false // Asegura que use requestAnimationFrame, no setTimeout
-  },
-
-		plugins: { 
+        width,
+        height,
+        title: "Eggy Carton",
+        type: Phaser.WEBGL, 
+        backgroundColor: "#e2e2e2",
+        scale: {
+            mode: Phaser.Scale.ScaleModes.FIT,
+            autoCenter: Phaser.Scale.Center.CENTER_BOTH
+        }, 
+        fps: {
+            target: 30,
+            forceSetTimeOut: false
+        },
+        plugins: { 
             global: [
                 {
-                  plugin: PokiPlugin,
-                  key: 'poki',
-                  start: false, // must be true, in order to load
-                  data: {
-                    // This must be the key/name of your loading scene
-                    loadingSceneKey: 'Preload',
-          
-                    // This must be the key/name of your game (gameplay) scene
-                    gameplaySceneKey: 'Level',
-          
-                    // This will always request a commercialBreak when gameplay starts,
-                    // set to false to disable this behaviour (recommended to have true,
-                    // see Poki SDK docs for more details).
-                    autoCommercialBreak: true
-                  }
+                    plugin: PokiPlugin,
+                    key: 'poki',
+                    start: false,
+                    data: {
+                        loadingSceneKey: 'Preload',
+                        gameplaySceneKey: 'Level',
+                        autoCommercialBreak: true
+                    }
                 }
-              ],
-			scene: [{
-				key: "spine.SpinePlugin",
-				plugin: SpinePlugin,
-				mapping: "spine"
-			  }]
-		  },
-		
-		scene: [Boot, Preload, Level, GameUI, LevelPreloader],
-        input: {
-            keyboard: true, // Asegúrate de que el sistema de teclado esté habilitado
-            mouse: true,    // Asegúrate de que el sistema de ratón esté habilitado
-            touch: {
-                capture: true,
-                
-                // activePointers: 3 // Permitir hasta 3 punteros activos
-            },    // Asegúrate de que el sistema de toque esté habilitado
-            gamepad: true   // Asegúrate de que el sistema de gamepad esté habilitado
+            ],
+            scene: [{
+                key: "spine.SpinePlugin",
+                plugin: SpinePlugin,
+                mapping: "spine"
+            }]
         },
-		physics: {
+        scene: [Boot, Preload, Level, GameUI, LevelPreloader],
+        input: {
+            keyboard: true,
+            mouse: true,
+            touch: { capture: true },
+            gamepad: true
+        },
+        physics: {
             default: 'arcade',
             arcade: {
-                gravity: { x:0,y: 300 }, // Configura la gravedad en el eje Y
-                debug: false,// Activa la depuración de colisiones
+                gravity: { x:0, y: 300 },
+                debug: false,
                 fps: 60,
                 timeScale: 1
             }
         },
-		render: {
-            pixelArt: false, // Habilita el modo de pixel art
-            antialias: true, // Desactiva el antialiasing
-            powerPreference: "high-performance",// Sugerencia para la GPU
+        render: {
+            pixelArt: false,
+            antialias: true,
+            powerPreference: "high-performance",
             clearBeforeRender: true
-          //  roundPixels: true, // Redondea las posiciones de los píxeles
-          
         }
-	});
+    });
 
     game.playerData = {
-        
         isMobile: isMobile,
-    
     }
-
-    
-   
 }
 
 // Initialize the game for the first time

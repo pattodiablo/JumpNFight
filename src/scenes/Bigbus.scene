@@ -1,0 +1,42 @@
+{
+    "id": "54ea46a1-edb4-4f7e-b393-432502baa57d",
+    "settings": {
+        "createMethodName": "",
+        "preloadMethodName": "",
+        "compilerOutputLanguage": "TYPE_SCRIPT",
+        "exportClass": true,
+        "autoImport": true,
+        "importFileExtension": false,
+        "generateAwakeHandler": false,
+        "compilerInsertSpaces": false,
+        "compilerTabSize": 4,
+        "borderWidth": 1280,
+        "borderHeight": 720,
+        "borderX": 0,
+        "borderY": 0
+    },
+    "sceneType": "PREFAB",
+    "displayList": [
+        {
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "type": "SpineGameObject",
+            "id": "3eaf13f0-9a75-4369-8265-10125aa085f0",
+            "label": "bIGBUS",
+            "dataKey": "BIGBUS",
+            "atlasKey": "BIGBUS-atlas",
+            "skinName": "default",
+            "bpType": 1,
+            "previewAnimation": "",
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType"
+    }
+}

@@ -36,7 +36,7 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 	
 	public LaserShotsNumber: number = 1;
 	public LaserVelocity: number = 4500;
-	public LaserShotsInterval: number = 750;
+	public LaserShotsInterval: number = 500;
 	public LaserDamage: number = 1;
 
 	

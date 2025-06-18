@@ -2,8 +2,8 @@
     "id": "b685c081-ee5f-4b67-b583-415922c9e2c4",
     "sceneType": "SCENE",
     "settings": {
-        "snapWidth": 132.00000559242991,
-        "snapHeight": 240.99999999999994,
+        "snapWidth": 1334.0000192602358,
+        "snapHeight": 414.99999999999983,
         "exportClass": true,
         "autoImport": true,
         "superClassName": "PhaserScene",
@@ -27,7 +27,7 @@
             "label": "Player",
             "scope": "PUBLIC",
             "x": 900,
-            "y": -964,
+            "y": -1786,
             "scaleX": 0.5,
             "scaleY": 0.5
         },
@@ -97,7 +97,7 @@
             "label": "infoSphere",
             "scope": "PUBLIC",
             "x": 264,
-            "y": -645
+            "y": -771
         }
     ],
     "plainObjects": [],

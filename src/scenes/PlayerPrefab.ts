@@ -19,6 +19,7 @@ import AlertLabel from "./AlertLabel";
 export default class PlayerPrefab extends SpineGameObject {
 
 	trailParticles: Phaser.GameObjects.Particles.ParticleEmitter | undefined;
+	doublejumparticles: Phaser.GameObjects.Particles.ParticleEmitter | undefined;;
 
 	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, dataKey?: string, atlasKey?: string, skin?: string, boundsProvider?: SpineGameObjectBoundsProvider, xargs?: any) {
 		super(scene, plugin, x ?? 0, y ?? 0, dataKey ?? "Player", atlasKey ?? "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
@@ -549,7 +550,19 @@ export default class PlayerPrefab extends SpineGameObject {
 
 					this.isInAir = true;
 					newAnimation = "Jump"; // Cambiar a la animación de salto
+	this.doublejumparticles =  this.scene.add.particles(0, 0, 'particleImage', {
+							x: this.x,
+							y: this.y,
+							speed: { min: 0, max: 1000 },
+							angle: { min: 0, max: 360 },
+							lifespan: { min: 30, max: 500 },
+							scale: { start: 4, end: 0 },
+							quantity: 15,
+							maxParticles: 15,
+							frequency: 100,
+							gravityY: 3000
 
+						});
 					this.playJumpSound();
 
 				} else if (this.isJumping && !this.hasDoubleJumped && playerBody.velocity.y > 0) {
@@ -557,13 +570,45 @@ export default class PlayerPrefab extends SpineGameObject {
 					this.hasDoubleJumped = true;
 					newAnimation = "Roll"; // Cambiar a la animación de Roll
 
+
+					this.doublejumparticles =  this.scene.add.particles(0, 0, 'particleImage', {
+							x: this.x,
+							y: this.y,
+							speed: { min: 0, max: 1000 },
+							angle: { min: 0, max: 360 },
+							lifespan: { min: 30, max: 500 },
+							scale: { start: 4, end: 0 },
+							quantity: 15,
+							maxParticles: 15,
+							frequency: 100,
+							gravityY: 3000
+
+						});
+
 					this.playJumpSound();
 
-					const camera = this.scene.cameras.main;
+
+					  // Detectar si es móvil
+        const isMobile = this.scene.sys.game.device.os.android || this.scene.sys.game.device.os.iOS;
+
+        // Ajustar el zoom de la cámara según el dispositivo
+        if (isMobile) {
+           const camera = this.scene.cameras.main;
+					camera.zoomTo(this.factor/6, 500); // Alejar la cámara en 500ms
+					this.scene.time.delayedCall(1000, () => {
+						camera.zoomTo(this.factor/5, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
+					});
+        } else {
+            const camera = this.scene.cameras.main;
 					camera.zoomTo(this.factor/4, 500); // Alejar la cámara en 500ms
 					this.scene.time.delayedCall(1000, () => {
 						camera.zoomTo(this.factor/3, 500); // Volver el zoom a la normalidad en 500ms después de 1000ms
 					});
+        }
+
+
+
+					
 
 
 				}else if(this.WannaSord){
