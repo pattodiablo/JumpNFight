@@ -29,7 +29,8 @@ export default class GameUI extends Phaser.Scene {
 
 		// JumpBtn
 		const jumpBtn = this.add.image(387, 675, "JumpBtn");
-	
+		jumpBtn.scaleX = 0.5;
+		jumpBtn.scaleY = 0.5;
 
 		// fullScreenBtn
 		const fullScreenBtn = this.add.image(0, 0, "FullScreenBtn");
@@ -63,6 +64,9 @@ export default class GameUI extends Phaser.Scene {
 		// helpPc
 		const helpPc = this.add.image(0, 0, "HelpPc");
 
+		// gameTitle
+		const gameTitle = this.add.image(0, 0, "gameTitle");
+
 		this.weveanaJoystick = weveanaJoystick;
 		this.jumpBtn = jumpBtn;
 		this.fullScreenBtn = fullScreenBtn;
@@ -73,6 +77,7 @@ export default class GameUI extends Phaser.Scene {
 		this.finalImage = finalImage;
 		this.finalBtn = finalBtn;
 		this.helpPc = helpPc;
+		this.gameTitle = gameTitle;
 
 		this.events.emit("scene-awake");
 	}
@@ -87,6 +92,7 @@ export default class GameUI extends Phaser.Scene {
 	private finalImage!: Phaser.GameObjects.Image;
 	private finalBtn!: Phaser.GameObjects.Image;
 	public helpPc!: Phaser.GameObjects.Image;
+	private gameTitle!: Phaser.GameObjects.Image;
 
 	/* START-USER-CODE */
 	public levelText!: Phaser.GameObjects.Text;
@@ -106,6 +112,46 @@ export default class GameUI extends Phaser.Scene {
 
 	create() {
 		this.editorCreate();
+
+		// Pausar el juego al inicio y mostrar el título
+		this.scene.pause('Level');
+		this.gameTitle.setVisible(true);
+		this.gameTitle.setInteractive();
+
+		// Detectar si es móvil
+		const isMobile = this.game.device.os.android || this.game.device.os.iOS;
+		const factor = this.scale.height / this.scale.width;
+
+		// Centrar y adaptar la imagen del título
+		this.gameTitle.setOrigin(0.5, 0.5);
+		this.gameTitle.setPosition(this.cameras.main.centerX, this.cameras.main.centerY);
+
+		if (isMobile) {
+			// Escala adaptativa para mobile
+			this.gameTitle.setScale(0.7 * factor);
+		} else {
+			this.gameTitle.setScale(1);
+		}
+
+		// Al hacer click/tap en el título, iniciar el juego y destruir el objeto
+		this.gameTitle.once('pointerdown', () => {
+			this.gameTitle.destroy();
+			const levelScene = this.scene.get('Level') as Phaser.Scene;
+			(levelScene as any).showPokiAdAndPauseGame();
+			this.scene.resume('Level');
+		});
+
+		// También permitir iniciar con ENTER
+		if (this.input.keyboard) {
+			this.input.keyboard.once('keydown-ENTER', () => {
+				if (this.gameTitle && this.gameTitle.active) {
+					this.gameTitle.destroy();
+					const levelScene = this.scene.get('Level') as Phaser.Scene;
+					(levelScene as any).showPokiAdAndPauseGame();
+					this.scene.resume('Level');
+				}
+			});
+		}
 
 		// Crea primero las barras y el texto de nivel
 		const levelBar = this.add.rectangle(this.scale.width / 2, 40, this.scale.width / 2, 35, 0xffffff);
@@ -131,10 +177,6 @@ export default class GameUI extends Phaser.Scene {
 		this.updateBar = UpdateBar;
 		this.strokeBar = strokeBar;
 		this.levelText = levelText;
-
-		// Detectar si es móvil
-		const isMobile = this.game.device.os.android || this.game.device.os.iOS;
-		const factor = this.scale.height / this.scale.width;
 
 		// Ajustes para móvil
 		if (isMobile) {
@@ -184,10 +226,10 @@ export default class GameUI extends Phaser.Scene {
 			this.weveanaJoystick.setPosition(this.weveanaJoystick.x, this.weveanaJoystick.y);
 			this.fullScreenBtn.setVisible(false);
 			this.finalBtn.setVisible(false);
-	
+
 		}
 
-		
+
 		this.helpPc.setOrigin(0.5, 0.5);
 		this.physics.add.existing(this.helpPc, false); // false = no estático, true = estático
 		(this.helpPc.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);

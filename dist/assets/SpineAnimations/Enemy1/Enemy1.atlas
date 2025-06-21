@@ -1,0 +1,14 @@
+Enemy1.png
+size:268,201
+filter:Linear,Linear
+pma:true
+alaDerecha
+bounds:183,103,83,96
+offsets:1,1,85,98
+alaIzquierda
+bounds:183,6,67,95
+offsets:1,1,69,97
+cuerpo
+bounds:2,2,197,179
+offsets:1,1,199,181
+rotate:90

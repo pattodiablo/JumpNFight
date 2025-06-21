@@ -62,7 +62,7 @@ export default class InfoSphere extends SpineGameObject {
 						if (isMobile) {
 							gameUIScene.helpPc.setTexture("HelpMovile");
 						} else {
-							gameUIScene.helpPc.setTexture("helpPc");
+							gameUIScene.helpPc.setTexture("HelpPc");
 						}
 						gameUIScene.helpPc.setVisible(true);
 					}

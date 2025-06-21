@@ -19,7 +19,8 @@ import AlertLabel from "./AlertLabel";
 export default class PlayerPrefab extends SpineGameObject {
 
 	trailParticles: Phaser.GameObjects.Particles.ParticleEmitter | undefined;
-	doublejumparticles: Phaser.GameObjects.Particles.ParticleEmitter | undefined;;
+	doublejumparticles: Phaser.GameObjects.Particles.ParticleEmitter | undefined;shootBulletParciles: Phaser.GameObjects.Particles.ParticleEmitter | undefined;
+;
 
 	constructor(scene: Phaser.Scene, plugin: SpinePlugin, x: number, y: number, dataKey?: string, atlasKey?: string, skin?: string, boundsProvider?: SpineGameObjectBoundsProvider, xargs?: any) {
 		super(scene, plugin, x ?? 0, y ?? 0, dataKey ?? "Player", atlasKey ?? "Player-atlas", boundsProvider ?? new SkinsAndAnimationBoundsProvider("Idle", ["default"]));
@@ -267,6 +268,18 @@ export default class PlayerPrefab extends SpineGameObject {
 	shootSawBullet(enemy: Phaser.GameObjects.Sprite) {
 		for (let i = 0; i < this.AddSawMissile; i++) {
 			if(this.SawMissile>0){
+
+
+
+
+					const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+		if(!(levelScene as any).isFxMuted){
+			const jumpSounds = ['MissileShot_01'];
+		// Select a random sound
+		const randomSound = Phaser.Math.RND.pick(jumpSounds);
+		// Play the selected sound
+		this.scene.sound.play(randomSound);
+		}
 			//	console.log("shooting saw missile");
 				const sawBullet = this.scene.add.existing(new SawBullet(this.scene, this.x, this.y));
 				sawBullet.BulletVelocity = this.SawMissileVelocity;
@@ -550,7 +563,7 @@ export default class PlayerPrefab extends SpineGameObject {
 
 					this.isInAir = true;
 					newAnimation = "Jump"; // Cambiar a la animación de salto
-	this.doublejumparticles =  this.scene.add.particles(0, 0, 'particleImage', {
+					this.doublejumparticles =  this.scene.add.particles(0, 0, 'particleImage', {
 							x: this.x,
 							y: this.y,
 							speed: { min: 0, max: 1000 },
@@ -828,6 +841,16 @@ export default class PlayerPrefab extends SpineGameObject {
 	}
 
 	restoreShieldLife() {
+			const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+				if(!(levelScene as any).isFxMuted){
+					const jumpSounds = ['powerUp_01'];
+				// Select a random sound
+				const randomSound = Phaser.Math.RND.pick(jumpSounds);
+				// Play the selected sound
+				this.scene.sound.play(randomSound);
+				}
+
+
 		this.IsRestoringShield = true;
 		this.ShieldLife = this.OrioginalShieldLife; // Restaurar la vida del escudo a su valor original
 		this.IsShieldActive = true;

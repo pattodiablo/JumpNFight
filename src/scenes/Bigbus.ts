@@ -39,7 +39,7 @@ export default class Bigbus extends SpineGameObject {
 
 			// Body más pequeño y ubicado en la parte superior de la imagen
 			const newWidth = this.width * 0.6;
-			const newHeight = this.height * 0.35; // Más bajo (35% de la altura)
+			const newHeight = this.height * 0.15; // Más bajo (35% de la altura)
 			busBody.setSize(newWidth, newHeight);
 			busBody.setOffset((this.width - newWidth) / 2, 0); // Offset Y en 0 para que quede arriba
 
@@ -66,14 +66,13 @@ export default class Bigbus extends SpineGameObject {
                 this.y = player.y - Phaser.Math.Between(player.y, 2000);
 
                 // Opcional: randomiza escala y velocidad al reaparecer
-                const randomScale = Phaser.Math.FloatBetween(1.5, 2.5);
+                const randomScale = Phaser.Math.FloatBetween(1.5, 2);
                 this.setScale(randomScale);
 
                 const busBody = this.body as Phaser.Physics.Arcade.Body;
                 const newWidth = this.width * 0.6;
                 const newHeight = this.height * 0.9;
-                busBody.setSize(newWidth, newHeight);
-                busBody.setOffset((this.width - newWidth) / 2, (this.height - newHeight) / 2);
+             
 
                 busBody.setVelocityX(-Phaser.Math.Between(1000, 3000));
             }

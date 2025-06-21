@@ -159,7 +159,14 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 			// Set the ray's velocity to fall down
 			rayBody.setVelocityY(this.RainVelocity); // Adjust the speed as needed
 			rayBody.setAllowGravity(false);
-
+			const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+			if(!(levelScene as any).isFxMuted){
+				const jumpSounds = ['laserShoot1_01'];
+			// Select a random sound
+			const randomSound = Phaser.Math.RND.pick(jumpSounds);
+			// Play the selected sound
+		//this.scene.sound.play(randomSound);
+			}
 
 				// Add a tween to scale the ray from 1 to 0
 			this.scene.tweens.add({
@@ -243,8 +250,20 @@ export default class LaserShot extends Phaser.GameObjects.Sprite {
 
 	fireSwords(){ //minas
 		for (let i = 0; i < this.SwordNumber; i++) {
+
+				const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+				if(!(levelScene as any).isFxMuted){
+					const jumpSounds = ['MissileShot_01'];
+				// Select a random sound
+				const randomSound = Phaser.Math.RND.pick(jumpSounds);
+				// Play the selected sound
+				this.scene.sound.play(randomSound);
+				}
+
+
 			const missile = this.scene.add.sprite(this.x, this.y, 'swordWeapon');
 			missile.setData('damage', this.swordWeaponDamage);
+			missile.setOrigin(0.5, 0.5);
 			this.scene.physics.world.enable(missile);
 			const velocityX = Phaser.Math.Between(-this.SwordVelocity, this.SwordVelocity);
 			const velocityY = Phaser.Math.Between(-this.SwordVelocity, -this.SwordVelocity);

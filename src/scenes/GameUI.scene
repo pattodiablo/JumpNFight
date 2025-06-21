@@ -128,6 +128,15 @@
             "texture": {
                 "key": "HelpPc"
             }
+        },
+        {
+            "type": "Image",
+            "id": "1aa5b4c4-cf28-4c66-bdb4-38c8ae8c3940",
+            "label": "gameTitle",
+            "scope": "CLASS",
+            "texture": {
+                "key": "gameTitle"
+            }
         }
     ],
     "plainObjects": [],

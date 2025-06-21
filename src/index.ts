@@ -189,7 +189,7 @@ function initializeGame() {
                 {
                     plugin: PokiPlugin,
                     key: 'poki',
-                    start: false,
+                    start: true,
                     data: {
                         loadingSceneKey: 'Preload',
                         gameplaySceneKey: 'Level',

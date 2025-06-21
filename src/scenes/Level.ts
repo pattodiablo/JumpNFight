@@ -93,7 +93,7 @@ export default class Level extends PhaserScene {
 		wall.isFilled = true;
 
 		// infoSphere
-		const infoSphere = new InfoSphere(this, this.spine, 264, -771);
+		const infoSphere = new InfoSphere(this, this.spine, 3552, -771);
 		this.add.existing(infoSphere);
 
 		this.player = player;
@@ -131,10 +131,16 @@ export default class Level extends PhaserScene {
                 // Reanuda el juego después del anuncio
                 this.scene.resume(); // Reanuda la escena actual
 
+            }else {
+                     (poki as any).gameplayStart();
+                    this.scene.resume(); // Reanuda la escena actual
+         
             }
         }
 
 	// Write your code here
+     
+
     private currentPlatform!: Phaser.GameObjects.Rectangle;
 	public platforms!: Phaser.GameObjects.Group;
     private platformBuffer: number = 20; // Número de plataformas de buffer por delante y por detrás del jugador
@@ -162,18 +168,24 @@ export default class Level extends PhaserScene {
 
 	create() {
 		this.editorCreate();
-        this.showPokiAdAndPauseGame();
+        const poki = this.plugins.get('poki');
+        if (poki) {
+         	(poki as any).gameLoadingFinished();
+        } else {
+            console.warn("Poki plugin not found, proceeding without it.");
+        }
+        // Espera a que se cargue el anuncio
     // this.createParticles();
          //this.cameras.main.postFX.addPixelate(0.01); // Cambia 8 por el tamaño de pixel deseado
 
 // Instanciar 5 Bigbus a 20000px a la derecha del player y alturas aleatorias, distanciados en X
-const minDistanceBetweenBuses = 200; // Distancia mínima entre buses en Y
+const minDistanceBetweenBuses = 1200; // Distancia mínima entre buses en Y
 const usedHeights: number[] = [];
 const minY = this.player.y;
 const maxY = this.player.y - 800;
 const numBuses = 5;
 const baseX = this.player.x + 20000;
-const distanceBetweenBusesX = 1200; // Distancia en X entre cada bus
+const distanceBetweenBusesX = 5000; // Distancia en X entre cada bus
 
 for (let i = 0; i < numBuses; i++) {
     let bigbusY: number;
@@ -189,6 +201,7 @@ for (let i = 0; i < numBuses; i++) {
 
     const bigbusX = baseX + i * distanceBetweenBusesX;
     const bigbus = new Bigbus(this, this.spine, bigbusX, bigbusY);
+    bigbus.setScale(1); // Ajusta la escala del Bigbus
     this.add.existing(bigbus);
 }
 
@@ -217,37 +230,47 @@ this.physics.add.collider(this.player, this.wall);
         // Reproduce la animación 'Idle' por defecto
         this.player.animationState.setAnimation(0, "Idle", true);
         this.cameras.main.setBackgroundColor(0xd0cfcf); // Azul
-		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,0);
+		this.cameras.main.startFollow(this.player, true, 0.8, 1,0,390);
 
 
         // Detectar si es móvil
-        const isMobile = this.sys.game.device.os.android || this.sys.game.device.os.iOS;
+const isMobile = this.sys.game.device.os.android || this.sys.game.device.os.iOS;
 
-        // Ajustar el zoom de la cámara según el dispositivo
-        if (isMobile) {
-            this.cameras.main.setZoom(factor / 6);
-        } else {
-            this.cameras.main.setZoom(factor / 4);
-        }
-		this.cameras.main.fadeIn(100);
-        const fxCamera = this.cameras.main.postFX.addPixelate(40);
-        this.add.tween({
-            targets: fxCamera,
-            duration: 700,
-            amount: -1,
-        });
-
-
-        this.platforms = this.add.group();
-        this.enemies = this.add.group();
-        this.bg1.setDepth(-1);
+// Ajustar el zoom de la cámara según el dispositivo
+if (isMobile) {
+    this.cameras.main.setZoom(factor / 6);
+} else {
+    this.cameras.main.setZoom(factor / 4);
+}
+this.cameras.main.fadeIn(100);
+const fxCamera = this.cameras.main.postFX.addPixelate(40);
+this.add.tween({
+    targets: fxCamera,
+    duration: 700,
+    amount: -1,
+});
 
 
-        this.bg1.setOrigin(0, 0);
-        this.bg1.setPosition(-this.scale.width*4, -this.scale.height*4);
-        this.bg1.setSize(this.scale.width*20, this.scale.height*10);
-        this.bg1.setTileScale(4, 4);
-        this.bg1.setScrollFactor(0, 0.5); // Ajustar el factor de desplazamiento para el efecto parallax
+this.platforms = this.add.group();
+this.enemies = this.add.group();
+this.bg1.setDepth(-1);
+
+if (isMobile) {
+
+    this.bg1.setOrigin(0, 0);
+    this.bg1.setPosition(-this.scale.width*6, -this.scale.height*8);
+    this.bg1.setSize(this.scale.width*20, this.scale.height*10);
+    this.bg1.setTileScale(4, 4);
+    this.bg1.setScrollFactor(0, 0.5); // Ajustar el factor de desplazamiento para el efecto parallax
+
+}else{
+     this.bg1.setOrigin(0, 0);
+    this.bg1.setPosition(-this.scale.width*4, -this.scale.height*4);
+    this.bg1.setSize(this.scale.width*20, this.scale.height*10);
+    this.bg1.setTileScale(4, 4);
+    this.bg1.setScrollFactor(0, 0.5); // Ajustar el factor de desplazamiento para el efecto parallax
+
+}
 
 		this.createFloor(); 
 		this.createPlatforms();
@@ -348,7 +371,7 @@ this.game.events.once("RestartLevel", () => {
             Enemy10,
             Enemy11,
             Enemy12,
-            MainEnemy
+            MainEnemy, // Asegúrate de que esta clase esté definida
         ];
 
         const generateEnemies = () => {

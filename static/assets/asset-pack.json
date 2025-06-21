@@ -388,6 +388,11 @@
                 "key": "FxOnBtn"
             },
             {
+                "url": "assets/gameTitle.png",
+                "type": "image",
+                "key": "gameTitle"
+            },
+            {
                 "url": "assets/HelpMovile.png",
                 "type": "image",
                 "key": "HelpMovile"

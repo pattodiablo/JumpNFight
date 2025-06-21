@@ -70,6 +70,7 @@ export default class Enemy1V1 extends SpineGameObject {
 	public canPlayerHit: boolean = true;
 	private hasHitPlayer: boolean = false;
 	public IsMegaLaser: boolean = false; // Variable para controlar si es un Mega Laser
+	private canCollideWithPlayer: boolean = true; // Agrega esta propiedad a la clase
 	/* START-USER-CODE */
 	create(){
 		const gameUI = this.scene.scene.get('GameUI') as any;
@@ -96,7 +97,13 @@ export default class Enemy1V1 extends SpineGameObject {
 
 		const player = (this.scene as Phaser.Scene & { player: Phaser.GameObjects.Sprite }).player;
 		if(this.canHitPlayer){
-			this.scene.physics.add.collider(this, player, this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
+			this.scene.physics.add.collider(
+				this,
+				player,
+				this.handlePlayerCollision as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+				undefined,
+				this
+			);
 
 		}else if(this.canPlayerStand){
 			this.scene.physics.add.collider(this, player, this.handlePlayerCollisionStand as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback, undefined, this);
@@ -112,7 +119,7 @@ export default class Enemy1V1 extends SpineGameObject {
     }
 	}
 	// Llama a este método desde updateEnemy o donde corresponda para resetear el flag cuando ya no hay overlap
-resetPlayerHit(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
+	resetPlayerHit(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
     // Verifica si ya no hay overlap (puedes usar Arcade Physics para esto)
     // Por ejemplo, si la distancia es mayor a cierto umbral o usando body.touching
     if (!this.scene.physics.overlap(enemy, player)) {
@@ -125,15 +132,38 @@ resetPlayerHit(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.
 		
 	}
 	handlePlayerCollision(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.GameObject) {
+		if (!this.canCollideWithPlayer) return;
+	
+		this.scene.add.particles(0, 0, 'particleImage', {
+							x: (player as any).x,
+							y: (player as any).y,
+							speed: { min: 0, max: 1000 },
+							angle: { min: 0, max: 360 },
+							lifespan: { min: 30, max: 500 },
+							scale: { start: 4, end: 0 },
+							quantity: 15,
+							maxParticles: 15,
+							frequency: 100,
+							gravityY: 3000
 
+						});
+							const levelScene = this.scene.scene.get('Level') as Phaser.Scene;
+				if(!(levelScene as any).isFxMuted){
+					const jumpSounds = ['dead2_01', 'dead3_01', 'dead1_01', 'dead4_01'];
+				// Select a random sound
+				const randomSound = Phaser.Math.RND.pick(jumpSounds);
+				// Play the selected sound
+				this.scene.sound.play(randomSound);
+				}
+    this.canCollideWithPlayer = false;
 
-    // Agregar un efecto de "camera shake"
-	const gameUI = this.scene.scene.get('GameUI') as any;
-	const EnergyLevel = gameUI.level;
-	//gameUI.updateLevelBar(-this.EnemyDamage*EnergyLevel);
+    // --- Tu lógica de colisión normal ---
+    const gameUI = this.scene.scene.get('GameUI') as any;
+    const EnergyLevel = gameUI.level;
+    //gameUI.updateLevelBar(-this.EnemyDamage*EnergyLevel);
 		// Reducir la vida del jugador
 		( player as any).body.setVelocityY(-2000);
-		
+		(player as any).body.setVelocityX(-1000);
 		( player as any).handleDamage(this.EnemyDamage);
 
 		const bloodParticles =  this.scene.add.particles(0, 0, 'particleImage', {
@@ -159,6 +189,10 @@ resetPlayerHit(enemy: Phaser.GameObjects.GameObject, player: Phaser.GameObjects.
 			}, [], this);
 		
 
+		// --- Cooldown para volver a permitir la colisión ---
+    this.scene.time.delayedCall(1500, () => {
+        this.canCollideWithPlayer = true;
+    });
 	}
 
 	updateEnemy(delta: number) {

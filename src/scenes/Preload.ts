@@ -91,9 +91,7 @@ export default class Preload extends Phaser.Scene {
 				console.log(`Development: jump to ${start}`);
 			
 
-				    const poki = this.plugins.get('poki');
-				(poki as any).gameLoadingFinished();
-			
+				
 
 				return;
 			}
