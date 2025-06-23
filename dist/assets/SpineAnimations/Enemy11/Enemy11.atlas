@@ -1,0 +1,10 @@
+Enemy11.png
+size:216,226
+filter:Linear,Linear
+pma:true
+Body
+bounds:2,52,175,172
+offsets:1,1,177,174
+Helix
+bounds:2,2,212,48
+offsets:1,1,214,50
