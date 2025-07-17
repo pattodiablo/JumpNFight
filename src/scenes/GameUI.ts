@@ -210,7 +210,7 @@ export default class GameUI extends Phaser.Scene {
 			this.jumpBtn.setPosition(0.3, 0.3);
 			this.weveanaJoystick.setPosition(this.scale.width * 0.15, this.scale.height - this.scale.height * 0.08);
 
-			this.fullScreenBtn.setVisible(true); // Opcional: ocultar en móvil
+			this.fullScreenBtn.setVisible(false); // Opcional: ocultar en móvil
 					this.restartBtn.setVisible(false);
 		} else {
 			// Desktop: dejar todo como está
@@ -356,7 +356,7 @@ export default class GameUI extends Phaser.Scene {
 			this.events.emit('jump',false);
         });
 
-		this.jumpBtn.setScale(0.2);
+		this.jumpBtn.setScale(0.15);
 		this.weveanaJoystick.setScale(factor/1.5);
 
 

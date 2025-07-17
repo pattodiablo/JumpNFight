@@ -70,12 +70,19 @@ class Boot extends Phaser.Scene {
     }
 
     create() {
-        const canvas = this.sys.game.canvas;
-        canvas.setAttribute("id", "game_canvas");
-        
-        console.log("Canvas renombrado dentro de Boot scene.");
-       // canvas.style.display = "none";
-        
+           if (document.fullscreenElement) {
+        document.exitFullscreen();
+    }
+
+        let canvas = document.getElementById("game_canvas") as HTMLCanvasElement | null;
+            if (!canvas) {
+                canvas = this.sys.game.canvas;
+                canvas.setAttribute("id", "game_canvas");
+                 console.log("Canvas renombrado dentro de Boot scene.");
+            }
+
+        // canvas.style.display = "none";
+
        this.scene.start("Preload");
     }
 }
